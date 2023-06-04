@@ -12,7 +12,7 @@ class Overworld extends Phaser.Scene {
          frameHeight: 16,
       })
       this.load.image('tilesetImage', 'tileset.png')
-      this.load.tilemapTiledJSON('tilemapJSON','area01.json')
+      this.load.tilemapTiledJSON('tilemapJSON','prologue_map.json')
    }
 
    create() {
@@ -20,12 +20,16 @@ class Overworld extends Phaser.Scene {
       const tileset = map.addTilesetImage('tileset', 'tilesetImage')
 
       // add layer
-      const bgLayer = map.createLayer('Background', tileset, 0, 0)
-      const terrainLayer = map.createLayer('Terrain', tileset, 0, 0)
-      const treesLayer = map.createLayer('Trees', tileset, 0, 0)
+      const elevationLayer = map.createLayer('elevation', tileset, 0, 0)
+      const riverLayer = map.createLayer('river', tileset, 0, 0)
+      const bgLayer = map.createLayer('background', tileset, 0, 0)
+      const pathsLayer = map.createLayer('paths', tileset, 0, 0)
+      const decorationsLayer = map.createLayer('decorations', tileset, 0, 0)
+      const housesLayer = map.createLayer('houses', tileset, 0, 0)
+      const treesLayer = map.createLayer('trees', tileset, 0, 0)
 
       // add player
-      this.slime = this.physics.add.sprite(32, 32, 'slime', 0)
+      this.slime = this.physics.add.sprite(32*57, 32*40, 'slime', 0)
       this.anims.create({
          key: 'jiggle',
          frameRate: 8,
@@ -40,9 +44,13 @@ class Overworld extends Phaser.Scene {
       this.slime.body.setCollideWorldBounds(true)
 
       // enable collision
-      terrainLayer.setCollisionByProperty({ collides: true })
+      riverLayer.setCollisionByProperty({ collides: true })
+      pathsLayer.setCollisionByProperty({ collides: true })
+      housesLayer.setCollisionByProperty({ collides: true })
       treesLayer.setCollisionByProperty({ collides: true })
-      this.physics.add.collider(this.slime, terrainLayer)
+      this.physics.add.collider(this.slime, riverLayer)
+      this.physics.add.collider(this.slime, pathsLayer)
+      this.physics.add.collider(this.slime, housesLayer)
       this.physics.add.collider(this.slime, treesLayer)
 
       // cameras
