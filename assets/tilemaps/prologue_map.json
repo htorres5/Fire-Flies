@@ -543,7 +543,7 @@
         {
          "columns":16,
          "firstgid":1,
-         "image":"tilemaps\/tileset.png",
+         "image":"tileset.png",
          "imageheight":512,
          "imagewidth":512,
          "margin":0,

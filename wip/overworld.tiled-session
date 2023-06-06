@@ -20,11 +20,12 @@
             }
         },
         "C:/github/Fire-Flies/assets/prologue_map.json#tileset": {
-            "scaleInDock": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
-    "last.exportedFilePath": "C:/github/Fire-Flies/assets",
-    "last.imagePath": "C:/github/Fire-Flies/assets",
+    "last.exportedFilePath": "C:/github/Fire-Flies/assets/tilemaps",
+    "last.imagePath": "C:/github/Fire-Flies/assets/tilemaps",
     "lastUsedTilesetExportFilter": "All Files (*)",
     "map.height": 48,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
