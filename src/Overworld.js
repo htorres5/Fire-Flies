@@ -12,7 +12,12 @@ class Overworld extends Phaser.Scene {
          frameHeight: 16,
       })
       this.load.image('tilesetImage', 'tileset.png')
+      this.load.image('change_depth', 'change_depth.png')
       this.load.tilemapTiledJSON('tilemapJSON','prologue_map.json')
+   }
+
+   tile(coord) {
+      return coord * 32;
    }
 
    create() {
@@ -20,7 +25,7 @@ class Overworld extends Phaser.Scene {
       const tileset = map.addTilesetImage('tileset', 'tilesetImage')
 
       // add layer
-      this.elevationLayer = map.createLayer('elevation', tileset, 0, 0);
+      this.elevationLayer = map.createLayer('elevation', tileset, 0, 0).setDepth(-1);
       this.riverLayer = map.createLayer('river', tileset, 0, 0).setDepth(-1)
       this.bgLayer = map.createLayer('background', tileset, 0, 0)
       this.pathsLayer = map.createLayer('paths', tileset, 0, 0)
@@ -29,13 +34,19 @@ class Overworld extends Phaser.Scene {
       this.housesLayer = map.createLayer('houses', tileset, 0, 0).setDepth(0);
       this.treesLayer = map.createLayer('trees', tileset, 0, 0).setDepth(1);
 
+      // * Toggle Layer
+      this.regularArea = this.add.rectangle(this.tile(44), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.physics.add.existing(this.regularArea);
 
+      this.riverArea = this.add.rectangle(this.tile(44), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.physics.add.existing(this.riverArea);
+
+      this.underRightBridgeCollider = this.add.rectangle(this.tile(38), this.tile(19), this.tile(3), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.physics.add.existing(this.underRightBridgeCollider, true);
 
       // add player
       this.slime = this.physics.add.sprite(32*57, 32*40, 'slime', 0).setDepth(0);
 
-      // add overlap collider
-      this.changeDepthArea = this.physics.add.staticBody(28*32, 20*32, 64, 32)
 
       this.anims.create({
          key: 'jiggle',
@@ -49,7 +60,6 @@ class Overworld extends Phaser.Scene {
       this.slime.play('jiggle')
 
       this.slime.body.setCollideWorldBounds(true)
-      this.isInRiverLayer = false;
 
       // enable collision
       this.riverLayer.setCollisionByProperty({ collides: true })
@@ -58,19 +68,24 @@ class Overworld extends Phaser.Scene {
       this.treesLayer.setCollisionByProperty({ collides: true })
       this.bridgeLayer.setCollisionByProperty({ collides: true})
       this.physics.add.collider(this.slime, this.riverLayer)
-      this.physics.add.collider(this.slime, this.bridgeLayer)
       this.physics.add.collider(this.slime, this.pathsLayer)
       this.physics.add.collider(this.slime, this.housesLayer)
       this.physics.add.collider(this.slime, this.treesLayer)
 
-      this.physics.add.overlap(this.slime, this.changeDepthArea, () => {
-         console.log("hi");
-         this.isInRiverLayer = !this.isInRiverLayer
-         if(this.isInRiverLayer) {
-            this.slime.setDepth(-1);
-         } else {
-            this.slime.setDepth(0);
-         }
+      this.isInRiverLayer = false;
+      // * Bridge Collision
+      this.bridgeCollider = this.physics.add.collider(this.slime, this.bridgeLayer)
+
+      this.underRightBridgeCollider = this.physics.add.collider(this.slime, this.underRightBridgeCollider)
+      this.underRightBridgeCollider.active = false;
+
+      this.riverAreaCollider = this.physics.add.overlap(this.slime, this.riverArea, () => {
+         this.isInRiverLayer = true;
+         console.log(`Collider callback function: ${this.isInRiverLayer}`)
+      })
+      this.regularAreaCollider = this.physics.add.overlap(this.slime, this.regularArea, () => {
+         this.isInRiverLayer = false;
+         console.log(`Collider callback function: ${this.isInRiverLayer}`)
       })
 
       // cameras
@@ -94,20 +109,21 @@ class Overworld extends Phaser.Scene {
       } else if (this.cursors.down.isDown) {
          this.direction.y = 1;
       }
-      if(this.slime.depth == -1) {
+
+      if(this.isInRiverLayer) {
+         this.slime.setDepth(-1);
          console.log(this.slime.depth)
-         this.bridgeLayer.setCollisionByProperty({ collides: false})
+         this.underRightBridgeCollider.active = true;
+         this.bridgeCollider.active = false;
       } else {
-         this.bridgeLayer.setCollisionByProperty({ collides: true})
+         this.slime.setDepth(1);
+         this.underRightBridgeCollider.active = false;
+         this.bridgeCollider.active = true;
       }
-      console.log(this.isInRiverLayer);
-      // if(this.isInRiverLayer) {
-      //    this.slime.setDepth(-1);
-      // } else {
-      //    this.slime.setDepth(0);
-      // }
+
+      console.log(`update function: ${this.isInRiverLayer}`)
 
       this.direction.normalize();
-      this.slime.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
+      this.slime.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
    }
 }
