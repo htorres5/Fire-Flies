@@ -13,10 +13,10 @@
         },
         "C:/github/Fire-Flies/assets/prologue_map.json": {
             "scale": 1,
-            "selectedLayer": 5,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 924,
-                "y": 671
+                "x": 1010,
+                "y": 658
             }
         },
         "C:/github/Fire-Flies/assets/prologue_map.json#tileset": {
