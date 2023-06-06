@@ -38,12 +38,8 @@ class Overworld extends Phaser.Scene {
       this.riverArea = this.add.rectangle(this.tile(44), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
       this.physics.add.existing(this.riverArea);
 
-      this.underRightBridgeCollider = this.add.rectangle(this.tile(37), this.tile(19), this.tile(5), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
-      this.physics.add.existing(this.underRightBridgeCollider, true);
-
       // add player
       this.riku = this.physics.add.sprite(this.tile(57), this.tile(40), 'riku', 0).setDepth(0);
-
 
       // this.anims.create({
       //    key: 'jiggle',
@@ -58,7 +54,7 @@ class Overworld extends Phaser.Scene {
 
       this.riku.body.setCollideWorldBounds(true)
 
-      // enable collision
+      // * World Collision
       this.riverLayer.setCollisionByProperty({ collides: true })
       this.underLayer.setCollisionByProperty({ collides: true })
       this.pathsLayer.setCollisionByProperty({ collides: true })
@@ -69,6 +65,7 @@ class Overworld extends Phaser.Scene {
       this.physics.add.collider(this.riku, this.pathsLayer)
       this.physics.add.collider(this.riku, this.housesLayer)
       this.physics.add.collider(this.riku, this.treesLayer)
+
 
       this.isInRiverLayer = false;
       // * Bridge Collision
