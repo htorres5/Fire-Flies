@@ -20,7 +20,7 @@ class Overworld extends Phaser.Scene {
       const map = this.add.tilemap('tilemapJSON')
       const tileset = map.addTilesetImage('tileset', 'tilesetImage')
 
-      // add layer
+      // * Add Layers
       this.elevationLayer = map.createLayer('elevation', tileset, 0, 0).setDepth(-1);
       this.riverLayer = map.createLayer('river', tileset, 0, 0).setDepth(-1);
       this.underLayer = map.createLayer('under', tileset, 0, 0).setDepth(0);
@@ -31,15 +31,60 @@ class Overworld extends Phaser.Scene {
       this.housesLayer = map.createLayer('houses', tileset, 0, 0).setDepth(0);
       this.treesLayer = map.createLayer('trees', tileset, 0, 0).setDepth(1);
 
-      // * Toggle Layer
-      this.regularArea = this.add.rectangle(this.tile(44), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
-      this.physics.add.existing(this.regularArea);
+      // * Depth Colliders
 
-      this.riverArea = this.add.rectangle(this.tile(44), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
-      this.physics.add.existing(this.riverArea);
+      // * Group That Will Change Depth/Enable Colliders for Regular Area
+      this.changeToRegularArea = this.add.group({
+         runChildUpdate: true
+      })
+      
+      // * Left of West Bridge
+      this.toRegularArea4 = this.add.rectangle(this.tile(44), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.physics.add.existing(this.toRegularArea4);
+      this.changeToRegularArea.add(this.toRegularArea4, true);
+
+      // * Right of West Bridge
+      this.toRegularArea3 = this.add.rectangle(this.tile(33), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.physics.add.existing(this.toRegularArea3);
+      this.changeToRegularArea.add(this.toRegularArea3, true);
+
+      // * Left of East Bridge
+      this.toRegularArea2 = this.add.rectangle(this.tile(28), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.physics.add.existing(this.toRegularArea2);
+      this.changeToRegularArea.add(this.toRegularArea2, true);
+
+      // * Right of East Bridge
+      this.toRegularArea1 = this.add.rectangle(this.tile(16), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.physics.add.existing(this.toRegularArea1);
+      this.changeToRegularArea.add(this.toRegularArea1, true);
+
+      // * Group That Will Change Depth/Enable Colliders for River Area
+      this.changeToRiverArea = this.add.group({
+         runChildUpdate: true
+      })
+
+      // * Left of West Bridge
+      this.toRiverArea4 = this.add.rectangle(this.tile(44), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.physics.add.existing(this.toRiverArea4);
+      this.changeToRiverArea.add(this.toRiverArea4, true);
+
+      // * Right of West Bridge
+      this.toRiverArea3 = this.add.rectangle(this.tile(33), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.physics.add.existing(this.toRiverArea3);
+      this.changeToRiverArea.add(this.toRiverArea3, true);
+
+      // * Left of East Bridge
+      this.toRiverArea2 = this.add.rectangle(this.tile(28), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.physics.add.existing(this.toRiverArea2);
+      this.changeToRiverArea.add(this.toRiverArea2, true);
+
+      // * right of East Bridge
+      this.toRiverArea1 = this.add.rectangle(this.tile(16), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.physics.add.existing(this.toRiverArea1);
+      this.changeToRiverArea.add(this.toRiverArea1, true);
 
       // add player
-      this.riku = this.physics.add.sprite(this.tile(57), this.tile(40), 'riku', 0).setDepth(0);
+      this.riku = this.physics.add.sprite(this.tile(57), this.tile(40), 'riku', 0).setDepth(1);
 
       // this.anims.create({
       //    key: 'jiggle',
@@ -74,15 +119,6 @@ class Overworld extends Phaser.Scene {
       this.underCollider = this.physics.add.collider(this.riku, this.underLayer)
       this.underCollider.active = false;
 
-      this.riverAreaCollider = this.physics.add.overlap(this.riku, this.riverArea, () => {
-         this.isInRiverLayer = true;
-         console.log(`Collider callback function: ${this.isInRiverLayer}`)
-      })
-      this.regularAreaCollider = this.physics.add.overlap(this.riku, this.regularArea, () => {
-         this.isInRiverLayer = false;
-         console.log(`Collider callback function: ${this.isInRiverLayer}`)
-      })
-
       // cameras
       this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
       this.cameras.main.startFollow(this.riku, true, 0.25, 0.25)
@@ -104,14 +140,29 @@ class Overworld extends Phaser.Scene {
       } else if (this.cursors.down.isDown) {
          this.direction.y = 1;
       }
+      
+      // * Colliders
+      this.riverAreaCollider = this.physics.world.overlap(this.riku, this.changeToRiverArea, () => {
+         this.isInRiverLayer = true;
+         console.log(`Collider callback function: ${this.isInRiverLayer}`)
+      }, null, this)
+      this.regularAreaCollider = this.physics.world.overlap(this.riku, this.changeToRegularArea, () => {
+         this.isInRiverLayer = false;
+         console.log(`Collider callback function: ${this.isInRiverLayer}`)
+      }, null, this)
 
+      // * If is in River Layer...
       if(this.isInRiverLayer) {
+         // * Change Depth to River Layer
          this.riku.setDepth(-1);
          console.log(this.riku.depth)
+         // * Disable Bridge Collider & Enable River Collider
          this.underCollider.active = true;
          this.bridgeCollider.active = false;
       } else {
+         // * Change depth to Regular Layer
          this.riku.setDepth(1);
+         // * Disable River Colliders & Enable Bridge Colliders
          this.underCollider.active = false;
          this.bridgeCollider.active = true;
       }
