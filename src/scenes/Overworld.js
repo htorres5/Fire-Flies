@@ -8,6 +8,7 @@ class Overworld extends Phaser.Scene {
    preload() {
       this.load.path = './assets/'
       this.load.image('riku', '/sprites/riku.png')
+      this.load.image('max', './sprites/max.png')
       this.load.image('tilesetImage', '/tilemaps/tileset.png')
       this.load.tilemapTiledJSON('tilemapJSON','/tilemaps/prologue_map.json')
    }
@@ -83,7 +84,7 @@ class Overworld extends Phaser.Scene {
       this.physics.add.existing(this.toRiverArea1);
       this.changeToRiverArea.add(this.toRiverArea1, true);
 
-      // add player
+      // * Add Riku (Protaganist)
       this.riku = this.physics.add.sprite(this.tile(57), this.tile(40), 'riku', 0).setDepth(1);
 
       // this.anims.create({
@@ -97,7 +98,12 @@ class Overworld extends Phaser.Scene {
       // })
       // this.riku.play('jiggle')
 
-      this.riku.body.setCollideWorldBounds(true)
+      this.riku.body.setCollideWorldBounds(true);
+
+      // * Add Max (Protaganist lil bro)
+      this.maxTheSlime = new Max(this, this.tile(58), this.tile(40), this.riku, 'max');
+
+      this.maxTheSlime.body.setCollideWorldBounds(true);
 
       // * World Collision
       this.riverLayer.setCollisionByProperty({ collides: true })
@@ -129,6 +135,7 @@ class Overworld extends Phaser.Scene {
    }
 
    update() {
+      // * Riku Controls/Movement
       this.direction = new Phaser.Math.Vector2(0)
       if(this.cursors.left.isDown) {
          this.direction.x = -1;
@@ -140,6 +147,9 @@ class Overworld extends Phaser.Scene {
       } else if (this.cursors.down.isDown) {
          this.direction.y = 1;
       }
+
+      // * Max Movment
+      this.maxTheSlime.update();
       
       // * Colliders
       this.riverAreaCollider = this.physics.world.overlap(this.riku, this.changeToRiverArea, () => {
@@ -154,13 +164,16 @@ class Overworld extends Phaser.Scene {
       // * If is in River Layer...
       if(this.isInRiverLayer) {
          // * Change Depth to River Layer
+         this.maxTheSlime.setDepth(-1);
          this.riku.setDepth(-1);
+         
          console.log(this.riku.depth)
          // * Disable Bridge Collider & Enable River Collider
          this.underCollider.active = true;
          this.bridgeCollider.active = false;
       } else {
          // * Change depth to Regular Layer
+         this.maxTheSlime.setDepth(1);
          this.riku.setDepth(1);
          // * Disable River Colliders & Enable Bridge Colliders
          this.underCollider.active = false;
