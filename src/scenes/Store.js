@@ -1,6 +1,7 @@
-class Opening extends Phaser.Scene {
+// TODO: Implement Store Scene
+class Store extends Phaser.Scene {
    constructor() {
-      super({key: 'openingScene'})
+      super({key: 'storeScene'})
 
       this.padding = game.config.width / 100;
    }
@@ -26,7 +27,7 @@ class Opening extends Phaser.Scene {
      }
       this.dialogue = this.add.text(game.config.width / 4, game.config.height / 1.5 + this.padding*4, "You are in a room,\nsleeping soundly...\n(Press SPACE)", this.dialogueConfig)
 
-      this.portrait = this.add.sprite(game.config.width / 8, game.config.height / 1.3+ this.padding*4, 'ruby').setOrigin(0.5);
+      this.portrait = this.add.sprite(game.config.width / 8, game.config.height / 1.3 + this.padding*4, 'ruby').setOrigin(0.5);
 
      this.start();
    }
@@ -46,16 +47,14 @@ class Opening extends Phaser.Scene {
    }
 
    start() {
-      this.dialogue.setText("You are in your room,\nsleeping soundly...\n(Press SPACE)");
+      this.dialogue.setText("Obtained RICE");
       this.portrait.setAlpha(0);
       keySPACE.once('down', () => {
-         // ! UNCOMMENT THIS FOR PLAYTEST BUILD
+         // ! UNCOMMENT THIS LATER
          // events[0].call(this, this.chain(1));
          // ! DELETE THIS
-         this.cameras.main.fadeOut(2500, 0, 0, 0);
-         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-             this.scene.start('overworldScene');
-         });
+         this.scene.start('airRaidScene');
+
       }, this);
    }
 }

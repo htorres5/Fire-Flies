@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "C:/github/Fire-Flies/assets/prologue_map.json",
+    "activeFile": "overworld.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -22,6 +22,17 @@
         "C:/github/Fire-Flies/assets/prologue_map.json#tileset": {
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "overworld.tmx": {
+            "scale": 0.42861328125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1021.9002050580998,
+                "y": 767.5917065390748
+            }
+        },
+        "overworld.tmx#tileset": {
+            "scaleInDock": 1
         }
     },
     "last.exportedFilePath": "C:/github/Fire-Flies/assets/tilemaps",
@@ -32,11 +43,12 @@
     "map.lastUsedFormat": "json",
     "map.width": 64,
     "openFiles": [
-        "C:/github/Fire-Flies/assets/prologue_map.json"
+        "overworld.tmx"
     ],
     "project": "overworld.tiled-project",
     "property.type": "bool",
     "recentFiles": [
+        "overworld.tmx",
         "C:/github/Fire-Flies/assets/prologue_map.json"
     ],
     "tileset.embedInMap": true

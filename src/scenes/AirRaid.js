@@ -1,6 +1,6 @@
-class Overworld extends Phaser.Scene {
+class AirRaid extends Phaser.Scene {
    constructor() {
-      super({key: 'overworldScene'})
+      super({key: 'airRaidScene'})
 
       this.VEL = 200;
    }
@@ -150,13 +150,7 @@ class Overworld extends Phaser.Scene {
       this.objectiveUI.scrollFactorX = 0;
       this.objectiveUI.scrollFactorY = 0;
 
-      this.storeLocation = this.physics.add.sprite(this.tile(48) + 16, this.tile(4), 'store_location').setOrigin(0).setDepth(4);
-      this.storeLocation.setImmovable();
-      this.storeCollider = this.physics.add.overlap(this.ruby, this.storeLocation, () => {
-         console.log("hit");
-         this.storeCollider.active = false;
-         this.scene.start('storeScene');
-      })
+      this.storeLocation = this.add.sprite(this.tile(48) + 16, this.tile(4), 'store_location').setOrigin(0).setDepth(-5);
 
       this.waypoint = this.add.sprite(16, 42, 'waypoint', this.objectiveTextConfig).setOrigin(0.5).setDepth(10).setScale(0.5);
       this.waypoint.scrollFactorX = 0;
