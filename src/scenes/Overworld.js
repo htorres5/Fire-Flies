@@ -2,7 +2,7 @@ class Overworld extends Phaser.Scene {
    constructor() {
       super({key: 'overworldScene'})
 
-      this.VEL = 500;
+      this.VEL = 250;
    }
 
    preload() {
