@@ -47,13 +47,15 @@ class Opening extends Phaser.Scene {
 
    start() {
       this.dialogue.setText("Press Space!");
+      this.portrait.setAlpha(0);
       keySPACE.once('down', () => {
          // ! UNCOMMENT THIS FOR PLAYTEST BUILD
-         //events[0].call(this, this.chain(1));
-         this.cameras.main.fadeOut(2500, 0, 0, 0);
-         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-             this.scene.start('overworldScene');
-         });
+         events[0].call(this, this.chain(1));
+         // ! DELETE THIS
+         // this.cameras.main.fadeOut(2500, 0, 0, 0);
+         // this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+         //     this.scene.start('overworldScene');
+         // });
       }, this);
    }
 }
@@ -61,7 +63,7 @@ class Opening extends Phaser.Scene {
 var events = [
    function(fn) {
       this.dialogue.text = 'RUBYYYYYYYYYYY!!!'
-      this.portrait.setTexture('mom');
+      this.portrait.setTexture('mom').setAlpha(1);
       keySPACE.once('down', () => {
          fn();
       })

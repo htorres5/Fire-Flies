@@ -19,7 +19,7 @@ class Max extends Phaser.Physics.Arcade.Sprite {
       this.HISTORY_LENGTH = 5;
 
       // Define constants that affect motion
-      this.MAX_SPEED = 230; // pixels/second
+      this.MAX_SPEED = 190; // pixels/second
       this.MIN_DISTANCE = 32; // pixels
    }
 

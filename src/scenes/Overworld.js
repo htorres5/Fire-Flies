@@ -2,13 +2,15 @@ class Overworld extends Phaser.Scene {
    constructor() {
       super({key: 'overworldScene'})
 
-      this.VEL = 250;
+      this.VEL = 200;
    }
 
    preload() {
       this.load.path = './assets/'
       this.load.image('ruby', '/sprites/ruby.png')
       this.load.image('max', './sprites/max.png')
+      this.load.image('waypoint', './sprites/waypoint.png')
+      this.load.image('store_location', './sprites/change_depth.png')
       this.load.image('tilesetImage', '/tilemaps/tileset.png')
       this.load.tilemapTiledJSON('tilemapJSON','/tilemaps/prologue_map.json')
    }
@@ -131,22 +133,51 @@ class Overworld extends Phaser.Scene {
       this.physics.world.bounds.setTo(0, 0, map.widthInPixels, map.heightInPixels)
 
       // input
-      this.cursors = this.input.keyboard.createCursorKeys()
+      keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+      keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+      keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+      keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+      // * UI
+      this.objectiveTextConfig = {
+         fontFamily: 'Hanyi',
+         fontSize: '10px',
+         color: 'yellow',
+         align: 'left'
+     }
+      this.objectiveText = 'Go to the Store and get Rice.'
+      this.objectiveUI = this.add.text(1, 1, `Objective:\n${this.objectiveText}`, this.objectiveTextConfig).setStroke(0xFFFFFF, 3).setOrigin(0, 0).setDepth(10);
+      this.objectiveUI.scrollFactorX = 0;
+      this.objectiveUI.scrollFactorY = 0;
+
+      this.storeLocation = this.add.sprite(this.tile(48) + 16, this.tile(4), 'store_location').setOrigin(0).setDepth(-5);
+
+      this.waypoint = this.add.sprite(16, 42, 'waypoint', this.objectiveTextConfig).setOrigin(0.5).setDepth(10).setScale(0.5);
+      this.waypoint.scrollFactorX = 0;
+      this.waypoint.scrollFactorY = 0;
+
+      this.distanceToLocation = 0;
+      this.distanceUI = this.add.text(32, 42, `${this.distanceToLocation} m`, this.objectiveTextConfig).setOrigin(0, 0.5).setDepth(10).setStroke(0xFFFFFF, 3);
+      this.distanceUI.scrollFactorX = 0;
+      this.distanceUI.scrollFactorY = 0;
    }
 
    update() {
       // * Ruby Controls/Movement
       this.direction = new Phaser.Math.Vector2(0)
-      if(this.cursors.left.isDown) {
+      if(keyLEFT.isDown) {
          this.direction.x = -1;
-      } else if (this.cursors.right.isDown) {
+      } else if (keyRIGHT.isDown) {
          this.direction.x = 1;
       }
-      if(this.cursors.up.isDown) {
+      if(keyUP.isDown) {
          this.direction.y = -1;
-      } else if (this.cursors.down.isDown) {
+      } else if (keyDOWN.isDown) {
          this.direction.y = 1;
       }
+
+      this.direction.normalize();
+      this.ruby.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
 
       // * Max Movment
       this.maxTheSlime.update();
@@ -180,9 +211,22 @@ class Overworld extends Phaser.Scene {
          this.bridgeCollider.active = true;
       }
 
-      console.log(`update function: ${this.isInRiverLayer}`)
+      // * UI
 
-      this.direction.normalize();
-      this.ruby.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
+      this.distanceToLocation = Math.trunc(Phaser.Math.Distance.Between(this.ruby.x, this.ruby.y, this.sdtoreLocation.x, this.storeLocation.y)/4);
+      this.distanceUI.text = `${this.distanceToLocation}m`
+      
+      var rotation = Phaser.Math.Angle.Between(this.ruby.x, this.ruby.y, this.storeLocation.x, this.storeLocation.y);
+      this.waypoint.rotation = rotation;
+
+      if(this.distanceToLocation < 40) {
+         this.waypoint.setAlpha(0);
+         this.distanceUI.setAlpha(0);
+      } else {
+         this.waypoint.setAlpha(1);
+         this.distanceUI.setAlpha(1);
+      }
+
+      console.log(`update function: ${this.isInRiverLayer}`)
    }
 }
