@@ -45,7 +45,7 @@ class Max extends Phaser.Physics.Arcade.Sprite {
         t.y = this.target.y;
 
         // Calculate distance to target
-        // If the position is far enough way then consider it "moving"
+        // If the position is far asenough way then consider it "moving"
         // so that we can get this Follower to move.
         var distance = Phaser.Math.Distance.Between(this.x, this.y , t.x, t.y);
         if (distance > this.MIN_DISTANCE) targetMoving = true;
