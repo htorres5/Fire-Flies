@@ -213,7 +213,7 @@ class Overworld extends Phaser.Scene {
 
       // * UI
 
-      this.distanceToLocation = Math.trunc(Phaser.Math.Distance.Between(this.ruby.x, this.ruby.y, this.sdtoreLocation.x, this.storeLocation.y)/4);
+      this.distanceToLocation = Math.trunc(Phaser.Math.Distance.Between(this.ruby.x, this.ruby.y, this.storeLocation.x, this.storeLocation.y)/4);
       this.distanceUI.text = `${this.distanceToLocation}m`
       
       var rotation = Phaser.Math.Angle.Between(this.ruby.x, this.ruby.y, this.storeLocation.x, this.storeLocation.y);
