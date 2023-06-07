@@ -49,7 +49,6 @@ class Max extends Phaser.Physics.Arcade.Sprite {
         // so that we can get this Follower to move.
         var distance = Phaser.Math.Distance.Between(this.x, this.y , t.x, t.y);
         if (distance > this.MIN_DISTANCE) targetMoving = true;
-        console.log(targetMoving)
     }
 
     // If the distance > MIN_DISTANCE then move
