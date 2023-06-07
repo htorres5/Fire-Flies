@@ -87,7 +87,7 @@ class AirRaid extends Phaser.Scene {
       this.changeToRiverArea.add(this.toRiverArea1, true);
 
       // * Add Ruby (Protaganist)
-      this.ruby = this.physics.add.sprite(this.tile(57), this.tile(40), 'ruby', 0).setDepth(1);
+      this.ruby = this.physics.add.sprite(this.tile(48) + 16, this.tile(4) + 16, 'ruby', 0).setDepth(1).setOrigin(0);
 
       // this.anims.create({
       //    key: 'jiggle',
@@ -103,7 +103,7 @@ class AirRaid extends Phaser.Scene {
       this.ruby.body.setCollideWorldBounds(true);
 
       // * Add Max (Protaganist lil bro)
-      this.maxTheSlime = new Max(this, this.tile(58), this.tile(40), this.ruby, 'max');
+      this.maxTheSlime = new Max(this, this.tile(49) + 16, this.tile(4) + 16, this.ruby, 'max').setOrigin(0);
 
       this.maxTheSlime.body.setCollideWorldBounds(true);
 
