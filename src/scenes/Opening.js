@@ -50,12 +50,12 @@ class Opening extends Phaser.Scene {
       this.portrait.setAlpha(0);
       keySPACE.once('down', () => {
          // ! UNCOMMENT THIS FOR PLAYTEST BUILD
-         // events[0].call(this, this.chain(1));
+         events[0].call(this, this.chain(1));
          // ! DELETE THIS
-         this.cameras.main.fadeOut(2500, 0, 0, 0);
-         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-             this.scene.start('overworldScene');
-         });
+         // this.cameras.main.fadeOut(2500, 0, 0, 0);
+         // this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+         //     this.scene.start('overworldScene');
+         // });
       }, this);
    }
 }

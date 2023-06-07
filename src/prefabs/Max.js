@@ -1,6 +1,6 @@
 // * Following Algorithm From: https://gamemechanicexplorer.com/#follow-3
 class Max extends Phaser.Physics.Arcade.Sprite {
-   constructor(scene, x, y, target, type) {
+   constructor(scene, x, y, target, velocity, type) {
        // call Phaser Physics Sprite constructor
        super(scene, x, y, type); 
 
@@ -19,7 +19,7 @@ class Max extends Phaser.Physics.Arcade.Sprite {
       this.HISTORY_LENGTH = 5;
 
       // Define constants that affect motion
-      this.MAX_SPEED = 190; // pixels/second
+      this.MAX_SPEED = velocity; // pixels/second
       this.MIN_DISTANCE = 32; // pixels
    }
 

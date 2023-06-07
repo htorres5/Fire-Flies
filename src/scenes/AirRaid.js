@@ -2,15 +2,30 @@ class AirRaid extends Phaser.Scene {
    constructor() {
       super({key: 'airRaidScene'})
 
-      this.VEL = 200;
+      this.VEL = 150;
    }
 
    preload() {
       this.load.path = './assets/'
+
+      // * Sprites
+
+      // * Characters
       this.load.image('ruby', '/sprites/ruby.png')
       this.load.image('max', './sprites/max.png')
+
+      // * UI
       this.load.image('waypoint', './sprites/waypoint.png')
       this.load.image('store_location', './sprites/change_depth.png')
+
+      // * Objects
+      this.load.spritesheet('bomb', './sprites/sheets/bomb.png', {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 5});
+
+      // * Effects
+      this.load.atlas('explosion', './sprites/sheets/explosion.png','./sprites/sheets/explosion.json');
+      this.load.atlas('fire', './sprites/sheets/fire.png','./sprites/sheets/fire.json');
+
+      // * TileMap
       this.load.image('tilesetImage', '/tilemaps/tileset.png')
       this.load.tilemapTiledJSON('tilemapJSON','/tilemaps/prologue_map.json')
    }
@@ -103,9 +118,36 @@ class AirRaid extends Phaser.Scene {
       this.ruby.body.setCollideWorldBounds(true);
 
       // * Add Max (Protaganist lil bro)
-      this.maxTheSlime = new Max(this, this.tile(49) + 16, this.tile(4) + 16, this.ruby, 'max').setOrigin(0);
+      this.maxTheSlime = new Max(this, this.tile(49) + 16, this.tile(4) + 16, this.ruby, 140, 'max').setOrigin(0);
 
       this.maxTheSlime.body.setCollideWorldBounds(true);
+
+      // * Animations
+      // Explosion Animation
+      this.anims.create({
+         key: 'explosion',
+         frames: this.anims.generateFrameNames('explosion', {
+               prefix: 'explosion',
+               start: 0,
+               end: 15
+            }),
+         frameRate: 24,
+      })
+
+      // Fire Animation
+      this.anims.create({
+         key: 'fire',
+         frames: this.anims.generateFrameNames('fire', {
+               prefix: 'fire',
+               start: 0,
+               end: 21
+            }),
+         frameRate: 24,
+         repeat: -1
+      })
+
+      this.fire = this.add.sprite(this.tile(43), this.tile(7), 'store_location');
+      this.fire.play('fire');
 
       // * World Collision
       this.riverLayer.setCollisionByProperty({ collides: true })
@@ -138,6 +180,11 @@ class AirRaid extends Phaser.Scene {
       keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
       keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
+      // * Fog
+      this.fogSprite = this.add.rectangle(0,0, game.config.width, game.config.height, 0xf08080, 0.7).setOrigin(0).setDepth(8);
+      this.fogSprite.scrollFactorX = 0;
+      this.fogSprite.scrollFactorY = 0;
+
       // * UI
       this.objectiveTextConfig = {
          fontFamily: 'Hanyi',
@@ -145,12 +192,12 @@ class AirRaid extends Phaser.Scene {
          color: 'yellow',
          align: 'left'
      }
-      this.objectiveText = 'Go to the Store and get Rice.'
+      this.objectiveText = 'Get to Shelter.'
       this.objectiveUI = this.add.text(1, 1, `Objective:\n${this.objectiveText}`, this.objectiveTextConfig).setStroke(0xFFFFFF, 3).setOrigin(0, 0).setDepth(10);
       this.objectiveUI.scrollFactorX = 0;
       this.objectiveUI.scrollFactorY = 0;
 
-      this.storeLocation = this.add.sprite(this.tile(48) + 16, this.tile(4), 'store_location').setOrigin(0).setDepth(-5);
+      this.location = this.add.sprite(this.tile(31), this.tile(20), 'store_location').setOrigin(0).setDepth(-5);
 
       this.waypoint = this.add.sprite(16, 42, 'waypoint', this.objectiveTextConfig).setOrigin(0.5).setDepth(10).setScale(0.5);
       this.waypoint.scrollFactorX = 0;
@@ -213,10 +260,10 @@ class AirRaid extends Phaser.Scene {
 
       // * UI
 
-      this.distanceToLocation = Math.trunc(Phaser.Math.Distance.Between(this.ruby.x, this.ruby.y, this.storeLocation.x, this.storeLocation.y)/4);
+      this.distanceToLocation = Math.trunc(Phaser.Math.Distance.Between(this.ruby.x, this.ruby.y, this.location.x, this.location.y)/4);
       this.distanceUI.text = `${this.distanceToLocation}m`
       
-      var rotation = Phaser.Math.Angle.Between(this.ruby.x, this.ruby.y, this.storeLocation.x, this.storeLocation.y);
+      var rotation = Phaser.Math.Angle.Between(this.ruby.x, this.ruby.y, this.location.x, this.location.y);
       this.waypoint.rotation = rotation;
 
       if(this.distanceToLocation < 40) {

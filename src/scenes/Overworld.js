@@ -2,7 +2,7 @@ class Overworld extends Phaser.Scene {
    constructor() {
       super({key: 'overworldScene'})
 
-      this.VEL = 200;
+      this.VEL = 100;
    }
 
    preload() {
@@ -103,7 +103,7 @@ class Overworld extends Phaser.Scene {
       this.ruby.body.setCollideWorldBounds(true);
 
       // * Add Max (Protaganist lil bro)
-      this.maxTheSlime = new Max(this, this.tile(58), this.tile(40), this.ruby, 'max');
+      this.maxTheSlime = new Max(this, this.tile(58), this.tile(40), this.ruby, 90, 'max');
 
       this.maxTheSlime.body.setCollideWorldBounds(true);
 
@@ -150,7 +150,7 @@ class Overworld extends Phaser.Scene {
       this.objectiveUI.scrollFactorX = 0;
       this.objectiveUI.scrollFactorY = 0;
 
-      this.storeLocation = this.physics.add.sprite(this.tile(48) + 16, this.tile(4), 'store_location').setOrigin(0).setDepth(4);
+      this.storeLocation = this.physics.add.sprite(this.tile(48) + 16, this.tile(4), 'store_location').setOrigin(0).setDepth(-4);
       this.storeLocation.setImmovable();
       this.storeCollider = this.physics.add.overlap(this.ruby, this.storeLocation, () => {
          console.log("hit");
