@@ -7,7 +7,7 @@ class Overworld extends Phaser.Scene {
 
    preload() {
       this.load.path = './assets/'
-      this.load.image('riku', '/sprites/riku.png')
+      this.load.image('ruby', '/sprites/ruby.png')
       this.load.image('max', './sprites/max.png')
       this.load.image('tilesetImage', '/tilemaps/tileset.png')
       this.load.tilemapTiledJSON('tilemapJSON','/tilemaps/prologue_map.json')
@@ -84,24 +84,24 @@ class Overworld extends Phaser.Scene {
       this.physics.add.existing(this.toRiverArea1);
       this.changeToRiverArea.add(this.toRiverArea1, true);
 
-      // * Add Riku (Protaganist)
-      this.riku = this.physics.add.sprite(this.tile(57), this.tile(40), 'riku', 0).setDepth(1);
+      // * Add Ruby (Protaganist)
+      this.ruby = this.physics.add.sprite(this.tile(57), this.tile(40), 'ruby', 0).setDepth(1);
 
       // this.anims.create({
       //    key: 'jiggle',
       //    frameRate: 8,
       //    repeat: -1,
-      //    frames: this.anims.generateFrameNumbers('riku', {
+      //    frames: this.anims.generateFrameNumbers('ruby', {
       //       start: 0,
       //       end: 1
       //    })
       // })
-      // this.riku.play('jiggle')
+      // this.ruby.play('jiggle')
 
-      this.riku.body.setCollideWorldBounds(true);
+      this.ruby.body.setCollideWorldBounds(true);
 
       // * Add Max (Protaganist lil bro)
-      this.maxTheSlime = new Max(this, this.tile(58), this.tile(40), this.riku, 'max');
+      this.maxTheSlime = new Max(this, this.tile(58), this.tile(40), this.ruby, 'max');
 
       this.maxTheSlime.body.setCollideWorldBounds(true);
 
@@ -112,22 +112,22 @@ class Overworld extends Phaser.Scene {
       this.housesLayer.setCollisionByProperty({ collides: true })
       this.treesLayer.setCollisionByProperty({ collides: true })
       this.bridgeLayer.setCollisionByProperty({ collides: true})
-      this.physics.add.collider(this.riku, this.riverLayer)
-      this.physics.add.collider(this.riku, this.pathsLayer)
-      this.physics.add.collider(this.riku, this.housesLayer)
-      this.physics.add.collider(this.riku, this.treesLayer)
+      this.physics.add.collider(this.ruby, this.riverLayer)
+      this.physics.add.collider(this.ruby, this.pathsLayer)
+      this.physics.add.collider(this.ruby, this.housesLayer)
+      this.physics.add.collider(this.ruby, this.treesLayer)
 
 
       this.isInRiverLayer = false;
       // * Bridge Collision
-      this.bridgeCollider = this.physics.add.collider(this.riku, this.bridgeLayer)
+      this.bridgeCollider = this.physics.add.collider(this.ruby, this.bridgeLayer)
 
-      this.underCollider = this.physics.add.collider(this.riku, this.underLayer)
+      this.underCollider = this.physics.add.collider(this.ruby, this.underLayer)
       this.underCollider.active = false;
 
       // cameras
       this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
-      this.cameras.main.startFollow(this.riku, true, 0.25, 0.25)
+      this.cameras.main.startFollow(this.ruby, true, 0.25, 0.25)
       this.physics.world.bounds.setTo(0, 0, map.widthInPixels, map.heightInPixels)
 
       // input
@@ -135,7 +135,7 @@ class Overworld extends Phaser.Scene {
    }
 
    update() {
-      // * Riku Controls/Movement
+      // * Ruby Controls/Movement
       this.direction = new Phaser.Math.Vector2(0)
       if(this.cursors.left.isDown) {
          this.direction.x = -1;
@@ -152,11 +152,11 @@ class Overworld extends Phaser.Scene {
       this.maxTheSlime.update();
       
       // * Colliders
-      this.riverAreaCollider = this.physics.world.overlap(this.riku, this.changeToRiverArea, () => {
+      this.riverAreaCollider = this.physics.world.overlap(this.ruby, this.changeToRiverArea, () => {
          this.isInRiverLayer = true;
          console.log(`Collider callback function: ${this.isInRiverLayer}`)
       }, null, this)
-      this.regularAreaCollider = this.physics.world.overlap(this.riku, this.changeToRegularArea, () => {
+      this.regularAreaCollider = this.physics.world.overlap(this.ruby, this.changeToRegularArea, () => {
          this.isInRiverLayer = false;
          console.log(`Collider callback function: ${this.isInRiverLayer}`)
       }, null, this)
@@ -165,16 +165,16 @@ class Overworld extends Phaser.Scene {
       if(this.isInRiverLayer) {
          // * Change Depth to River Layer
          this.maxTheSlime.setDepth(-1);
-         this.riku.setDepth(-1);
+         this.ruby.setDepth(-1);
          
-         console.log(this.riku.depth)
+         console.log(this.ruby.depth)
          // * Disable Bridge Collider & Enable River Collider
          this.underCollider.active = true;
          this.bridgeCollider.active = false;
       } else {
          // * Change depth to Regular Layer
          this.maxTheSlime.setDepth(1);
-         this.riku.setDepth(1);
+         this.ruby.setDepth(1);
          // * Disable River Colliders & Enable Bridge Colliders
          this.underCollider.active = false;
          this.bridgeCollider.active = true;
@@ -183,6 +183,6 @@ class Overworld extends Phaser.Scene {
       console.log(`update function: ${this.isInRiverLayer}`)
 
       this.direction.normalize();
-      this.riku.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
+      this.ruby.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
    }
 }

@@ -12,7 +12,10 @@ let config = {
       }
    },
    zoom: 2,
-   scene: [ Overworld ]
+   scene: [ Opening, Overworld ]
 }
+
+// reserve keyboard vars
+let keyESC, keySPACE, keyLEFT, keyRIGHT, keyF, keyC;
 
 const game = new Phaser.Game(config);
