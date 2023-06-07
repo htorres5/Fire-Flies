@@ -1,6 +1,6 @@
 class AirRaid extends Phaser.Scene {
    constructor() {
-      super({key: 'airRaidScene'})
+      super({ key: 'airRaidScene' })
 
       this.VEL = 150;
    }
@@ -16,18 +16,18 @@ class AirRaid extends Phaser.Scene {
 
       // * UI
       this.load.image('waypoint', './sprites/waypoint.png')
-      this.load.image('store_location', './sprites/change_depth.png')
+      this.load.image('collider', './sprites/change_depth.png')
 
       // * Objects
-      this.load.spritesheet('bomb', './sprites/sheets/bomb.png', {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 5});
+      this.load.spritesheet('bomb', './sprites/sheets/bomb.png', { frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 5 });
 
       // * Effects
-      this.load.atlas('explosion', './sprites/sheets/explosion.png','./sprites/sheets/explosion.json');
-      this.load.atlas('fire', './sprites/sheets/fire.png','./sprites/sheets/fire.json');
+      this.load.atlas('explosion', './sprites/sheets/explosion.png', './sprites/sheets/explosion.json');
+      this.load.atlas('fire', './sprites/sheets/fire.png', './sprites/sheets/fire.json');
 
       // * TileMap
       this.load.image('tilesetImage', '/tilemaps/tileset.png')
-      this.load.tilemapTiledJSON('tilemapJSON','/tilemaps/prologue_map.json')
+      this.load.tilemapTiledJSON('tilemapJSON', '/tilemaps/prologue_map.json')
    }
 
    tile(coord) {
@@ -55,24 +55,24 @@ class AirRaid extends Phaser.Scene {
       this.changeToRegularArea = this.add.group({
          runChildUpdate: true
       })
-      
+
       // * Left of West Bridge
-      this.toRegularArea4 = this.add.rectangle(this.tile(44), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.toRegularArea4 = this.add.rectangle(this.tile(44), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2).setOrigin(0);
       this.physics.add.existing(this.toRegularArea4);
       this.changeToRegularArea.add(this.toRegularArea4, true);
 
       // * Right of West Bridge
-      this.toRegularArea3 = this.add.rectangle(this.tile(33), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.toRegularArea3 = this.add.rectangle(this.tile(33), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2).setOrigin(0);
       this.physics.add.existing(this.toRegularArea3);
       this.changeToRegularArea.add(this.toRegularArea3, true);
 
       // * Left of East Bridge
-      this.toRegularArea2 = this.add.rectangle(this.tile(28), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.toRegularArea2 = this.add.rectangle(this.tile(28), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2).setOrigin(0);
       this.physics.add.existing(this.toRegularArea2);
       this.changeToRegularArea.add(this.toRegularArea2, true);
 
       // * Right of East Bridge
-      this.toRegularArea1 = this.add.rectangle(this.tile(16), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.toRegularArea1 = this.add.rectangle(this.tile(16), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2).setOrigin(0);
       this.physics.add.existing(this.toRegularArea1);
       this.changeToRegularArea.add(this.toRegularArea1, true);
 
@@ -82,22 +82,22 @@ class AirRaid extends Phaser.Scene {
       })
 
       // * Left of West Bridge
-      this.toRiverArea4 = this.add.rectangle(this.tile(44), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.toRiverArea4 = this.add.rectangle(this.tile(44), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2).setOrigin(0);
       this.physics.add.existing(this.toRiverArea4);
       this.changeToRiverArea.add(this.toRiverArea4, true);
 
       // * Right of West Bridge
-      this.toRiverArea3 = this.add.rectangle(this.tile(33), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.toRiverArea3 = this.add.rectangle(this.tile(33), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2).setOrigin(0);
       this.physics.add.existing(this.toRiverArea3);
       this.changeToRiverArea.add(this.toRiverArea3, true);
 
       // * Left of East Bridge
-      this.toRiverArea2 = this.add.rectangle(this.tile(28), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.toRiverArea2 = this.add.rectangle(this.tile(28), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2).setOrigin(0);
       this.physics.add.existing(this.toRiverArea2);
       this.changeToRiverArea.add(this.toRiverArea2, true);
 
       // * right of East Bridge
-      this.toRiverArea1 = this.add.rectangle(this.tile(16), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.toRiverArea1 = this.add.rectangle(this.tile(16), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2).setOrigin(0);
       this.physics.add.existing(this.toRiverArea1);
       this.changeToRiverArea.add(this.toRiverArea1, true);
 
@@ -127,10 +127,10 @@ class AirRaid extends Phaser.Scene {
       this.anims.create({
          key: 'explosion',
          frames: this.anims.generateFrameNames('explosion', {
-               prefix: 'explosion',
-               start: 0,
-               end: 15
-            }),
+            prefix: 'explosion',
+            start: 0,
+            end: 15
+         }),
          frameRate: 24,
       })
 
@@ -138,16 +138,23 @@ class AirRaid extends Phaser.Scene {
       this.anims.create({
          key: 'fire',
          frames: this.anims.generateFrameNames('fire', {
-               prefix: 'fire',
-               start: 0,
-               end: 21
-            }),
+            prefix: 'fire',
+            start: 0,
+            end: 21
+         }),
          frameRate: 24,
          repeat: -1
       })
 
-      this.fire = this.add.sprite(this.tile(43), this.tile(7), 'store_location');
-      this.fire.play('fire');
+      // * Fire Colliders
+      this.fireColliders = this.add.group({
+         runChildUpdate: true
+      });
+
+      // * Fire Left of Store
+      this.placeFireY(4, 9, 43, .2);
+      this.placeFireX(44, 46, 9, .2);
+      this.placeFireX(50, 53, 9, .2);
 
       // * World Collision
       this.riverLayer.setCollisionByProperty({ collides: true })
@@ -155,7 +162,7 @@ class AirRaid extends Phaser.Scene {
       this.pathsLayer.setCollisionByProperty({ collides: true })
       this.housesLayer.setCollisionByProperty({ collides: true })
       this.treesLayer.setCollisionByProperty({ collides: true })
-      this.bridgeLayer.setCollisionByProperty({ collides: true})
+      this.bridgeLayer.setCollisionByProperty({ collides: true })
       this.physics.add.collider(this.ruby, this.riverLayer)
       this.physics.add.collider(this.ruby, this.pathsLayer)
       this.physics.add.collider(this.ruby, this.housesLayer)
@@ -181,7 +188,7 @@ class AirRaid extends Phaser.Scene {
       keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
       // * Fog
-      this.fogSprite = this.add.rectangle(0,0, game.config.width, game.config.height, 0xf08080, 0.7).setOrigin(0).setDepth(8);
+      this.fogSprite = this.add.rectangle(0, 0, game.config.width, game.config.height, 0xf08080, 0.6).setOrigin(0).setDepth(8);
       this.fogSprite.scrollFactorX = 0;
       this.fogSprite.scrollFactorY = 0;
 
@@ -191,13 +198,13 @@ class AirRaid extends Phaser.Scene {
          fontSize: '10px',
          color: 'yellow',
          align: 'left'
-     }
+      }
       this.objectiveText = 'Get to Shelter.'
       this.objectiveUI = this.add.text(1, 1, `Objective:\n${this.objectiveText}`, this.objectiveTextConfig).setStroke(0xFFFFFF, 3).setOrigin(0, 0).setDepth(10);
       this.objectiveUI.scrollFactorX = 0;
       this.objectiveUI.scrollFactorY = 0;
 
-      this.location = this.add.sprite(this.tile(31), this.tile(20), 'store_location').setOrigin(0).setDepth(-5);
+      this.location = this.add.sprite(this.tile(31), this.tile(20), 'collider').setOrigin(0).setDepth(-5);
 
       this.waypoint = this.add.sprite(16, 42, 'waypoint', this.objectiveTextConfig).setOrigin(0.5).setDepth(10).setScale(0.5);
       this.waypoint.scrollFactorX = 0;
@@ -212,12 +219,12 @@ class AirRaid extends Phaser.Scene {
    update() {
       // * Ruby Controls/Movement
       this.direction = new Phaser.Math.Vector2(0)
-      if(keyLEFT.isDown) {
+      if (keyLEFT.isDown) {
          this.direction.x = -1;
       } else if (keyRIGHT.isDown) {
          this.direction.x = 1;
       }
-      if(keyUP.isDown) {
+      if (keyUP.isDown) {
          this.direction.y = -1;
       } else if (keyDOWN.isDown) {
          this.direction.y = 1;
@@ -228,7 +235,7 @@ class AirRaid extends Phaser.Scene {
 
       // * Max Movment
       this.maxTheSlime.update();
-      
+
       // * Colliders
       this.riverAreaCollider = this.physics.world.overlap(this.ruby, this.changeToRiverArea, () => {
          this.isInRiverLayer = true;
@@ -238,13 +245,14 @@ class AirRaid extends Phaser.Scene {
          this.isInRiverLayer = false;
          console.log(`Collider callback function: ${this.isInRiverLayer}`)
       }, null, this)
+      this.fireCollider = this.physics.world.collide(this.ruby, this.fireColliders);
 
       // * If is in River Layer...
-      if(this.isInRiverLayer) {
+      if (this.isInRiverLayer) {
          // * Change Depth to River Layer
          this.maxTheSlime.setDepth(-1);
          this.ruby.setDepth(-1);
-         
+
          console.log(this.ruby.depth)
          // * Disable Bridge Collider & Enable River Collider
          this.underCollider.active = true;
@@ -260,13 +268,13 @@ class AirRaid extends Phaser.Scene {
 
       // * UI
 
-      this.distanceToLocation = Math.trunc(Phaser.Math.Distance.Between(this.ruby.x, this.ruby.y, this.location.x, this.location.y)/4);
+      this.distanceToLocation = Math.trunc(Phaser.Math.Distance.Between(this.ruby.x, this.ruby.y, this.location.x, this.location.y) / 4);
       this.distanceUI.text = `${this.distanceToLocation}m`
-      
+
       var rotation = Phaser.Math.Angle.Between(this.ruby.x, this.ruby.y, this.location.x, this.location.y);
       this.waypoint.rotation = rotation;
 
-      if(this.distanceToLocation < 40) {
+      if (this.distanceToLocation < 40) {
          this.waypoint.setAlpha(0);
          this.distanceUI.setAlpha(0);
       } else {
@@ -275,5 +283,31 @@ class AirRaid extends Phaser.Scene {
       }
 
       console.log(`update function: ${this.isInRiverLayer}`)
+   }
+
+   randomIntFromInterval(min, max) { // min and max included 
+     return Math.floor(Math.random() * (max - min + 1) + min)
+   }
+
+   placeFireX(fromX, toX, y, variance) {
+      for(let i = fromX; i <= toX; i++) {
+         let y_pos = this.randomIntFromInterval(y-variance, y+variance);
+         let fire = this.physics.add.sprite(this.tile(i), this.tile(y_pos), 'collider').setScale(2).setOrigin(0);
+         fire.setImmovable();
+         let randomInt = this.randomIntFromInterval(0, 21);
+         fire.play({ key: 'fire', startFrame: randomInt }, true);
+         this.fireColliders.add(fire)
+      }
+   }
+
+   placeFireY(fromY, toY, x, variance) {
+      for(let i = fromY; i <= toY; i++) {
+         let x_pos = this.randomIntFromInterval(x-variance, x+variance);
+         let fire = this.physics.add.sprite(this.tile(x_pos), this.tile(i), 'collider').setScale(2).setOrigin(0);
+         fire.setImmovable();
+         let randomInt = this.randomIntFromInterval(0, 21);
+         fire.play({ key: 'fire', startFrame: randomInt }, true);
+         this.fireColliders.add(fire)
+      }
    }
 }
