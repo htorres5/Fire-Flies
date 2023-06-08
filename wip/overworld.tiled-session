@@ -7,9 +7,14 @@
     "expandedProjectPaths": [
         "."
     ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "": {
+            "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "#tileset": {
+            "scaleInDock": 1
         },
         "C:/github/Fire-Flies/assets/prologue_map.json": {
             "scale": 1,
@@ -23,12 +28,38 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
-        "overworld.tmx": {
-            "scale": 0.42861328125,
+        "air_raid_map.tmx": {
+            "scale": 1,
+            "selectedLayer": 7,
+            "viewCenter": {
+                "x": 1229,
+                "y": 499
+            }
+        },
+        "air_raid_map.tmx#air_raid_tileset": {
+            "scaleInDock": 1
+        },
+        "air_raid_map.tmx#tileset": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "cave.tmx": {
+            "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1021.9002050580998,
-                "y": 767.5917065390748
+                "x": 326,
+                "y": 98
+            }
+        },
+        "cave.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "overworld.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 1384.6666666666665,
+                "y": 792.6666666666666
             }
         },
         "overworld.tmx#tileset": {
@@ -36,12 +67,12 @@
         }
     },
     "last.exportedFilePath": "C:/github/Fire-Flies/assets/tilemaps",
-    "last.imagePath": "C:/dev/Fire-Flies/assets/tilemaps",
+    "last.imagePath": "C:/github/Fire-Flies/assets/tilemaps",
     "lastUsedTilesetExportFilter": "All Files (*)",
-    "map.height": 48,
+    "map.height": 10,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
-    "map.lastUsedFormat": "json",
-    "map.width": 64,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 20,
     "openFiles": [
         "overworld.tmx"
     ],
@@ -51,5 +82,6 @@
         "overworld.tmx",
         "C:/github/Fire-Flies/assets/prologue_map.json"
     ],
+    "resizeMap.removeObjects": true,
     "tileset.embedInMap": true
 }

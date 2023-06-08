@@ -26,8 +26,8 @@ class AirRaid extends Phaser.Scene {
       this.load.atlas('fire', './sprites/sheets/fire.png', './sprites/sheets/fire.json');
 
       // * TileMap
-      this.load.image('tilesetImage', '/tilemaps/tileset.png')
-      this.load.tilemapTiledJSON('tilemapJSON', '/tilemaps/prologue_map.json')
+      this.load.image('tilesetImage', '/tilemaps/air_raid_tileset.png')
+      this.load.tilemapTiledJSON('tilemapJSON', '/tilemaps/air_raid_map.json')
    }
 
    tile(coord) {
@@ -57,22 +57,22 @@ class AirRaid extends Phaser.Scene {
       })
 
       // * Left of West Bridge
-      this.toRegularArea4 = this.add.rectangle(this.tile(44), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2).setOrigin(0);
+      this.toRegularArea4 = this.add.rectangle(this.tile(44), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0).setOrigin(0);
       this.physics.add.existing(this.toRegularArea4);
       this.changeToRegularArea.add(this.toRegularArea4, true);
 
       // * Right of West Bridge
-      this.toRegularArea3 = this.add.rectangle(this.tile(33), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2).setOrigin(0);
+      this.toRegularArea3 = this.add.rectangle(this.tile(33), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0).setOrigin(0);
       this.physics.add.existing(this.toRegularArea3);
       this.changeToRegularArea.add(this.toRegularArea3, true);
 
       // * Left of East Bridge
-      this.toRegularArea2 = this.add.rectangle(this.tile(28), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2).setOrigin(0);
+      this.toRegularArea2 = this.add.rectangle(this.tile(28), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0).setOrigin(0);
       this.physics.add.existing(this.toRegularArea2);
       this.changeToRegularArea.add(this.toRegularArea2, true);
 
       // * Right of East Bridge
-      this.toRegularArea1 = this.add.rectangle(this.tile(16), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2).setOrigin(0);
+      this.toRegularArea1 = this.add.rectangle(this.tile(16), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0).setOrigin(0);
       this.physics.add.existing(this.toRegularArea1);
       this.changeToRegularArea.add(this.toRegularArea1, true);
 
@@ -82,22 +82,22 @@ class AirRaid extends Phaser.Scene {
       })
 
       // * Left of West Bridge
-      this.toRiverArea4 = this.add.rectangle(this.tile(44), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2).setOrigin(0);
+      this.toRiverArea4 = this.add.rectangle(this.tile(44), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0).setOrigin(0);
       this.physics.add.existing(this.toRiverArea4);
       this.changeToRiverArea.add(this.toRiverArea4, true);
 
       // * Right of West Bridge
-      this.toRiverArea3 = this.add.rectangle(this.tile(33), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2).setOrigin(0);
+      this.toRiverArea3 = this.add.rectangle(this.tile(33), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0).setOrigin(0);
       this.physics.add.existing(this.toRiverArea3);
       this.changeToRiverArea.add(this.toRiverArea3, true);
 
       // * Left of East Bridge
-      this.toRiverArea2 = this.add.rectangle(this.tile(28), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2).setOrigin(0);
+      this.toRiverArea2 = this.add.rectangle(this.tile(28), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0).setOrigin(0);
       this.physics.add.existing(this.toRiverArea2);
       this.changeToRiverArea.add(this.toRiverArea2, true);
 
       // * right of East Bridge
-      this.toRiverArea1 = this.add.rectangle(this.tile(16), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2).setOrigin(0);
+      this.toRiverArea1 = this.add.rectangle(this.tile(16), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0).setOrigin(0);
       this.physics.add.existing(this.toRiverArea1);
       this.changeToRiverArea.add(this.toRiverArea1, true);
 
@@ -134,6 +134,25 @@ class AirRaid extends Phaser.Scene {
          frameRate: 24,
       })
 
+      // Bomb Animation
+      this.anims.create({
+         key: 'fuse',
+         frames: this.anims.generateFrameNumbers('bomb', { start: 0, end: 5, first: 0}),
+         frameRate: 12,
+         repeat: -1
+      });
+      
+      // * Place Bombs
+      this.time.addEvent({
+         delay: 1500,
+         callback: () => {
+            let x = this.ruby.x;
+            let y = this.ruby.y - game.config.height / 2;
+            this.placeBomb(x, y);
+         },
+         loop: true
+      })
+
       // Fire Animation
       this.anims.create({
          key: 'fire',
@@ -152,9 +171,19 @@ class AirRaid extends Phaser.Scene {
       });
 
       // * Fire Left of Store
-      this.placeFireY(4, 9, 43, .2);
-      this.placeFireX(44, 46, 9, .2);
-      this.placeFireX(50, 53, 9, .2);
+      this.placeFireY(4, 9, 43, .2, 1);
+      this.placeFireX(44, 46, 9, .2, 1);
+      this.placeFireX(50, 53, 9, .2, 1);
+
+      // * Fire Block Bridges
+      this.placeFireX(41, 53, 17, .15, 2);
+      this.placeFireX(18, 37, 16, .15, 2);
+      this.placeFireX(14, 43, 9, .3, 2);
+
+      this.lights.enable().setAmbientColor(0x555555);
+
+      // * Block West Side
+      this.placeFireY(11, 17, 14, .2, 2)
 
       // * World Collision
       this.riverLayer.setCollisionByProperty({ collides: true })
@@ -239,11 +268,9 @@ class AirRaid extends Phaser.Scene {
       // * Colliders
       this.riverAreaCollider = this.physics.world.overlap(this.ruby, this.changeToRiverArea, () => {
          this.isInRiverLayer = true;
-         console.log(`Collider callback function: ${this.isInRiverLayer}`)
       }, null, this)
       this.regularAreaCollider = this.physics.world.overlap(this.ruby, this.changeToRegularArea, () => {
          this.isInRiverLayer = false;
-         console.log(`Collider callback function: ${this.isInRiverLayer}`)
       }, null, this)
       this.fireCollider = this.physics.world.collide(this.ruby, this.fireColliders);
 
@@ -253,7 +280,6 @@ class AirRaid extends Phaser.Scene {
          this.maxTheSlime.setDepth(-1);
          this.ruby.setDepth(-1);
 
-         console.log(this.ruby.depth)
          // * Disable Bridge Collider & Enable River Collider
          this.underCollider.active = true;
          this.bridgeCollider.active = false;
@@ -289,10 +315,10 @@ class AirRaid extends Phaser.Scene {
      return Math.floor(Math.random() * (max - min + 1) + min)
    }
 
-   placeFireX(fromX, toX, y, variance) {
-      for(let i = fromX; i <= toX; i++) {
+   placeFireX(fromX, toX, y, variance, interval) {
+      for(let i = fromX; i <= toX; i+=interval) {
          let y_pos = this.randomIntFromInterval(y-variance, y+variance);
-         let fire = this.physics.add.sprite(this.tile(i), this.tile(y_pos), 'collider').setScale(2).setOrigin(0);
+         let fire = this.physics.add.sprite(this.tile(i), this.tile(y_pos), 'collider').setScale(2).setOrigin(0).setDepth(2);
          fire.setImmovable();
          let randomInt = this.randomIntFromInterval(0, 21);
          fire.play({ key: 'fire', startFrame: randomInt }, true);
@@ -300,14 +326,29 @@ class AirRaid extends Phaser.Scene {
       }
    }
 
-   placeFireY(fromY, toY, x, variance) {
-      for(let i = fromY; i <= toY; i++) {
+   placeFireY(fromY, toY, x, variance, interval) {
+      for(let i = fromY; i <= toY; i+=interval) {
          let x_pos = this.randomIntFromInterval(x-variance, x+variance);
-         let fire = this.physics.add.sprite(this.tile(x_pos), this.tile(i), 'collider').setScale(2).setOrigin(0);
+         let fire = this.physics.add.sprite(this.tile(x_pos), this.tile(i), 'collider').setScale(2).setOrigin(0).setDepth(2);
          fire.setImmovable();
          let randomInt = this.randomIntFromInterval(0, 21);
          fire.play({ key: 'fire', startFrame: randomInt }, true);
          this.fireColliders.add(fire)
       }
+   }
+
+   placeBomb(x ,y) {
+      let randomXPosition = this.randomIntFromInterval(x - game.config.width / 2, x + game.config.width / 2)
+      let randomEndTime = this.randomIntFromInterval(1000, 3000)
+      let bomb = this.physics.add.sprite(randomXPosition, y, 'bomb', 0).setDepth(3);
+      bomb.anims.play('fuse');
+      bomb.setVelocityY(75);
+      this.time.delayedCall(randomEndTime, () => { 
+         bomb.setVelocityY(0);
+         let boom = bomb.play('explosion', true);
+         boom.on('animationcomplete', () => {
+            bomb.destroy();
+        })
+     });
    }
 }

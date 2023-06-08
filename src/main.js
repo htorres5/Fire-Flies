@@ -1,5 +1,5 @@
 let config = {
-   type: Phaser.CANVAS,
+   type: Phaser.WEBGL,
    render: {
       pixelArt: true
    },

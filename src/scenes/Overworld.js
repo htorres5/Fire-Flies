@@ -42,22 +42,22 @@ class Overworld extends Phaser.Scene {
       })
       
       // * Left of West Bridge
-      this.toRegularArea4 = this.add.rectangle(this.tile(44), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.toRegularArea4 = this.add.rectangle(this.tile(44), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRegularArea4);
       this.changeToRegularArea.add(this.toRegularArea4, true);
 
       // * Right of West Bridge
-      this.toRegularArea3 = this.add.rectangle(this.tile(33), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.toRegularArea3 = this.add.rectangle(this.tile(33), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRegularArea3);
       this.changeToRegularArea.add(this.toRegularArea3, true);
 
       // * Left of East Bridge
-      this.toRegularArea2 = this.add.rectangle(this.tile(28), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.toRegularArea2 = this.add.rectangle(this.tile(28), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRegularArea2);
       this.changeToRegularArea.add(this.toRegularArea2, true);
 
       // * Right of East Bridge
-      this.toRegularArea1 = this.add.rectangle(this.tile(16), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.toRegularArea1 = this.add.rectangle(this.tile(16), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRegularArea1);
       this.changeToRegularArea.add(this.toRegularArea1, true);
 
@@ -67,22 +67,22 @@ class Overworld extends Phaser.Scene {
       })
 
       // * Left of West Bridge
-      this.toRiverArea4 = this.add.rectangle(this.tile(44), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.toRiverArea4 = this.add.rectangle(this.tile(44), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRiverArea4);
       this.changeToRiverArea.add(this.toRiverArea4, true);
 
       // * Right of West Bridge
-      this.toRiverArea3 = this.add.rectangle(this.tile(33), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.toRiverArea3 = this.add.rectangle(this.tile(33), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRiverArea3);
       this.changeToRiverArea.add(this.toRiverArea3, true);
 
       // * Left of East Bridge
-      this.toRiverArea2 = this.add.rectangle(this.tile(28), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.toRiverArea2 = this.add.rectangle(this.tile(28), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRiverArea2);
       this.changeToRiverArea.add(this.toRiverArea2, true);
 
       // * right of East Bridge
-      this.toRiverArea1 = this.add.rectangle(this.tile(16), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0.2 ).setOrigin(0);
+      this.toRiverArea1 = this.add.rectangle(this.tile(16), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRiverArea1);
       this.changeToRiverArea.add(this.toRiverArea1, true);
 
