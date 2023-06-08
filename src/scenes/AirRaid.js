@@ -112,6 +112,8 @@ class AirRaid extends Phaser.Scene {
       // * Add Ruby (Protaganist)
       this.ruby = this.physics.add.sprite(this.tile(48) + 16, this.tile(4) + 16, 'ruby', 0).setDepth(1).setOrigin(0);
 
+      this.ruby.dead = false;
+
       // this.anims.create({
       //    key: 'jiggle',
       //    frameRate: 8,
@@ -150,9 +152,14 @@ class AirRaid extends Phaser.Scene {
          repeat: -1
       });
       
+      // * Bomb Colliders
+      this.bombColliders = this.add.group({
+         runChildUpdate: true
+      });
+
       // * Drop Bombs
       this.time.delayedCall(1500,() => {
-         this.time.addEvent({
+         this.bombTimer = this.time.addEvent({
             delay: 1500,
             callback: () => {
                let x = this.ruby.x;
@@ -226,10 +233,11 @@ class AirRaid extends Phaser.Scene {
       keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
       // * Audio
-      this.siren = this.sound.add('air_raid_siren_start', {volume: 1, loop: false}).on('complete', () => {
-         this.sound.play('air_raid_siren_loop', {volume: 1, loop: true});
+      this.siren = this.sound.add('air_raid_siren_loop', {volume: 1, loop: true});
+      this.sirenStart = this.sound.add('air_raid_siren_start', {volume: 1, loop: false}).on('complete', () => {
+         this.siren.play();
       });
-      this.siren.play();
+      this.sirenStart.play();
 
       // * Fog
       this.fogSprite = this.add.rectangle(0, 0, game.config.width, game.config.height, 0xf08080, 0.6).setOrigin(0).setDepth(8);
@@ -258,6 +266,9 @@ class AirRaid extends Phaser.Scene {
       this.distanceUI = this.add.text(32, 42, `${this.distanceToLocation} m`, this.objectiveTextConfig).setOrigin(0, 0.5).setDepth(10).setStroke(0xFFFFFF, 3);
       this.distanceUI.scrollFactorX = 0;
       this.distanceUI.scrollFactorY = 0;
+
+      // * Game Over Flag
+      this.gameOver = false;
    }
 
    update() {
@@ -274,11 +285,13 @@ class AirRaid extends Phaser.Scene {
          this.direction.y = 1;
       }
 
-      this.direction.normalize();
-      this.ruby.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
+      if(!this.ruby.dead) {
+         this.direction.normalize();
+         this.ruby.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
 
-      // * Max Movment
-      this.maxTheSlime.update();
+         // * Max Movment
+         this.maxTheSlime.update();
+      }
 
       // * Colliders
       this.riverAreaCollider = this.physics.world.overlap(this.ruby, this.changeToRiverArea, () => {
@@ -288,6 +301,10 @@ class AirRaid extends Phaser.Scene {
          this.isInRiverLayer = false;
       }, null, this)
       this.fireCollider = this.physics.world.collide(this.ruby, this.fireColliders);
+      if(!this.ruby.dead) {
+         this.bombCollider = this.physics.world.overlap(this.ruby, this.bombColliders, this.bombCollision, null, this);
+      }
+
 
       // * If is in River Layer...
       if (this.isInRiverLayer) {
@@ -324,6 +341,23 @@ class AirRaid extends Phaser.Scene {
       }
 
       console.log(`update function: ${this.isInRiverLayer}`)
+
+      // * Game Over
+      console.log(this.ruby.dead);
+      if(this.ruby.dead) {
+         this.siren.stop();
+         this.bombTimer.remove();
+         this.ruby.destroy();
+         this.maxTheSlime.destroy();
+         this.objectiveUI.destroy();
+         this.distanceUI.destroy();
+         this.waypoint.destroy();
+         this.bombColliders.destroy(true, true);
+         this.fogSprite.setFillStyle(0x000000, 1);
+         this.time.delayedCall(5000, ()=>{
+            this.scene.restart('airRaidScene');
+         })
+      }
    }
 
    randomIntFromInterval(min, max) { // min and max included 
@@ -361,14 +395,22 @@ class AirRaid extends Phaser.Scene {
       fallingSFX.play();
       bomb.setVelocityY(75);
       this.time.delayedCall(randomEndTime, () => { 
-         fallingSFX.stop();
-         this.sound.play('explosion', {volume: 0.25})
-         bomb.setVelocityY(0);
-         let boom = bomb.play('explosion', true);
-         bomb.setSize(64,64)
-         boom.on('animationcomplete', () => {
-            bomb.destroy();
-        })
+         if(!this.ruby.dead) {
+            this.cameras.main.shake(500, 0.0075);
+            this.bombColliders.add(bomb);
+            fallingSFX.stop();
+            this.sound.play('explosion', {volume: 0.25})
+            bomb.setVelocityY(0);
+            let boom = bomb.play('explosion', true);
+            bomb.setSize(32,32)
+            boom.on('animationcomplete', () => {
+               bomb.destroy();
+           })
+         }
      });
+   }
+
+   bombCollision() {
+      this.ruby.dead = true;
    }
 }

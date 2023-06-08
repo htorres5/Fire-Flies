@@ -8,11 +8,11 @@ let config = {
    physics: {
       default: 'arcade',
       arcade: {
-         debug: true,
+         debug: false,
       }
    },
    zoom: 2,
-   scene: [ AirRaid, Opening, Overworld, Store ]
+   scene: [ Opening, Overworld, Store, AirRaid ]
 }
 
 // reserve keyboard vars
