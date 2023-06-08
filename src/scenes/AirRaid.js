@@ -28,6 +28,14 @@ class AirRaid extends Phaser.Scene {
       // * TileMap
       this.load.image('tilesetImage', '/tilemaps/air_raid_tileset.png')
       this.load.tilemapTiledJSON('tilemapJSON', '/tilemaps/air_raid_map.json')
+
+      // * Audio
+      this.load.audio('air_raid_siren_start', './audio/air_raid_siren_start.mp3')
+      this.load.audio('air_raid_siren_loop', './audio/air_raid_siren_loop.mp3')
+      this.load.audio('falling_bomb', './audio/falling_bomb.mp3')
+      this.load.audio('explosion', './audio/explosion.mp3')
+
+   
    }
 
    tile(coord) {
@@ -142,16 +150,19 @@ class AirRaid extends Phaser.Scene {
          repeat: -1
       });
       
-      // * Place Bombs
-      this.time.addEvent({
-         delay: 1500,
-         callback: () => {
-            let x = this.ruby.x;
-            let y = this.ruby.y - game.config.height / 2;
-            this.placeBomb(x, y);
-         },
-         loop: true
+      // * Drop Bombs
+      this.time.delayedCall(1500,() => {
+         this.time.addEvent({
+            delay: 1500,
+            callback: () => {
+               let x = this.ruby.x;
+               let y = this.ruby.y - game.config.height / 2;
+               this.placeBomb(x, y);
+            },
+            loop: true
+         })
       })
+
 
       // Fire Animation
       this.anims.create({
@@ -179,8 +190,6 @@ class AirRaid extends Phaser.Scene {
       this.placeFireX(41, 53, 17, .15, 2);
       this.placeFireX(18, 37, 16, .15, 2);
       this.placeFireX(14, 43, 9, .3, 2);
-
-      this.lights.enable().setAmbientColor(0x555555);
 
       // * Block West Side
       this.placeFireY(11, 17, 14, .2, 2)
@@ -215,6 +224,12 @@ class AirRaid extends Phaser.Scene {
       keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
       keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
       keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+      // * Audio
+      this.siren = this.sound.add('air_raid_siren_start', {volume: 1, loop: false}).on('complete', () => {
+         this.sound.play('air_raid_siren_loop', {volume: 1, loop: true});
+      });
+      this.siren.play();
 
       // * Fog
       this.fogSprite = this.add.rectangle(0, 0, game.config.width, game.config.height, 0xf08080, 0.6).setOrigin(0).setDepth(8);
@@ -342,10 +357,15 @@ class AirRaid extends Phaser.Scene {
       let randomEndTime = this.randomIntFromInterval(1000, 3000)
       let bomb = this.physics.add.sprite(randomXPosition, y, 'bomb', 0).setDepth(3);
       bomb.anims.play('fuse');
+      let fallingSFX = this.sound.add('falling_bomb', {volume: 0.25});
+      fallingSFX.play();
       bomb.setVelocityY(75);
       this.time.delayedCall(randomEndTime, () => { 
+         fallingSFX.stop();
+         this.sound.play('explosion', {volume: 0.25})
          bomb.setVelocityY(0);
          let boom = bomb.play('explosion', true);
+         bomb.setSize(64,64)
          boom.on('animationcomplete', () => {
             bomb.destroy();
         })
