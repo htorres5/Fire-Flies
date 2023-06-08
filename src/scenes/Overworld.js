@@ -20,19 +20,19 @@ class Overworld extends Phaser.Scene {
    }
 
    create() {
-      const map = this.add.tilemap('tilemapJSON')
-      const tileset = map.addTilesetImage('tileset', 'tilesetImage')
+      this.map = this.add.tilemap('tilemapJSON')
+      this.tileset = this.map.addTilesetImage('tileset', 'tilesetImage')
 
       // * Add Layers
-      this.elevationLayer = map.createLayer('elevation', tileset, 0, 0).setDepth(-1);
-      this.riverLayer = map.createLayer('river', tileset, 0, 0).setDepth(-1);
-      this.underLayer = map.createLayer('under', tileset, 0, 0).setDepth(0);
-      this.bgLayer = map.createLayer('background', tileset, 0, 0);
-      this.pathsLayer = map.createLayer('paths', tileset, 0, 0);
-      this.bridgeLayer = map.createLayer('bridge', tileset, 0, 0);
-      this.decorationsLayer = map.createLayer('decorations', tileset, 0, 0);
-      this.housesLayer = map.createLayer('houses', tileset, 0, 0).setDepth(0);
-      this.treesLayer = map.createLayer('trees', tileset, 0, 0).setDepth(1);
+      this.elevationLayer = this.map.createLayer('elevation', this.tileset, 0, 0).setDepth(-1);
+      this.riverLayer = this.map.createLayer('river', this.tileset, 0, 0).setDepth(-1);
+      this.underLayer = this.map.createLayer('under', this.tileset, 0, 0).setDepth(0);
+      this.bgLayer = this.map.createLayer('background', this.tileset, 0, 0);
+      this.pathsLayer = this.map.createLayer('paths', this.tileset, 0, 0);
+      this.bridgeLayer = this.map.createLayer('bridge', this.tileset, 0, 0);
+      this.decorationsLayer = this.map.createLayer('decorations', this.tileset, 0, 0);
+      this.housesLayer = this.map.createLayer('houses', this.tileset, 0, 0).setDepth(0);
+      this.treesLayer = this.map.createLayer('trees', this.tileset, 0, 0).setDepth(1);
 
       // * Depth Colliders
 
@@ -128,9 +128,9 @@ class Overworld extends Phaser.Scene {
       this.underCollider.active = false;
 
       // cameras
-      this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
+      this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
       this.cameras.main.startFollow(this.ruby, true, 0.25, 0.25)
-      this.physics.world.bounds.setTo(0, 0, map.widthInPixels, map.heightInPixels)
+      this.physics.world.bounds.setTo(0, 0, this.map.widthInPixels, this.map.heightInPixels)
 
       // input
       keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);

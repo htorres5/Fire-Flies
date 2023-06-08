@@ -8,7 +8,7 @@ class Opening extends Phaser.Scene {
    preload() {
       this.load.path = './assets/'
       this.load.image('mom', '/sprites/mom.png')
-      this.load.image('ruby', '/sprites/riku.png')
+      this.load.image('ruby', '/sprites/ruby.png')
       this.load.image('max', '/sprites/max.png')
 
    }
