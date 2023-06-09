@@ -32,8 +32,8 @@
             "scale": 1,
             "selectedLayer": 7,
             "viewCenter": {
-                "x": 746.5,
-                "y": 554
+                "x": 1024,
+                "y": 767.5
             }
         },
         "air_raid_map.tmx#air_raid_tileset": {
@@ -44,22 +44,36 @@
             "scaleInEditor": 1
         },
         "cave.tmx": {
-            "scale": 1,
+            "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 462.5,
-                "y": 94
+                "x": 277.75,
+                "y": 159.5
             }
         },
+        "cave.tmx#interior_tileset": {
+            "scaleInDock": 1
+        },
         "cave.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "opening.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 363.66666666666663,
+                "y": 114.66666666666663
+            }
+        },
+        "opening.tmx#interior_tileset": {
             "scaleInDock": 1
         },
         "overworld.tmx": {
             "scale": 0.5,
             "selectedLayer": 8,
             "viewCenter": {
-                "x": 1518,
-                "y": 382
+                "x": 1023,
+                "y": 767
             }
         },
         "overworld.tmx#tileset": {
@@ -73,8 +87,8 @@
             "scale": 0.75,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 1792.6666666666665,
-                "y": 1305.3333333333333
+                "x": 1791.3333333333333,
+                "y": 1304
             }
         },
         "scene_1_map.tmx#world_tileset": {
@@ -84,8 +98,8 @@
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1421,
-                "y": 887.3333333333333
+                "x": 1024,
+                "y": 767.6666666666666
             }
         },
         "scene_2_map.tmx#world_tileset": {
@@ -93,24 +107,35 @@
             "scaleInEditor": 0.75
         },
         "scene_3_map.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 4,
+            "scale": 1.5,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 1260.6666666666667,
-                "y": 770.6666666666667
+                "x": 976.3333333333333,
+                "y": 432.66666666666663
             }
         },
         "scene_3_map.tmx#world_tileset": {
+            "scaleInDock": 1
+        },
+        "store.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 363.66666666666663,
+                "y": 111.99999999999997
+            }
+        },
+        "store.tmx#interior_tileset": {
             "scaleInDock": 1
         }
     },
     "last.exportedFilePath": "C:/github/Fire-Flies/assets/tilemaps",
     "last.imagePath": "C:/github/Fire-Flies/assets/tilemaps",
     "lastUsedTilesetExportFilter": "All Files (*)",
-    "map.height": 10,
+    "map.height": 8,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
-    "map.width": 20,
+    "map.width": 10,
     "openFiles": [
         "overworld.tmx",
         "air_raid_map.tmx",
