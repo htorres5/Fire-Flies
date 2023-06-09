@@ -39,7 +39,13 @@ class Opening extends Phaser.Scene {
       this.ruby = this.physics.add.sprite(this.tile(15), this.tile(3.5), 'ruby', 0).setDepth(1).setScale(0.8).setOrigin(0);
       this.ruby.canMove = true;
 
-      this.ruby.body.setCollideWorldBounds(true);
+      this.ruby.body.setCollideWorldBounds(true)
+      
+      // * Add Path for Max (lil bro)
+      this.maxPath = new Phaser.Curves.Path(this.tile(3.5), this.tile(10));
+      this.maxPath.lineTo(this.tile(3.5), this.tile(6.5));
+      this.maxPath.lineTo(this.tile(5.5), this.tile(6.5));
+      this.maxPath.lineTo(this.tile(5.5), this.tile(3.5));
 
       // * Collision
       this.wallsLayer.setCollisionByProperty({ collides: true })
@@ -229,15 +235,25 @@ var cutscene = [
    },
 
    function(fn) {
-      this.dialogue.text = '*Max Appears Stage Left*'
+      const maxTheSlime = this.add.follower(this.maxPath, this.tile(3.5), this.tile(10), 'max');
+      maxTheSlime.startFollow({
+          duration: 5000,
+          rotateToPath: false,
+          verticalAdjust: true
+      });
+      this.dialogue.setAlpha(0);
+      this.textBox.setAlpha(0);
       this.portrait.setAlpha(0);
-      keySPACE.once('down', () => {
+      this.time.delayedCall(5500, () => {
          fn();
       })
    },
 
    function(fn) {
       this.dialogue.text = 'Ah there you are!'
+      this.dialogue.setAlpha(1);
+      this.textBox.setAlpha(1);
+      this.portrait.setAlpha(1);
       this.portrait.setTexture('mom').setAlpha(1);
       keySPACE.once('down', () => {
          fn();
