@@ -11,7 +11,7 @@ class Opening extends Phaser.Scene {
       this.load.image('mom', '/sprites/mom.png')
       this.load.image('ruby', '/sprites/ruby.png')
       this.load.image('max', '/sprites/max.png')
-
+      this.load.image('exit', '/sprites/change_depth.png')
       
       // * TileMap
       this.load.image('tilesetImage1', '/tilemaps/interior_tileset.png')
@@ -42,10 +42,13 @@ class Opening extends Phaser.Scene {
       this.ruby.body.setCollideWorldBounds(true)
       
       // * Add Path for Max (lil bro)
-      this.maxPath = new Phaser.Curves.Path(this.tile(3.5), this.tile(10));
+      this.maxPath = new Phaser.Curves.Path(this.tile(3.5), this.tile(9));
       this.maxPath.lineTo(this.tile(3.5), this.tile(6.5));
       this.maxPath.lineTo(this.tile(5.5), this.tile(6.5));
       this.maxPath.lineTo(this.tile(5.5), this.tile(3.5));
+
+      // * Add Miku (mom)
+      this.mom = this.physics.add.sprite(this.tile(3), this.tile(2), 'mom', 0).setOrigin(0);
 
       // * Collision
       this.wallsLayer.setCollisionByProperty({ collides: true })
@@ -54,6 +57,18 @@ class Opening extends Phaser.Scene {
       this.physics.add.collider(this.ruby, this.wallsLayer)
       this.physics.add.collider(this.ruby, this.decorationsLayer)
       this.physics.add.collider(this.ruby, this.doorsLayer)
+
+      // * Add Exit Collider
+      this.exit = this.physics.add.sprite(this.tile(3), this.tile(7.5), 'exit', '0').setOrigin(0);
+      this.exitCollider = this.physics.add.overlap(this.ruby, this.exit, () => {
+         this.exitCollider.active = false;
+         this.ruby.canMove = false;
+         this.ruby.setVelocity(0, 0);
+         this.cameras.main.fadeOut(1000, 0, 0, 0);
+         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+             this.scene.start('overworldScene');
+         });
+      });
 
       // * Opening Cutscene in Kitchen Flag
       this.cutsceneFlag = this.add.rectangle(0, 0, this.tile(6), this.tile(10), 0x000000, 0).setOrigin(0);
@@ -123,11 +138,13 @@ class Opening extends Phaser.Scene {
          if (cutscene[i]) {
             cutscene[i].call(this, this.chain(++i));
          } else {
-            console.log(cutscene[i])
-            this.cameras.main.fadeOut(2500, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-                this.scene.start('overworldScene');
-            });
+            this.ruby.canMove = true;
+            this.dialogue.setAlpha(0);
+            this.textBox.setAlpha(0);
+            this.portrait.setAlpha(0);
+
+            this.maxTheSlimeActor.destroy();
+            this.maxTheSlime = new Max(this, this.tile(5.5), this.tile(3.5), this.ruby, 90, 'max');
          }
       }.bind(this);
    }
@@ -235,8 +252,8 @@ var cutscene = [
    },
 
    function(fn) {
-      const maxTheSlime = this.add.follower(this.maxPath, this.tile(3.5), this.tile(10), 'max');
-      maxTheSlime.startFollow({
+      this.maxTheSlimeActor = this.add.follower(this.maxPath, this.tile(3.5), this.tile(9), 'max');
+      this.maxTheSlimeActor.startFollow({
           duration: 5000,
           rotateToPath: false,
           verticalAdjust: true
