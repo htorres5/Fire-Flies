@@ -26,8 +26,8 @@ class AirRaid extends Phaser.Scene {
       this.load.atlas('fire', './sprites/sheets/fire.png', './sprites/sheets/fire.json');
 
       // * TileMap
-      this.load.image('tilesetImage2', './tilemaps/air_raid_tileset.png')
-      this.load.tilemapTiledJSON('tilemapJSON2', './tilemaps/air_raid_map.json')
+      this.load.image('tilesetImage2', './tilemaps/raid_tileset.png')
+      this.load.tilemapTiledJSON('tilemapJSON2', './tilemaps/scene_2_map.json')
 
       // * Audio
       this.load.audio('air_raid_siren_start', './audio/air_raid_siren_start.mp3')
@@ -44,18 +44,21 @@ class AirRaid extends Phaser.Scene {
 
    create() {
       this.map = this.add.tilemap('tilemapJSON2')
-      this.tileset = this.map.addTilesetImage('tileset', 'tilesetImage2')
+      this.tileset = this.map.addTilesetImage('world_tileset', 'tilesetImage2')
 
       // * Add Layers
-      this.elevationLayer = this.map.createLayer('elevation', this.tileset, 0, 0).setDepth(-1);
-      this.riverLayer = this.map.createLayer('river', this.tileset, 0, 0).setDepth(-1);
-      this.underLayer = this.map.createLayer('under', this.tileset, 0, 0).setDepth(0);
+      this.elevationLayer = this.map.createLayer('elevation', this.tileset, 0, 0).setDepth(-2);
+      this.riverLayer = this.map.createLayer('river', this.tileset, 0, 0).setDepth(-3);
+      this.underLayer = this.map.createLayer('under', this.tileset, 0, 0).setDepth(-4);
+      this.stairsLayer = this.map.createLayer('stairs', this.tileset, 0, 0).setDepth(-2);
       this.bgLayer = this.map.createLayer('background', this.tileset, 0, 0);
       this.pathsLayer = this.map.createLayer('paths', this.tileset, 0, 0);
       this.bridgeLayer = this.map.createLayer('bridge', this.tileset, 0, 0);
       this.decorationsLayer = this.map.createLayer('decorations', this.tileset, 0, 0);
-      this.housesLayer = this.map.createLayer('houses', this.tileset, 0, 0).setDepth(0);
-      this.treesLayer = this.map.createLayer('trees', this.tileset, 0, 0).setDepth(1);
+      this.treesBehindLayer = this.map.createLayer('trees_behind', this.tileset, 0, 0);
+      this.housesLayer = this.map.createLayer('houses', this.tileset, 0, 0);
+      this.treesLayer = this.map.createLayer('trees', this.tileset, 0, 0).setDepth(2);
+      this.houseDecLayer = this.map.createLayer('house_decorations', this.tileset, 0, 0).setDepth(3);
 
       // * Depth Colliders
 
@@ -63,24 +66,24 @@ class AirRaid extends Phaser.Scene {
       this.changeToRegularArea = this.add.group({
          runChildUpdate: true
       })
-
+      
       // * Left of West Bridge
-      this.toRegularArea4 = this.add.rectangle(this.tile(44), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0).setOrigin(0);
+      this.toRegularArea4 = this.add.rectangle(this.tile(43), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRegularArea4);
       this.changeToRegularArea.add(this.toRegularArea4, true);
 
       // * Right of West Bridge
-      this.toRegularArea3 = this.add.rectangle(this.tile(33), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0).setOrigin(0);
+      this.toRegularArea3 = this.add.rectangle(this.tile(34), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRegularArea3);
       this.changeToRegularArea.add(this.toRegularArea3, true);
 
       // * Left of East Bridge
-      this.toRegularArea2 = this.add.rectangle(this.tile(28), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0).setOrigin(0);
+      this.toRegularArea2 = this.add.rectangle(this.tile(27), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRegularArea2);
       this.changeToRegularArea.add(this.toRegularArea2, true);
 
       // * Right of East Bridge
-      this.toRegularArea1 = this.add.rectangle(this.tile(16), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0).setOrigin(0);
+      this.toRegularArea1 = this.add.rectangle(this.tile(18), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRegularArea1);
       this.changeToRegularArea.add(this.toRegularArea1, true);
 
@@ -90,29 +93,27 @@ class AirRaid extends Phaser.Scene {
       })
 
       // * Left of West Bridge
-      this.toRiverArea4 = this.add.rectangle(this.tile(44), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0).setOrigin(0);
+      this.toRiverArea4 = this.add.rectangle(this.tile(43), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRiverArea4);
       this.changeToRiverArea.add(this.toRiverArea4, true);
 
       // * Right of West Bridge
-      this.toRiverArea3 = this.add.rectangle(this.tile(33), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0).setOrigin(0);
+      this.toRiverArea3 = this.add.rectangle(this.tile(34), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRiverArea3);
       this.changeToRiverArea.add(this.toRiverArea3, true);
 
       // * Left of East Bridge
-      this.toRiverArea2 = this.add.rectangle(this.tile(28), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0).setOrigin(0);
+      this.toRiverArea2 = this.add.rectangle(this.tile(27), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRiverArea2);
       this.changeToRiverArea.add(this.toRiverArea2, true);
 
       // * right of East Bridge
-      this.toRiverArea1 = this.add.rectangle(this.tile(16), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0).setOrigin(0);
+      this.toRiverArea1 = this.add.rectangle(this.tile(18), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRiverArea1);
       this.changeToRiverArea.add(this.toRiverArea1, true);
 
       // * Add Ruby (Protaganist)
-      this.ruby = this.physics.add.sprite(this.tile(48) + 16, this.tile(4) + 16, 'ruby', 0).setDepth(1).setOrigin(0);
-
-      this.ruby.dead = false;
+      this.ruby = this.physics.add.sprite(this.tile(49) + (32 - 32*0.8), this.tile(5), 'ruby', 0).setDepth(1).setScale(0.8).setOrigin(0);
 
       // this.anims.create({
       //    key: 'jiggle',
@@ -128,7 +129,7 @@ class AirRaid extends Phaser.Scene {
       this.ruby.body.setCollideWorldBounds(true);
 
       // * Add Max (Protaganist lil bro)
-      this.maxTheSlime = new Max(this, this.tile(49) + 16, this.tile(4) + 16, this.ruby, 140, 'max').setOrigin(0);
+      this.maxTheSlime = new Max(this, this.tile(50), this.tile(5), this.ruby, 90, 'max').setDepth(1).setOrigin(0);
 
       this.maxTheSlime.body.setCollideWorldBounds(true);
 
@@ -195,7 +196,7 @@ class AirRaid extends Phaser.Scene {
 
       // * Fire Block Bridges
       this.placeFireX(41, 53, 17, .15, 2);
-      this.placeFireX(18, 37, 16, .15, 2);
+      this.placeFireX(20, 37, 17, .15, 2);
       this.placeFireX(14, 43, 9, .3, 2);
 
       // * Block West Side
@@ -204,10 +205,16 @@ class AirRaid extends Phaser.Scene {
       // * World Collision
       this.riverLayer.setCollisionByProperty({ collides: true })
       this.underLayer.setCollisionByProperty({ collides: true })
+      this.elevationLayer.setCollisionByProperty({ collides: true })
       this.pathsLayer.setCollisionByProperty({ collides: true })
       this.housesLayer.setCollisionByProperty({ collides: true })
+      this.decorationsLayer.setCollisionByProperty({ collides: true })
+      this.treesBehindLayer.setCollisionByProperty({ collides: true })
       this.treesLayer.setCollisionByProperty({ collides: true })
-      this.bridgeLayer.setCollisionByProperty({ collides: true })
+      this.bridgeLayer.setCollisionByProperty({ collides: true})
+      this.physics.add.collider(this.ruby, this.decorationsLayer)
+      this.physics.add.collider(this.ruby, this.treesBehindLayer)
+      this.physics.add.collider(this.ruby, this.elevationLayer)
       this.physics.add.collider(this.ruby, this.riverLayer)
       this.physics.add.collider(this.ruby, this.pathsLayer)
       this.physics.add.collider(this.ruby, this.housesLayer)
@@ -399,7 +406,7 @@ class AirRaid extends Phaser.Scene {
             this.cameras.main.shake(500, 0.0075);
             this.bombColliders.add(bomb);
             fallingSFX.stop();
-            this.sound.play('explosion', {volume: 0.25})
+            this.sound.play('explosion', {volume: 0.15})
             bomb.setVelocityY(0);
             let boom = bomb.play('explosion', true);
             bomb.setSize(32,32)
