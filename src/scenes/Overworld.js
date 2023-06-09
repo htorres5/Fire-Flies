@@ -11,8 +11,8 @@ class Overworld extends Phaser.Scene {
       this.load.image('max', './sprites/max.png')
       this.load.image('waypoint', './sprites/waypoint.png')
       this.load.image('store_location', './sprites/change_depth.png')
-      this.load.image('tilesetImage', '/tilemaps/tileset.png')
-      this.load.tilemapTiledJSON('tilemapJSON','/tilemaps/prologue_map.json')
+      this.load.image('tilesetImage', '/tilemaps/world_tileset.png')
+      this.load.tilemapTiledJSON('tilemapJSON','/tilemaps/scene_1_map.json')
    }
 
    tile(coord) {
@@ -21,18 +21,21 @@ class Overworld extends Phaser.Scene {
 
    create() {
       this.map = this.add.tilemap('tilemapJSON')
-      this.tileset = this.map.addTilesetImage('tileset', 'tilesetImage')
+      this.tileset = this.map.addTilesetImage('world_tileset', 'tilesetImage')
 
       // * Add Layers
-      this.elevationLayer = this.map.createLayer('elevation', this.tileset, 0, 0).setDepth(-1);
-      this.riverLayer = this.map.createLayer('river', this.tileset, 0, 0).setDepth(-1);
-      this.underLayer = this.map.createLayer('under', this.tileset, 0, 0).setDepth(0);
+      this.elevationLayer = this.map.createLayer('elevation', this.tileset, 0, 0).setDepth(-2);
+      this.riverLayer = this.map.createLayer('river', this.tileset, 0, 0).setDepth(-2);
+      this.underLayer = this.map.createLayer('under', this.tileset, 0, 0).setDepth(-2);
+      this.stairsLayer = this.map.createLayer('stairs', this.tileset, 0, 0).setDepth(-2);
       this.bgLayer = this.map.createLayer('background', this.tileset, 0, 0);
       this.pathsLayer = this.map.createLayer('paths', this.tileset, 0, 0);
       this.bridgeLayer = this.map.createLayer('bridge', this.tileset, 0, 0);
       this.decorationsLayer = this.map.createLayer('decorations', this.tileset, 0, 0);
-      this.housesLayer = this.map.createLayer('houses', this.tileset, 0, 0).setDepth(0);
-      this.treesLayer = this.map.createLayer('trees', this.tileset, 0, 0).setDepth(1);
+      this.houseDecLayer = this.map.createLayer('house_decorations', this.tileset, 0, 0);
+      this.treesBehindLayer = this.map.createLayer('trees_behind', this.tileset, 0, 0);
+      this.housesLayer = this.map.createLayer('houses', this.tileset, 0, 0);
+      this.treesLayer = this.map.createLayer('trees', this.tileset, 0, 0).setDepth(2);
 
       // * Depth Colliders
 
@@ -87,7 +90,7 @@ class Overworld extends Phaser.Scene {
       this.changeToRiverArea.add(this.toRiverArea1, true);
 
       // * Add Ruby (Protaganist)
-      this.ruby = this.physics.add.sprite(this.tile(57), this.tile(40), 'ruby', 0).setDepth(1);
+      this.ruby = this.physics.add.sprite(this.tile(59), this.tile(40), 'ruby', 0).setDepth(1).setScale(0.8);
 
       // this.anims.create({
       //    key: 'jiggle',
@@ -103,17 +106,23 @@ class Overworld extends Phaser.Scene {
       this.ruby.body.setCollideWorldBounds(true);
 
       // * Add Max (Protaganist lil bro)
-      this.maxTheSlime = new Max(this, this.tile(58), this.tile(40), this.ruby, 90, 'max');
+      this.maxTheSlime = new Max(this, this.tile(60), this.tile(40), this.ruby, 90, 'max').setDepth(1);
 
       this.maxTheSlime.body.setCollideWorldBounds(true);
 
       // * World Collision
       this.riverLayer.setCollisionByProperty({ collides: true })
       this.underLayer.setCollisionByProperty({ collides: true })
+      this.elevationLayer.setCollisionByProperty({ collides: true })
       this.pathsLayer.setCollisionByProperty({ collides: true })
       this.housesLayer.setCollisionByProperty({ collides: true })
+      this.decorationsLayer.setCollisionByProperty({ collides: true })
+      this.treesBehindLayer.setCollisionByProperty({ collides: true })
       this.treesLayer.setCollisionByProperty({ collides: true })
       this.bridgeLayer.setCollisionByProperty({ collides: true})
+      this.physics.add.collider(this.ruby, this.decorationsLayer)
+      this.physics.add.collider(this.ruby, this.treesBehindLayer)
+      this.physics.add.collider(this.ruby, this.elevationLayer)
       this.physics.add.collider(this.ruby, this.riverLayer)
       this.physics.add.collider(this.ruby, this.pathsLayer)
       this.physics.add.collider(this.ruby, this.housesLayer)

@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "overworld.tmx",
+    "activeFile": "air_raid_map.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -32,8 +32,8 @@
             "scale": 1,
             "selectedLayer": 7,
             "viewCenter": {
-                "x": 1229,
-                "y": 499
+                "x": 608,
+                "y": 555
             }
         },
         "air_raid_map.tmx#air_raid_tileset": {
@@ -47,23 +47,27 @@
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 326,
-                "y": 98
+                "x": 323,
+                "y": 95
             }
         },
         "cave.tmx#tileset": {
             "scaleInDock": 1
         },
         "overworld.tmx": {
-            "scale": 1.5,
-            "selectedLayer": 3,
+            "scale": 0.5,
+            "selectedLayer": 8,
             "viewCenter": {
-                "x": 1384.6666666666665,
-                "y": 792.6666666666666
+                "x": 1518,
+                "y": 382
             }
         },
         "overworld.tmx#tileset": {
-            "scaleInDock": 1
+            "scaleInDock": 0.75
+        },
+        "overworld.tmx#world_tileset": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
     "last.exportedFilePath": "C:/github/Fire-Flies/assets/tilemaps",
@@ -74,12 +78,16 @@
     "map.lastUsedFormat": "tmx",
     "map.width": 20,
     "openFiles": [
-        "overworld.tmx"
+        "overworld.tmx",
+        "air_raid_map.tmx",
+        "cave.tmx"
     ],
     "project": "overworld.tiled-project",
     "property.type": "bool",
     "recentFiles": [
         "overworld.tmx",
+        "cave.tmx",
+        "air_raid_map.tmx",
         "C:/github/Fire-Flies/assets/prologue_map.json"
     ],
     "resizeMap.removeObjects": true,
