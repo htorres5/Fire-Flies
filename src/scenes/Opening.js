@@ -14,8 +14,8 @@ class Opening extends Phaser.Scene {
 
       
       // * TileMap
-      this.load.image('tilesetImage', '/tilemaps/interior_tileset.png')
-      this.load.tilemapTiledJSON('tilemapJSON','/tilemaps/opening.json')
+      this.load.image('tilesetImage1', '/tilemaps/interior_tileset.png')
+      this.load.tilemapTiledJSON('tilemapJSON1','/tilemaps/opening.json')
 
    }
 
@@ -25,8 +25,8 @@ class Opening extends Phaser.Scene {
 
    create() {
       // * Add Tilemap
-      this.map = this.add.tilemap('tilemapJSON')
-      this.tileset = this.map.addTilesetImage('interior_tileset', 'tilesetImage')
+      this.map = this.add.tilemap('tilemapJSON1')
+      this.tileset = this.map.addTilesetImage('interior_tileset', 'tilesetImage1')
 
       // * Add Layers
       this.floorLayer = this.map.createLayer('floor', this.tileset, 0, 0);
@@ -301,7 +301,7 @@ var cutscene = [
    },
 
    function(fn) {
-      this.dialogue.text = 'Anyways, now that you\'re both here,\ncan you go to store and \nget Rice?'
+      this.dialogue.text = 'Anyways, now that you\'re both here,\ncan you go to the store and \nget Rice?'
       this.portrait.setTexture('mom');
       keySPACE.once('down', () => {
          fn();
