@@ -25,17 +25,17 @@ class Overworld extends Phaser.Scene {
 
       // * Add Layers
       this.elevationLayer = this.map.createLayer('elevation', this.tileset, 0, 0).setDepth(-2);
-      this.riverLayer = this.map.createLayer('river', this.tileset, 0, 0).setDepth(-2);
+      this.riverLayer = this.map.createLayer('river', this.tileset, 0, 0).setDepth(-3);
       this.underLayer = this.map.createLayer('under', this.tileset, 0, 0).setDepth(-2);
-      this.stairsLayer = this.map.createLayer('stairs', this.tileset, 0, 0).setDepth(-2);
+      this.stairsLayer = this.map.createLayer('stairs', this.tileset, 0, 0).setDepth(-1);
       this.bgLayer = this.map.createLayer('background', this.tileset, 0, 0);
       this.pathsLayer = this.map.createLayer('paths', this.tileset, 0, 0);
       this.bridgeLayer = this.map.createLayer('bridge', this.tileset, 0, 0);
       this.decorationsLayer = this.map.createLayer('decorations', this.tileset, 0, 0);
-      this.houseDecLayer = this.map.createLayer('house_decorations', this.tileset, 0, 0);
       this.treesBehindLayer = this.map.createLayer('trees_behind', this.tileset, 0, 0);
       this.housesLayer = this.map.createLayer('houses', this.tileset, 0, 0);
       this.treesLayer = this.map.createLayer('trees', this.tileset, 0, 0).setDepth(2);
+      this.houseDecLayer = this.map.createLayer('house_decorations', this.tileset, 0, 0).setDepth(3);
 
       // * Depth Colliders
 
@@ -45,22 +45,22 @@ class Overworld extends Phaser.Scene {
       })
       
       // * Left of West Bridge
-      this.toRegularArea4 = this.add.rectangle(this.tile(44), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
+      this.toRegularArea4 = this.add.rectangle(this.tile(43), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRegularArea4);
       this.changeToRegularArea.add(this.toRegularArea4, true);
 
       // * Right of West Bridge
-      this.toRegularArea3 = this.add.rectangle(this.tile(33), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
+      this.toRegularArea3 = this.add.rectangle(this.tile(34), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRegularArea3);
       this.changeToRegularArea.add(this.toRegularArea3, true);
 
       // * Left of East Bridge
-      this.toRegularArea2 = this.add.rectangle(this.tile(28), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
+      this.toRegularArea2 = this.add.rectangle(this.tile(27), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRegularArea2);
       this.changeToRegularArea.add(this.toRegularArea2, true);
 
       // * Right of East Bridge
-      this.toRegularArea1 = this.add.rectangle(this.tile(16), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
+      this.toRegularArea1 = this.add.rectangle(this.tile(18), this.tile(19), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRegularArea1);
       this.changeToRegularArea.add(this.toRegularArea1, true);
 
@@ -70,27 +70,27 @@ class Overworld extends Phaser.Scene {
       })
 
       // * Left of West Bridge
-      this.toRiverArea4 = this.add.rectangle(this.tile(44), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
+      this.toRiverArea4 = this.add.rectangle(this.tile(43), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRiverArea4);
       this.changeToRiverArea.add(this.toRiverArea4, true);
 
       // * Right of West Bridge
-      this.toRiverArea3 = this.add.rectangle(this.tile(33), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
+      this.toRiverArea3 = this.add.rectangle(this.tile(34), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRiverArea3);
       this.changeToRiverArea.add(this.toRiverArea3, true);
 
       // * Left of East Bridge
-      this.toRiverArea2 = this.add.rectangle(this.tile(28), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
+      this.toRiverArea2 = this.add.rectangle(this.tile(27), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRiverArea2);
       this.changeToRiverArea.add(this.toRiverArea2, true);
 
       // * right of East Bridge
-      this.toRiverArea1 = this.add.rectangle(this.tile(16), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
+      this.toRiverArea1 = this.add.rectangle(this.tile(18), this.tile(20), this.tile(2), this.tile(1), 0x000000, 0 ).setOrigin(0);
       this.physics.add.existing(this.toRiverArea1);
       this.changeToRiverArea.add(this.toRiverArea1, true);
 
       // * Add Ruby (Protaganist)
-      this.ruby = this.physics.add.sprite(this.tile(59), this.tile(40), 'ruby', 0).setDepth(1).setScale(0.8);
+      this.ruby = this.physics.add.sprite(this.tile(59) + (32 - 32*0.8), this.tile(40), 'ruby', 0).setDepth(1).setScale(0.8).setOrigin(0);
 
       // this.anims.create({
       //    key: 'jiggle',
@@ -106,7 +106,7 @@ class Overworld extends Phaser.Scene {
       this.ruby.body.setCollideWorldBounds(true);
 
       // * Add Max (Protaganist lil bro)
-      this.maxTheSlime = new Max(this, this.tile(60), this.tile(40), this.ruby, 90, 'max').setDepth(1);
+      this.maxTheSlime = new Max(this, this.tile(60), this.tile(40), this.ruby, 90, 'max').setDepth(1).setOrigin(0);
 
       this.maxTheSlime.body.setCollideWorldBounds(true);
 
@@ -159,7 +159,7 @@ class Overworld extends Phaser.Scene {
       this.objectiveUI.scrollFactorX = 0;
       this.objectiveUI.scrollFactorY = 0;
 
-      this.storeLocation = this.physics.add.sprite(this.tile(48) + 16, this.tile(4), 'store_location').setOrigin(0).setDepth(-4);
+      this.storeLocation = this.physics.add.sprite(this.tile(49), this.tile(4), 'store_location').setOrigin(0).setDepth(-4);
       this.storeLocation.setImmovable();
       this.storeCollider = this.physics.add.overlap(this.ruby, this.storeLocation, () => {
          console.log("hit");
