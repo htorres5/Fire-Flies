@@ -5,6 +5,10 @@ class Store extends Phaser.Scene {
 
       this.padding = game.config.width / 100;
    }
+   
+   init(data) {
+      this.music = data.music;
+   }
 
    preload() {
       this.load.path = './assets/'
@@ -15,10 +19,7 @@ class Store extends Phaser.Scene {
    }
 
    create() {
-      
-      
-      
-      
+      this.music.stop();
       
       keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
@@ -46,6 +47,7 @@ class Store extends Phaser.Scene {
             console.log(events[i])
             this.cameras.main.fadeOut(2500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+
                 this.scene.start('overworldScene');
             });
          }

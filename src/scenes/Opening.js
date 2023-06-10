@@ -17,6 +17,9 @@ class Opening extends Phaser.Scene {
       this.load.image('tilesetImage1', '/tilemaps/interior_tileset.png')
       this.load.tilemapTiledJSON('tilemapJSON1','/tilemaps/opening.json')
 
+      // * Music
+      this.load.audio('windmill_village', './audio/music/windmill_village.mp3')
+
    }
 
    tile(coord) {
@@ -66,7 +69,7 @@ class Opening extends Phaser.Scene {
          this.ruby.setVelocity(0, 0);
          this.cameras.main.fadeOut(1000, 0, 0, 0);
          this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-             this.scene.start('overworldScene');
+             this.scene.start('overworldScene', {music: this.music});
          });
       });
 
@@ -89,6 +92,9 @@ class Opening extends Phaser.Scene {
       keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
       keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
+      // * Music
+      this.music = this.sound.add('windmill_village', {volume: 0.25, loop: true})
+
       // * Dialogue
 
       this.textBox = this.add.rectangle(this.padding*2, game.config.height / 1.5, game.config.width - this.padding*4, (game.config.height / 3 ) - this.padding*2, 0x000000, 1).setStrokeStyle(this.padding, 0xFFFFFF, 1).setOrigin(0).setAlpha(0).setDepth(3);
@@ -107,6 +113,7 @@ class Opening extends Phaser.Scene {
       this.portrait.setScrollFactor(0, 0);
 
       this.time.delayedCall(1500, () => {
+         this.music.play();
          this.start();
       })
       

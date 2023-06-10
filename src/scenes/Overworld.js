@@ -5,6 +5,10 @@ class Overworld extends Phaser.Scene {
       this.VEL = 100;
    }
 
+   init(data) {
+      this.music = data.music;
+   }
+
    preload() {
       this.load.path = './assets/'
       this.load.image('ruby', '/sprites/ruby.png')
@@ -164,7 +168,7 @@ class Overworld extends Phaser.Scene {
       this.storeCollider = this.physics.add.overlap(this.ruby, this.storeLocation, () => {
          console.log("hit");
          this.storeCollider.active = false;
-         this.scene.start('storeScene');
+         this.scene.start('storeScene', {music: this.music});
       })
 
       this.waypoint = this.add.sprite(16, 42, 'waypoint', this.objectiveTextConfig).setOrigin(0.5).setDepth(10).setScale(0.5);
