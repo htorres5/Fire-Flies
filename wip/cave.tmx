@@ -3,8 +3,8 @@
  <editorsettings>
   <export target="../assets/tilemaps/cave.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" name="interior_tileset" tilewidth="32" tileheight="32" tilecount="1280" columns="64">
-  <image source="../assets/tilemaps/interior_tileset.png" width="2048" height="656"/>
+ <tileset firstgid="1" name="interior_tileset" tilewidth="32" tileheight="32" tilecount="1344" columns="64">
+  <image source="../assets/tilemaps/interior_tileset.png" width="2048" height="672"/>
   <tile id="0">
    <properties>
     <property name="collides" type="bool" value="true"/>
@@ -3752,12 +3752,12 @@
   </tile>
   <tile id="749">
    <properties>
-    <property name="collides" type="bool" value="false"/>
+    <property name="collides" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="750">
    <properties>
-    <property name="collides" type="bool" value="false"/>
+    <property name="collides" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="751">
@@ -4072,12 +4072,12 @@
   </tile>
   <tile id="813">
    <properties>
-    <property name="collides" type="bool" value="false"/>
+    <property name="collides" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="814">
    <properties>
-    <property name="collides" type="bool" value="false"/>
+    <property name="collides" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="815">
@@ -4392,12 +4392,12 @@
   </tile>
   <tile id="877">
    <properties>
-    <property name="collides" type="bool" value="false"/>
+    <property name="collides" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="878">
    <properties>
-    <property name="collides" type="bool" value="false"/>
+    <property name="collides" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="879">
@@ -4712,12 +4712,12 @@
   </tile>
   <tile id="941">
    <properties>
-    <property name="collides" type="bool" value="false"/>
+    <property name="collides" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="942">
    <properties>
-    <property name="collides" type="bool" value="false"/>
+    <property name="collides" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="943">
@@ -6414,7 +6414,7 @@
 1,1,465,870,871,871,871,871,871,871,871,871,871,871,871,872,469,1,1,
 1,1,465,870,871,871,871,871,871,871,871,871,871,871,871,872,469,1,1,
 1,1,465,870,871,871,871,871,871,871,871,871,871,871,871,872,469,1,1,
-1,1,465,934,935,935,935,935,935,878,935,935,935,935,935,936,469,1,1,
+1,1,465,934,935,935,935,935,935,1128,935,935,935,935,935,936,469,1,1,
 1,1,657,660,660,660,660,660,658,937,659,660,660,660,660,660,661,1,1,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 </data>

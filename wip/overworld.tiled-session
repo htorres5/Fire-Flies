@@ -48,7 +48,7 @@
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 277.75,
-                "y": 159.5
+                "y": 159
             }
         },
         "cave.tmx#interior_tileset": {
@@ -61,8 +61,8 @@
             "scale": 1.5,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 363.66666666666663,
-                "y": 114.66666666666663
+                "x": 362.99999999999994,
+                "y": 111.33333333333331
             }
         },
         "opening.tmx#interior_tileset": {
@@ -87,8 +87,8 @@
             "scale": 0.75,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 1791.3333333333333,
-                "y": 1304
+                "x": 1790,
+                "y": 1301.3333333333333
             }
         },
         "scene_1_map.tmx#world_tileset": {
@@ -110,19 +110,19 @@
             "scale": 1.5,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 976.3333333333333,
-                "y": 432.66666666666663
+                "x": 975.6666666666666,
+                "y": 431.99999999999994
             }
         },
         "scene_3_map.tmx#world_tileset": {
             "scaleInDock": 1
         },
         "store.tmx": {
-            "scale": 1.5,
-            "selectedLayer": 3,
+            "scale": 2,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 363.66666666666663,
-                "y": 111.99999999999997
+                "x": 280.25,
+                "y": 174.5
             }
         },
         "store.tmx#interior_tileset": {
