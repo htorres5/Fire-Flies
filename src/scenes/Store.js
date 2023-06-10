@@ -7,9 +7,9 @@ class Store extends Phaser.Scene {
       this.padding = game.config.width / 100;
    }
    
-   // init(data) {
-   //    this.music = data.music;
-   // }
+   init(data) {
+      this.music = data.music;
+   }
 
    preload() {
       this.load.path = './assets/'
@@ -23,9 +23,6 @@ class Store extends Phaser.Scene {
       this.load.tilemapTiledJSON('tilemapJSON3','/tilemaps/store.json')
 
       // * Music
-      // ! remove this and replace with data
-      this.load.audio('windmill_village', './audio/music/windmill_village.mp3')
-
       this.load.audio('air_raid_siren_start', './audio/air_raid_siren_start.mp3')
       this.load.audio('air_raid_siren_loop', './audio/air_raid_siren_loop.mp3')
 
@@ -36,10 +33,6 @@ class Store extends Phaser.Scene {
    }
 
    create() {
-      // ! remove this and replace with data
-      // * Music
-      this.music = this.sound.add('windmill_village', {volume: 0.25, loop: true})
-      this.music.play();
 
       // * Add Tilemap
       this.map = this.add.tilemap('tilemapJSON3')
@@ -99,9 +92,10 @@ class Store extends Phaser.Scene {
          this.exitCollider.active = false;
          this.ruby.canMove = false;
          this.ruby.setVelocity(0, 0);
+         this.maxTheSlime.setVelocity(0, 0);
          this.cameras.main.fadeOut(1000, 0, 0, 0);
          this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-             this.scene.start('overworldScene', {music: this.music});
+             this.scene.start('airRaidScene', {music: this.siren});
          });
       });
       this.exitCollider.active = false;
@@ -188,8 +182,8 @@ class Store extends Phaser.Scene {
 
    chain(i) {
       return function() {
-         if (cutscene[i]) {
-            cutscene[i].call(this, this.chain(++i));
+         if (storeCutscene[i]) {
+            storeCutscene[i].call(this, this.chain(++i));
          } else {
             this.ruby.canMove = true;
             this.dialogue.setAlpha(0);
@@ -212,7 +206,7 @@ class Store extends Phaser.Scene {
       this.portrait.setAlpha(1);
       keySPACE.once('down', () => {
          // ! UNCOMMENT THIS FOR PLAYTEST BUILD
-         cutscene[0].call(this, this.chain(1));
+         storeCutscene[0].call(this, this.chain(1));
          // ! DELETE THIS
          // this.cameras.main.fadeOut(2500, 0, 0, 0);
          // this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
@@ -222,7 +216,7 @@ class Store extends Phaser.Scene {
    }
 }
 
-var cutscene = [
+var storeCutscene = [
    function(fn) {
       this.maxTheSlimeActor.startFollow({
           duration: 3000,

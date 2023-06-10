@@ -5,6 +5,12 @@ class AirRaid extends Phaser.Scene {
       this.VEL = 150;
    }
 
+   init(data) {
+      this.siren = data.music;
+   }
+
+   
+
    preload() {
       this.load.path = './assets/'
 
@@ -30,8 +36,6 @@ class AirRaid extends Phaser.Scene {
       this.load.tilemapTiledJSON('tilemapJSON2', './tilemaps/scene_2_map.json')
 
       // * Audio
-      this.load.audio('air_raid_siren_start', './audio/air_raid_siren_start.mp3')
-      this.load.audio('air_raid_siren_loop', './audio/air_raid_siren_loop.mp3')
       this.load.audio('falling_bomb', './audio/falling_bomb.mp3')
       this.load.audio('explosion', './audio/explosion.mp3')
 
@@ -129,7 +133,7 @@ class AirRaid extends Phaser.Scene {
       this.ruby.body.setCollideWorldBounds(true);
 
       // * Add Max (Protaganist lil bro)
-      this.maxTheSlime = new Max(this, this.tile(50), this.tile(5), this.ruby, 90, 'max').setDepth(1).setOrigin(0);
+      this.maxTheSlime = new Max(this, this.tile(50), this.tile(5), this.ruby, 140, 'max').setDepth(1).setOrigin(0);
 
       this.maxTheSlime.body.setCollideWorldBounds(true);
 
@@ -238,13 +242,6 @@ class AirRaid extends Phaser.Scene {
       keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
       keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
       keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-
-      // * Audio
-      this.siren = this.sound.add('air_raid_siren_loop', {volume: 1, loop: true});
-      this.sirenStart = this.sound.add('air_raid_siren_start', {volume: 1, loop: false}).on('complete', () => {
-         this.siren.play();
-      });
-      this.sirenStart.play();
 
       // * Fog
       this.fogSprite = this.add.rectangle(0, 0, game.config.width, game.config.height, 0xf08080, 0.6).setOrigin(0).setDepth(8);

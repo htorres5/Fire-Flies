@@ -43,6 +43,9 @@ class Opening extends Phaser.Scene {
       this.ruby.canMove = true;
 
       this.ruby.body.setCollideWorldBounds(true)
+
+      // * Add Max (real)
+      this.maxTheSlime = new Max(this, this.tile(16), this.tile(3.5), this.ruby, 90, 'max').setAlpha(0);
       
       // * Add Path for Max (lil bro)
       this.maxPath = new Phaser.Curves.Path(this.tile(3.5), this.tile(9));
@@ -67,6 +70,7 @@ class Opening extends Phaser.Scene {
          this.exitCollider.active = false;
          this.ruby.canMove = false;
          this.ruby.setVelocity(0, 0);
+         this.maxTheSlime.setVelocity(0, 0);
          this.cameras.main.fadeOut(1000, 0, 0, 0);
          this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
              this.scene.start('overworldScene', {music: this.music});
@@ -136,6 +140,7 @@ class Opening extends Phaser.Scene {
    
          this.direction.normalize();
          this.ruby.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
+         this.maxTheSlime.update();
        }
 
    }
@@ -151,7 +156,7 @@ class Opening extends Phaser.Scene {
             this.portrait.setAlpha(0);
 
             this.maxTheSlimeActor.destroy();
-            this.maxTheSlime = new Max(this, this.tile(5.5), this.tile(3.5), this.ruby, 90, 'max');
+            this.maxTheSlime.setAlpha(1);
          }
       }.bind(this);
    }
@@ -160,6 +165,7 @@ class Opening extends Phaser.Scene {
       this.ruby.canMove = false;
       this.dialogue.text = 'RUBYYYYYYYYYYY!!!\n\n(Press SPACE)'
       this.ruby.setVelocity(0, 0);
+      this.maxTheSlime.setVelocity(0, 0);
       this.dialogue.setAlpha(1);
       this.textBox.setAlpha(1);
       this.portrait.setAlpha(1);
@@ -191,6 +197,7 @@ var cutscene = [
       this.portrait.setAlpha(0);
       this.cutsceneCollider = this.physics.add.overlap(this.ruby, this.cutsceneFlag, () => { 
          this.ruby.setVelocity(0, 0);
+         this.maxTheSlime.setVelocity(0, 0);
          this.cutsceneCollider.active = false;
          console.log('hi');
          fn();
