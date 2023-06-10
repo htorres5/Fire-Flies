@@ -12,7 +12,7 @@ let config = {
       }
    },
    zoom: 2,
-   scene: [Opening, Overworld, Store, AirRaid, Cave]
+   scene: [Cave, Opening, Overworld, Store, AirRaid]
 }
 
 // reserve keyboard vars

@@ -206,8 +206,141 @@ var caveCutscene = [
    },
 
    function(fn) {
-      this.time.delayedCall(100, () => {
+      this.dialogue.text = '...'
+      this.dialogue.setAlpha(1);
+      this.textBox.setAlpha(1);
+      this.portrait.setTexture('max').setAlpha(1);
+      keySPACE.once('down', () => {
          fn();
       })
    },
+
+   function(fn) {
+      this.dialogue.text = 'are mom and dad still\nat the hospital?'
+      this.portrait.setTexture('max');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogue.text = '...'
+      this.portrait.setTexture('ruby');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogue.text = 'Yes, they still are.'
+      this.portrait.setTexture('ruby');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogue.text = 'How about we play a game?'
+      this.portrait.setTexture('ruby');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogue.text = 'is it the be quiet game again?'
+      this.portrait.setTexture('max');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogue.text = 'No, it\'s an actual game.'
+      this.portrait.setTexture('ruby');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogue.text = 'Have you ever caught a\nfirefly before?'
+      this.portrait.setTexture('ruby');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogue.text = 'no! they\'re hard to catch!'
+      this.portrait.setTexture('max');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogue.text = '...'
+      this.portrait.setTexture('ruby');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogue.text = 'Well, we are going to catch\na bunch of them.'
+      this.portrait.setTexture('ruby');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogue.text = 'So much that this cave\nwill be as bright as the sun!'
+      this.portrait.setTexture('ruby');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogue.text = '😮'
+      this.portrait.setTexture('max');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogue.text = 'no more dark?'
+      this.portrait.setTexture('max');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogue.text = 'No more dark.\nYou can sleep in peace.'
+      this.portrait.setTexture('ruby');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogue.text = 'where are fireflies?'
+      this.portrait.setTexture('max');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogue.text = 'Let\'s go. I\'ll show you.'
+      this.portrait.setTexture('ruby');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
 ]
