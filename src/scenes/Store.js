@@ -86,7 +86,7 @@ class Store extends Phaser.Scene {
       this.physics.add.collider(this.ruby, this.doorsLayer)
 
       // * Add Exit Collider
-      this.exit = this.physics.add.sprite(this.tile(3), this.tile(7.5), 'exit', '0').setOrigin(0);
+      this.exit = this.physics.add.sprite(this.tile(3), this.tile(7.5), 'exit', '0').setOrigin(0).setAlpha(0);
 
       this.exitCollider = this.physics.add.overlap(this.ruby, this.exit, () => {
          this.exitCollider.active = false;

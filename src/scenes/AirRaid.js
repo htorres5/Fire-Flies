@@ -260,7 +260,14 @@ class AirRaid extends Phaser.Scene {
       this.objectiveUI.scrollFactorX = 0;
       this.objectiveUI.scrollFactorY = 0;
 
-      this.location = this.add.sprite(this.tile(31), this.tile(20), 'collider').setOrigin(0).setDepth(-5);
+      this.location = this.physics.add.sprite(this.tile(31), this.tile(20), 'collider').setOrigin(0).setAlpha(0);
+      this.location.setImmovable();
+      this.locationCollider = this.physics.add.overlap(this.ruby, this.location, () => {
+         console.log("hit");
+         this.siren.stop();
+         this.locationCollider.active = false;
+         this.scene.start('caveScene');
+      })
 
       this.waypoint = this.add.sprite(16, 42, 'waypoint', this.objectiveTextConfig).setOrigin(0.5).setDepth(10).setScale(0.5);
       this.waypoint.scrollFactorX = 0;
