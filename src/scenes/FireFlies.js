@@ -296,6 +296,10 @@ class FireFlies extends Phaser.Scene {
 
       // * UI
 
+      // * FireFly Count
+      this.fireFlies = 0;
+      this.maxFireFlies = 4;
+
       // * Objective
       this.objectiveTextConfig = {
          fontFamily: 'Hanyi',
@@ -303,7 +307,8 @@ class FireFlies extends Phaser.Scene {
          color: 'yellow',
          align: 'left'
       }
-      this.objectiveText = 'Find Fireflies.'
+
+      this.objectiveText = `Find Fireflies. ${this.fireFlies}/${this.maxFireFlies}`
       this.objectiveUI = this.add.text(1, 1, `Objective:\n${this.objectiveText}`, this.objectiveTextConfig).setStroke(0xFFFFFF, 3).setOrigin(0, 0).setDepth(10);
       this.objectiveUI.scrollFactorX = 0;
       this.objectiveUI.scrollFactorY = 0;
@@ -426,6 +431,7 @@ class FireFlies extends Phaser.Scene {
       this.startedQuest = false;
 
       // * Detect if Won Race
+      this.completedRace = false;
       this.timerEnded = false;
       this.wonRace = false;
 
@@ -435,6 +441,13 @@ class FireFlies extends Phaser.Scene {
          this.raceQuestCollider.active = false;
          this.startRaceQuest();
       })
+
+      // * Add Won Race Starter Collider
+      this.wonRaceCollider = this.physics.add.collider(this.ruby, this.army, () => { 
+         this.wonRaceCollider.active = false;
+         this.startWonRaceQuest();
+      })
+      this.wonRaceCollider.active = false;
 
    }
 
@@ -475,6 +488,13 @@ class FireFlies extends Phaser.Scene {
          // * Disable River Colliders & Enable Bridge Colliders
          this.underCollider.active = false;
          this.bridgeCollider.active = true;
+
+         // * Race Quest
+         if(this.timerEnded && this.completedRace && this.wonRace) {
+            this.completedRace = false;
+            this.wonRaceCollider.active = true;
+         }
+
       }
 
       console.log(`update function: ${this.isInRiverLayer}`)
@@ -487,6 +507,7 @@ class FireFlies extends Phaser.Scene {
       this.portrait.setTexture(portrait).setAlpha(alpha);
    }
 
+   // * Race Quest
    raceQuestChain(i) {
       return function() {
          // * Start of Quest
@@ -499,13 +520,6 @@ class FireFlies extends Phaser.Scene {
             if(this.timerEnded) {
                this.objectiveUI.setText('Checkpoints: 5/5')
 
-               // * Hide Checkpoints
-               this.checkpoint1.setAlpha(0);
-               this.checkpoint2.setAlpha(0);
-               this.checkpoint3.setAlpha(0);
-               this.checkpoint4.setAlpha(0);
-               this.checkpoint5.setAlpha(0);
-
                this.wonRace = false;
                this.time.delayedCall(500, () => {
                   this.objectiveUI.setText('Objective:\nTalk to Seargent Jin.')
@@ -515,7 +529,16 @@ class FireFlies extends Phaser.Scene {
                console.log(this.wonRace);
             } else {
                this.wonRace = true;
+               this.completedRace = true;
                this.objectiveUI.setText('Checkpoints: 5/5')
+
+               // * Hide Checkpoints
+               this.checkpoint1.setAlpha(0);
+               this.checkpoint2.setAlpha(0);
+               this.checkpoint3.setAlpha(0);
+               this.checkpoint4.setAlpha(0);
+               this.checkpoint5.setAlpha(0);
+
                this.time.delayedCall(500, () => {
                   this.objectiveUI.setText('Objective:\nTalk to Seargent Jin.')
                   this.raceMusic.stop();
@@ -536,6 +559,39 @@ class FireFlies extends Phaser.Scene {
       this.dialogBox('yo i heard you was looking\nfor fireflies', 'army', 1);
       keySPACE.once('down', () => {
          raceQuest[0].call(this, this.raceQuestChain(1));
+      }, this);
+   }
+
+   // * Won the Race Quest
+   wonRaceQuestChain(i) {
+      return function() {
+         // * Start of Quest
+         if (wonRaceQuest[i]) {
+            wonRaceQuest[i].call(this, this.wonRaceQuestChain(++i));
+         // * End of Quest
+         } else {
+            this.ruby.canMove = true;
+            this.dialogBox('', 'placeholder', 0)
+            this.fireFlies += 1;
+            this.objectiveUI.setText(`Objective:\nFind Fireflies. ${this.fireFlies}/${this.maxFireFlies}`);
+
+            // * Destroy Checkpoints
+            this.checkpoint1.destroy();
+            this.checkpoint2.destroy();
+            this.checkpoint3.destroy();
+            this.checkpoint4.destroy();
+            this.checkpoint5.destroy();
+         }
+      }.bind(this);
+   }
+
+   startWonRaceQuest() {
+      //this.startedQuest = true;
+      this.ruby.stopMoving('idle_up');
+      this.maxTheSlime.setVelocity(0, 0);
+      this.dialogBox('yeah I\'m more of a sprinter\nnot much of a long-distance\nrunner.', 'army', 1);
+      keySPACE.once('down', () => {
+         wonRaceQuest[0].call(this, this.wonRaceQuestChain(1));
       }, this);
    }
 }
