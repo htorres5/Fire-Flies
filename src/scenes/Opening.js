@@ -42,7 +42,7 @@ class Opening extends Phaser.Scene {
       this.doorsLayer = this.map.createLayer('doors', this.tileset, 0, 0);
 
       // * Add Ruby (Protaganist)
-      this.ruby = new Ruby(this, this.tile(15), this.tile(3.5), this.VEL).setDepth(1).setOrigin(0);
+      this.ruby = new Ruby(this, this.tile(15), this.tile(3.5), this.VEL);
 
       // * Add Ruby's Animations
 

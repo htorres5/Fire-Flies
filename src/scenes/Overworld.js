@@ -11,7 +11,7 @@ class Overworld extends Phaser.Scene {
 
    preload() {
       this.load.path = './assets/'
-      this.load.image('ruby', '/sprites/ruby.png')
+      this.load.image('ruby', '/sprites/sheets/ruby/idle.png')
       this.load.image('max', './sprites/max.png')
       this.load.image('waypoint', './sprites/waypoint.png')
       this.load.image('store_location', './sprites/change_depth.png')
@@ -94,7 +94,7 @@ class Overworld extends Phaser.Scene {
       this.changeToRiverArea.add(this.toRiverArea1, true);
 
       // * Add Ruby (Protaganist)
-      this.ruby = new Ruby(this, this.tile(59), this.tile(40), this.VEL).setDepth(1).setOrigin(0);
+      this.ruby = new Ruby(this, this.tile(59), this.tile(40), this.VEL);
 
       // this.anims.create({
       //    key: 'jiggle',

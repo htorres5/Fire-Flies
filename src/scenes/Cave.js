@@ -10,7 +10,7 @@ class Cave extends Phaser.Scene {
    preload() {
       this.load.path = './assets/'
       this.load.image('army', '/sprites/army.png')
-      this.load.image('ruby', '/sprites/ruby.png')
+      this.load.image('ruby', '/sprites/sheets/ruby/up1.png')
       this.load.image('max', '/sprites/max.png')
       this.load.image('exit', '/sprites/change_depth.png')
 
@@ -41,7 +41,7 @@ class Cave extends Phaser.Scene {
       this.decorationsLayer = this.map.createLayer('decorations', this.tileset, 0, 0);
 
       // * Add Ruby (Protaganist)
-      this.ruby = this.physics.add.sprite(this.tile(9), this.tile(5), 'ruby', 0).setDepth(1).setScale(0.8).setOrigin(0);
+      this.ruby = new Ruby(this, this.tile(9), this.tile(4), this.VEL);
       this.ruby.canMove = false;
 
       this.ruby.body.setCollideWorldBounds(true)
@@ -122,22 +122,10 @@ class Cave extends Phaser.Scene {
    }
 
    update() {
-       // * Ruby Controls/Movement
        if(this.ruby.canMove) {
-         this.direction = new Phaser.Math.Vector2(0)
-         if(keyLEFT.isDown) {
-            this.direction.x = -1;
-         } else if (keyRIGHT.isDown) {
-            this.direction.x = 1;
-         }
-         if(keyUP.isDown) {
-            this.direction.y = -1;
-         } else if (keyDOWN.isDown) {
-            this.direction.y = 1;
-         }
-   
-         this.direction.normalize();
-         this.ruby.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
+         // * Ruby Controls/Movement
+         this.ruby.update();
+         // * Max Movement
          this.maxTheSlime.update();
        }
 
@@ -163,6 +151,7 @@ class Cave extends Phaser.Scene {
       this.music.play({volume: 0});
       this.ruby.canMove = false;
       this.ruby.setVelocity(0, 0);
+      this.ruby.anims.play('idle_down')
       this.maxTheSlime.setVelocity(0, 0);
 
       this.time.delayedCall(3000, () => {
@@ -232,6 +221,8 @@ var caveCutscene = [
    },
 
    function(fn) {
+      this.ruby.flipX = true;
+      this.ruby.anims.play('idle_side')
       this.dialogue.text = 'Yes, they still are.'
       this.portrait.setTexture('ruby');
       keySPACE.once('down', () => {

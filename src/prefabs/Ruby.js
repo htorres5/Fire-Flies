@@ -17,10 +17,16 @@ class Ruby extends Phaser.Physics.Arcade.Sprite {
       this.directionFlag = 'down';
 
       // * Speed
-      this.velocity = velocity;
+      this.velocity = 500;
       
       // * Set hitbox
-      this.setSize(28, 28)
+      this.setSize(25, 25)
+
+      // * Set Origin
+      this.setOrigin(0);
+
+      // * Set Depth
+      this.setDepth(1);
    }
 
    update() {

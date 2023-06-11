@@ -14,7 +14,7 @@ class Store extends Phaser.Scene {
    preload() {
       this.load.path = './assets/'
       this.load.image('dad', '/sprites/dad.png')
-      this.load.image('ruby', '/sprites/ruby.png')
+      this.load.image('ruby', '/sprites/sheets/ruby/idle.png')
       this.load.image('max', '/sprites/max.png')
       this.load.image('exit', '/sprites/change_depth.png')
 
@@ -46,8 +46,7 @@ class Store extends Phaser.Scene {
       this.doorsLayer = this.map.createLayer('doors', this.tileset, 0, 0);
 
       // * Add Ruby (Protaganist)
-      this.ruby = this.physics.add.sprite(this.tile(3), this.tile(6), 'ruby', 0).setDepth(1).setScale(0.8).setOrigin(0);
-      this.ruby.canMove = true;
+      this.ruby = new Ruby(this, this.tile(3), this.tile(6), this.VEL);
 
       this.ruby.body.setCollideWorldBounds(true)
       
@@ -91,7 +90,9 @@ class Store extends Phaser.Scene {
       this.exitCollider = this.physics.add.overlap(this.ruby, this.exit, () => {
          this.exitCollider.active = false;
          this.ruby.canMove = false;
+         this.siren.stop();
          this.ruby.setVelocity(0, 0);
+         this.ruby.anims.play('idle_down')
          this.maxTheSlime.setVelocity(0, 0);
          this.cameras.main.fadeOut(1000, 0, 0, 0);
          this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
@@ -161,20 +162,7 @@ class Store extends Phaser.Scene {
    update() {
        // * Ruby Controls/Movement
        if(this.ruby.canMove) {
-         this.direction = new Phaser.Math.Vector2(0)
-         if(keyLEFT.isDown) {
-            this.direction.x = -1;
-         } else if (keyRIGHT.isDown) {
-            this.direction.x = 1;
-         }
-         if(keyUP.isDown) {
-            this.direction.y = -1;
-         } else if (keyDOWN.isDown) {
-            this.direction.y = 1;
-         }
-   
-         this.direction.normalize();
-         this.ruby.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
+         this.ruby.update();
          this.maxTheSlime.update();
        }
 
@@ -200,6 +188,8 @@ class Store extends Phaser.Scene {
       this.ruby.canMove = false;
       this.dialogue.text = 'ok ima go look at the tomatoes!'
       this.ruby.setVelocity(0, 0);
+      this.ruby.flipX = true;
+      this.ruby.anims.play('idle_side');
       this.maxTheSlime.setVelocity(0, 0);
       this.dialogue.setAlpha(1);
       this.textBox.setAlpha(1);
@@ -233,6 +223,8 @@ var storeCutscene = [
 
    function(fn) {
       this.dialogue.text = 'Hi Dad.'
+      this.ruby.flipX = false;
+      this.ruby.anims.play('idle_up');
       this.dialogue.setAlpha(1);
       this.textBox.setAlpha(1);
       this.portrait.setTexture('ruby').setAlpha(1);
@@ -483,6 +475,7 @@ var storeCutscene = [
 
    function(fn) {
       this.dialogue.text = 'Wait!'
+      this.ruby.anims.play('idle_down');
       this.dialogue.setAlpha(1);
       this.textBox.setAlpha(1);
       this.portrait.setAlpha(1);
@@ -581,6 +574,8 @@ var storeCutscene = [
       this.ruby.canMove = false;
       this.dialogue.text = '...'
       this.ruby.setVelocity(0, 0);
+      this.ruby.flipX = true;
+      this.ruby.anims.play('idle_side');
       this.maxTheSlime.setVelocity(0, 0);
       this.dialogue.setAlpha(1);
       this.textBox.setAlpha(1);

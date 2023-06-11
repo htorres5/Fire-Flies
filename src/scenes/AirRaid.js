@@ -4,11 +4,6 @@ class AirRaid extends Phaser.Scene {
 
       this.VEL = 150;
    }
-
-   init(data) {
-      this.siren = data.music;
-   }
-
    
 
    preload() {
@@ -17,7 +12,7 @@ class AirRaid extends Phaser.Scene {
       // * Sprites
 
       // * Characters
-      this.load.image('ruby', '/sprites/ruby.png')
+      this.load.image('ruby', '/sprites/sheets/ruby/idle.png')
       this.load.image('max', './sprites/max.png')
 
       // * UI
@@ -117,7 +112,7 @@ class AirRaid extends Phaser.Scene {
       this.changeToRiverArea.add(this.toRiverArea1, true);
 
       // * Add Ruby (Protaganist)
-      this.ruby = this.physics.add.sprite(this.tile(49) + (32 - 32*0.8), this.tile(5), 'ruby', 0).setDepth(1).setScale(0.8).setOrigin(0);
+      this.ruby = new Ruby(this, this.tile(49), this.tile(5), this.VEL);
 
       // this.anims.create({
       //    key: 'jiggle',
@@ -243,6 +238,10 @@ class AirRaid extends Phaser.Scene {
       keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
       keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
+      // * Music
+      this.siren = this.sound.add('air_raid_siren_loop', {volume: 1, loop: true});
+      this.siren.play();
+
       // * Fog
       this.fogSprite = this.add.rectangle(0, 0, game.config.width, game.config.height, 0xf08080, 0.6).setOrigin(0).setDepth(8);
       this.fogSprite.scrollFactorX = 0;
@@ -283,22 +282,10 @@ class AirRaid extends Phaser.Scene {
    }
 
    update() {
-      // * Ruby Controls/Movement
-      this.direction = new Phaser.Math.Vector2(0)
-      if (keyLEFT.isDown) {
-         this.direction.x = -1;
-      } else if (keyRIGHT.isDown) {
-         this.direction.x = 1;
-      }
-      if (keyUP.isDown) {
-         this.direction.y = -1;
-      } else if (keyDOWN.isDown) {
-         this.direction.y = 1;
-      }
 
       if(!this.ruby.dead) {
-         this.direction.normalize();
-         this.ruby.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
+         // * Ruby Movement
+         this.ruby.update();
 
          // * Max Movment
          this.maxTheSlime.update();
@@ -351,10 +338,10 @@ class AirRaid extends Phaser.Scene {
          this.distanceUI.setAlpha(1);
       }
 
-      console.log(`update function: ${this.isInRiverLayer}`)
+      //console.log(`update function: ${this.isInRiverLayer}`)
 
       // * Game Over
-      console.log(this.ruby.dead);
+      //console.log(this.ruby.dead);
       if(this.ruby.dead) {
          this.siren.stop();
          this.bombTimer.remove();
@@ -366,7 +353,7 @@ class AirRaid extends Phaser.Scene {
          this.bombColliders.destroy(true, true);
          this.fogSprite.setFillStyle(0x000000, 1);
          this.time.delayedCall(5000, ()=>{
-            this.scene.restart('airRaidScene');
+            this.scene.restart();
          })
       }
    }
