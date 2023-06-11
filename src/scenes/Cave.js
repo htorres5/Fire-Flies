@@ -9,7 +9,10 @@ class Cave extends Phaser.Scene {
 
    preload() {
       this.load.path = './assets/'
-      this.load.image('army', '/sprites/army.png')
+      this.load.spritesheet('army', './sprites/army.png', {
+         frameWidth: 32,
+         frameHeight: 32,
+      })
       this.load.image('ruby', '/sprites/sheets/ruby/up1.png')
       this.load.image('max', '/sprites/max.png')
       this.load.image('exit', '/sprites/change_depth.png')
@@ -57,11 +60,24 @@ class Cave extends Phaser.Scene {
       this.maxTheSlimeActor = this.add.follower(this.maxPath, this.tile(10.5), this.tile(4.5), 'max', 0);
       this.maxTheSlimeActor.play('jiggle');
 
+      // * Add Jin (Army)
+
+      this.anims.create({
+         key: 'vibrate',
+         frameRate: 4,
+         repeat: -1,
+         frames: this.anims.generateFrameNumbers('army', {
+            start: 0,
+            end: 1
+         })
+      })
+
       // * Add Path for Jin (Army)
       this.armySlimePath = new Phaser.Curves.Path(this.tile(9), this.tile(6)); 
       this.armySlimePath.lineTo(this.tile(9), this.tile(9));
 
-      this.armySlime =  this.add.follower(this.armySlimePath, this.tile(9), this.tile(6), 'army').setOrigin(0);
+      this.armySlime =  this.add.follower(this.armySlimePath, this.tile(9), this.tile(6), 'army', 1).setOrigin(0);
+      this.armySlime.anims.play('vibrate');
 
       // * Collision
       this.caveLayer.setCollisionByProperty({ collides: true })

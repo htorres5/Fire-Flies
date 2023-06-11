@@ -13,7 +13,10 @@ class Store extends Phaser.Scene {
 
    preload() {
       this.load.path = './assets/'
-      this.load.image('dad', '/sprites/dad.png')
+      this.load.spritesheet('dad', '/sprites/dad.png', {
+         frameWidth: 32,
+         frameHeight: 32,
+      })
       this.load.image('ruby', '/sprites/sheets/ruby/idle.png')
       this.load.image('max', '/sprites/max.png')
       this.load.image('exit', '/sprites/change_depth.png')
@@ -67,6 +70,17 @@ class Store extends Phaser.Scene {
 
       // * Add Richard (dad)
 
+      // * Add Dad Animation
+      this.anims.create({
+         key: 'wiggle',
+         frameRate: 4,
+         repeat: -1,
+         frames: this.anims.generateFrameNumbers('dad', {
+            start: 0,
+            end: 1
+         })
+      })
+
       // * Add path for Richard (dad)
       this.dadPath = new Phaser.Curves.Path(this.tile(5), this.tile(2));
       this.dadPath.lineTo(this.tile(8), this.tile(2));
@@ -76,7 +90,8 @@ class Store extends Phaser.Scene {
       this.dadExit = new Phaser.Curves.Path(this.tile(3), this.tile(6));
       this.dadExit.lineTo(this.tile(3), this.tile(10));
 
-      this.dad = this.add.follower(this.dadPath, this.tile(5), this.tile(2), 'dad').setOrigin(0);
+      this.dad = this.add.follower(this.dadPath, this.tile(5), this.tile(2), 'dad', 0).setOrigin(0);
+      this.dad.anims.play('wiggle');
 
       // * Collision
       this.wallsLayer.setCollisionByProperty({ collides: true })
