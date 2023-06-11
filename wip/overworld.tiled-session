@@ -87,8 +87,8 @@
             "scale": 0.75,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 1024,
-                "y": 767.3333333333333
+                "x": 1282,
+                "y": 899.9999999999999
             }
         },
         "scene_1_map.tmx#world_tileset": {
@@ -108,10 +108,10 @@
         },
         "scene_3_map.tmx": {
             "scale": 1.5,
-            "selectedLayer": 5,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 1236.3333333333333,
-                "y": 774.6666666666666
+                "x": 1390.3333333333333,
+                "y": 839.9999999999999
             }
         },
         "scene_3_map.tmx#world_tileset": {

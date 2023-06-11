@@ -1,6 +1,6 @@
 class FireFlies extends Phaser.Scene {
    constructor() {
-      super({key: 'firefliesScene'})
+      super({key: 'fireFliesScene'})
 
       this.padding = game.config.width / 100;
       this.VEL = 140;
