@@ -394,7 +394,7 @@ var raceQuest = [
          fn();
       })
 
-      this.raceTimer = this.time.delayedCall(15000, () => {
+      this.raceTimer = this.time.delayedCall(14500, () => {
          this.timerEnded = true;
       })
    },
@@ -556,4 +556,141 @@ function(fn) {
       fn();
    })
 },
+]
+
+// see I told you so.
+// mom was right, you do need to do exercise...
+// Rematch.
+// why? just so you could lose again?
+// Around the town again, no cutting corners.
+// but I didnt agree to-
+// Ready...
+// Set..
+// GO!
+
+var lostRaceQuest = [
+   function(fn) {
+      this.dialogBox('mom was right,\nyou do need to do exercise...', 'max', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogBox('Rematch.', 'ruby', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogBox('why?\njust so you could lose again?', 'army', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogBox('Around the town again,\nno cutting corners.', 'ruby', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogBox('Ready...', 'ruby', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogBox('Set..', 'ruby', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.dialogBox('GO!', 'ruby', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
+   function(fn) {
+      // * Hide Dialogue Box
+      this.dialogBox('', 'placeholder', 0);
+
+      // * Allow Ruby to Move
+      this.ruby.canMove = true;
+
+      // * Start Race
+
+      // * Start Race Music
+      this.music.pause();
+      this.raceMusic.play();
+      this.army.startFollow({
+         duration: 15000,
+         rotateToPath: false,
+         verticalAdjust: true
+      });
+
+      // * Change Objective
+      this.objectiveUI.setText('Checkpoints: 0/5')
+
+      // * Show Checkpoints
+      this.checkpoint1.setAlpha(1);
+      this.checkpoint2.setAlpha(1);
+      this.checkpoint3.setAlpha(1);
+      this.checkpoint4.setAlpha(1);
+
+      this.checkpoint1Collider = this.physics.add.overlap(this.ruby, this.checkpoint1, () => {
+         this.sound.play('passed')
+         this.checkpoint1Collider.active = false;
+         fn();
+      })
+
+      this.raceTimer = this.time.delayedCall(14500, () => {
+         this.timerEnded = true;
+      })
+   },
+
+   function(fn) {
+      this.objectiveUI.setText('Checkpoints: 1/5')
+      this.checkpoint2Collider = this.physics.add.overlap(this.ruby, this.checkpoint2, () => {
+         this.checkpoint2Collider.active = false;
+         this.sound.play('passed')
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.objectiveUI.setText('Checkpoints: 2/5')
+      this.checkpoint3Collider = this.physics.add.overlap(this.ruby, this.checkpoint3, () => {
+         this.checkpoint3Collider.active = false;
+         this.sound.play('passed')
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.objectiveUI.setText('Checkpoints: 3/5')
+      // * Show Final Checkpoint
+      this.checkpoint5.setAlpha(1);
+      this.checkpoint4Collider = this.physics.add.overlap(this.ruby, this.checkpoint4, () => {
+         this.checkpoint4Collider.active = false;
+         this.sound.play('passed')
+         fn();
+      })
+   },
+
+   function(fn) {
+      this.objectiveUI.setText('Checkpoints: 4/5')
+      this.checkpoint5collider = this.physics.add.overlap(this.ruby, this.checkpoint5, () => {
+         this.checkpoint5collider.active = false;
+         this.sound.play('passed')
+         fn();
+      })
+   },
 ]

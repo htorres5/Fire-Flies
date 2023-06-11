@@ -251,18 +251,22 @@ class FireFlies extends Phaser.Scene {
       this.riverLayer.setCollisionByProperty({ collides: true })
       this.underLayer.setCollisionByProperty({ collides: true })
       this.elevationLayer.setCollisionByProperty({ collides: true })
+      this.bgLayer.setCollisionByProperty({ collides: true })
       this.pathsLayer.setCollisionByProperty({ collides: true })
       this.housesLayer.setCollisionByProperty({ collides: true })
       this.decorationsLayer.setCollisionByProperty({ collides: true })
       this.treesBehindLayer.setCollisionByProperty({ collides: true })
       this.treesLayer.setCollisionByProperty({ collides: true })
+      this.houseDecLayer.setCollisionByProperty({ collides: true})
       this.bridgeLayer.setCollisionByProperty({ collides: true})
+      this.physics.add.collider(this.ruby, this.bgLayer)
       this.physics.add.collider(this.ruby, this.decorationsLayer)
       this.physics.add.collider(this.ruby, this.treesBehindLayer)
       this.physics.add.collider(this.ruby, this.elevationLayer)
       this.physics.add.collider(this.ruby, this.riverLayer)
       this.physics.add.collider(this.ruby, this.pathsLayer)
       this.physics.add.collider(this.ruby, this.housesLayer)
+      this.physics.add.collider(this.ruby, this.houseDecLayer)
       this.physics.add.collider(this.ruby, this.treesLayer)
 
 
@@ -449,6 +453,13 @@ class FireFlies extends Phaser.Scene {
       })
       this.wonRaceCollider.active = false;
 
+      // * Add Lost Race Starter Collider
+      this.lostRaceCollider = this.physics.add.collider(this.ruby, this.army, () => { 
+         this.lostRaceCollider.active = false;
+         this.startLostRaceQuest();
+      })
+      this.lostRaceCollider.active = false;
+
    }
 
    update() {
@@ -495,6 +506,11 @@ class FireFlies extends Phaser.Scene {
             this.wonRaceCollider.active = true;
          }
 
+         if(this.timerEnded && this.completedRace && !this.wonRace) {
+            this.completedRace = false;
+            this.lostRaceCollider.active = true;
+         }
+
       }
 
       console.log(`update function: ${this.isInRiverLayer}`)
@@ -517,16 +533,34 @@ class FireFlies extends Phaser.Scene {
          } else {
             this.ruby.canMove = true;
             this.dialogBox('', 'placeholder', 0);
+
+            // * If Lost Race...
             if(this.timerEnded) {
                this.objectiveUI.setText('Checkpoints: 5/5')
 
+               this.completedRace = true;
                this.wonRace = false;
+
                this.time.delayedCall(500, () => {
                   this.objectiveUI.setText('Objective:\nTalk to Seargent Jin.')
                   this.raceMusic.stop();
                   this.music.resume();
                });
+
+               // * Hide Checkpoints
+               this.checkpoint1.setAlpha(0);
+               this.checkpoint2.setAlpha(0);
+               this.checkpoint3.setAlpha(0);
+               this.checkpoint4.setAlpha(0);
+               this.checkpoint5.setAlpha(0);
+               // this.checkpoint1Collider.destroy();
+               // this.checkpoint2Collider.destroy();
+               // this.checkpoint3Collider.destroy();
+               // this.checkpoint4Collider.destroy();
+               // this.checkpoint5Collider.destroy();
                console.log(this.wonRace);
+
+            // * If Won Race...
             } else {
                this.wonRace = true;
                this.completedRace = true;
@@ -562,13 +596,13 @@ class FireFlies extends Phaser.Scene {
       }, this);
    }
 
-   // * Won the Race Quest
+   // * Won the Race
    wonRaceQuestChain(i) {
       return function() {
          // * Start of Quest
          if (wonRaceQuest[i]) {
             wonRaceQuest[i].call(this, this.wonRaceQuestChain(++i));
-         // * End of Quest
+         // * End of Race Quest
          } else {
             this.ruby.canMove = true;
             this.dialogBox('', 'placeholder', 0)
@@ -592,6 +626,80 @@ class FireFlies extends Phaser.Scene {
       this.dialogBox('yeah I\'m more of a sprinter\nnot much of a long-distance\nrunner.', 'army', 1);
       keySPACE.once('down', () => {
          wonRaceQuest[0].call(this, this.wonRaceQuestChain(1));
+      }, this);
+   }
+
+   // * Lost the Race
+   lostRaceQuestChain(i) {
+      return function() {
+         // * Start of Quest
+         if (lostRaceQuest[i]) {
+            lostRaceQuest[i].call(this, this.lostRaceQuestChain(++i));
+         // * End of Quest
+         } else {
+            this.ruby.canMove = true;
+            this.dialogBox('', 'placeholder', 0);
+
+            // * If Lost Race...
+            if(this.timerEnded) {
+               this.objectiveUI.setText('Checkpoints: 5/5')
+               this.completedRace = true;
+
+               this.wonRace = false;
+
+               this.time.delayedCall(500, () => {
+                  this.objectiveUI.setText('Objective:\nTalk to Seargent Jin.')
+                  this.raceMusic.stop();
+                  this.music.resume();
+               });
+
+               // * Hide Checkpoints
+               this.checkpoint1.setAlpha(0);
+               this.checkpoint2.setAlpha(0);
+               this.checkpoint3.setAlpha(0);
+               this.checkpoint4.setAlpha(0);
+               this.checkpoint5.setAlpha(0);
+
+               // this.checkpoint1Collider.destroy();
+               // this.checkpoint2Collider.destroy();
+               // this.checkpoint3Collider.destroy();
+               // this.checkpoint4Collider.destroy();
+               // this.checkpoint5Collider.destroy();
+               console.log(this.wonRace);
+
+            // * If Won Race...
+            } else {
+               this.wonRace = true;
+               this.completedRace = true;
+               this.objectiveUI.setText('Checkpoints: 5/5')
+
+               // * Hide Checkpoints
+               this.checkpoint1.setAlpha(0);
+               this.checkpoint2.setAlpha(0);
+               this.checkpoint3.setAlpha(0);
+               this.checkpoint4.setAlpha(0);
+               this.checkpoint5.setAlpha(0);
+
+               this.time.delayedCall(500, () => {
+                  this.objectiveUI.setText('Objective:\nTalk to Seargent Jin.')
+                  this.raceMusic.stop();
+                  this.music.resume();
+                  this.sound.play('won_race');
+               });
+
+               console.log(this.wonRace);
+            }
+         }
+      }.bind(this);
+   }
+
+   startLostRaceQuest() {
+      this.timerEnded = false;
+      this.ruby.stopMoving('idle_up');
+      this.maxTheSlime.setVelocity(0, 0);
+      this.dialogBox('see I told you so.', 'army', 1);
+      keySPACE.once('down', () => {
+         lostRaceQuest[0].call(this, this.lostRaceQuestChain(1));
       }, this);
    }
 }
