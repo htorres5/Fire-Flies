@@ -39,6 +39,9 @@ class FireFlies extends Phaser.Scene {
          frameHeight: 32,
       })
 
+      // * Race Music
+      this.load.audio('vs_jin', './audio/music/battle_2.mp3');
+
       // * Checkpoint for Race
       this.load.spritesheet('checkpoint', './sprites/checkpoint.png', {
          frameWidth: 96,
@@ -305,6 +308,18 @@ class FireFlies extends Phaser.Scene {
       this.objectiveUI.scrollFactorX = 0;
       this.objectiveUI.scrollFactorY = 0;
 
+      // * Arrow That Shows You Where to Go
+      this.waypoint = this.add.sprite(16, 42, 'waypoint', this.objectiveTextConfig).setOrigin(0.5).setDepth(10).setScale(0.5).setAlpha(0);
+      this.waypoint.scrollFactorX = 0;
+      this.waypoint.scrollFactorY = 0;
+
+      // * Distance to Destination
+      this.distanceToLocation = 0;
+      this.distanceUI = this.add.text(32, 42, `${this.distanceToLocation} m`, this.objectiveTextConfig).setOrigin(0, 0.5).setDepth(10).setStroke(0xFFFFFF, 3).setAlpha(0);
+
+      this.distanceUI.scrollFactorX = 0;
+      this.distanceUI.scrollFactorY = 0;
+
       // * QUESTS
 
       // * Add Speech Bubble (Quest Indicator)
@@ -402,6 +417,9 @@ class FireFlies extends Phaser.Scene {
       this.checkpoint5 = this.physics.add.sprite(this.tile(47.5), this.tile(13), 'checkpoint', 0).setOrigin(0);
       this.checkpoint5.play('flags').setAlpha(0);
 
+      // * Race Music
+      this.raceMusic = this.sound.add('vs_jin', {volume: 0.25, loop: true});
+
       // * Quest Logic
 
       // * Detect if Started Quest
@@ -479,13 +497,32 @@ class FireFlies extends Phaser.Scene {
             this.ruby.canMove = true;
             this.dialogBox('', 'placeholder', 0);
             if(this.timerEnded) {
+               this.objectiveUI.setText('Checkpoints: 5/5')
+
+               // * Hide Checkpoints
+               this.checkpoint1.setAlpha(0);
+               this.checkpoint2.setAlpha(0);
+               this.checkpoint3.setAlpha(0);
+               this.checkpoint4.setAlpha(0);
+               this.checkpoint5.setAlpha(0);
+
                this.wonRace = false;
+               this.time.delayedCall(500, () => {
+                  this.objectiveUI.setText('Objective:\nTalk to Seargent Jin.')
+                  this.raceMusic.stop();
+                  this.music.resume();
+               });
                console.log(this.wonRace);
             } else {
                this.wonRace = true;
+               this.objectiveUI.setText('Checkpoints: 5/5')
                this.time.delayedCall(500, () => {
+                  this.objectiveUI.setText('Objective:\nTalk to Seargent Jin.')
+                  this.raceMusic.stop();
+                  this.music.resume();
                   this.sound.play('won_race');
                });
+
                console.log(this.wonRace);
             }
          }

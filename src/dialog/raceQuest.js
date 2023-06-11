@@ -289,8 +289,17 @@ var raceQuest = [
    },
 
    function(fn) {
+      // * Hide Dialogue Box
       this.dialogBox('', 'placeholder', 0);
+
+      // * Allow Ruby to Move
       this.ruby.canMove = true;
+
+      // * Start Race
+
+      // * Start Race Music
+      this.music.pause();
+      this.raceMusic.play();
       this.army.startFollow({
          duration: 15000,
          rotateToPath: false,
@@ -302,6 +311,9 @@ var raceQuest = [
       this.checkpoint2.setAlpha(1);
       this.checkpoint3.setAlpha(1);
       this.checkpoint4.setAlpha(1);
+
+      // * Change Objective
+      this.objectiveUI.setText('Checkpoints: 0/5')
 
       this.checkpoint1Collider = this.physics.add.overlap(this.ruby, this.checkpoint1, () => {
          this.sound.play('passed')
@@ -315,6 +327,7 @@ var raceQuest = [
    },
 
    function(fn) {
+      this.objectiveUI.setText('Checkpoints: 1/5')
       this.checkpoint2Collider = this.physics.add.overlap(this.ruby, this.checkpoint2, () => {
          this.checkpoint2Collider.active = false;
          this.sound.play('passed')
@@ -323,6 +336,7 @@ var raceQuest = [
    },
 
    function(fn) {
+      this.objectiveUI.setText('Checkpoints: 2/5')
       this.checkpoint3Collider = this.physics.add.overlap(this.ruby, this.checkpoint3, () => {
          this.checkpoint3Collider.active = false;
          this.sound.play('passed')
@@ -331,6 +345,7 @@ var raceQuest = [
    },
 
    function(fn) {
+      this.objectiveUI.setText('Checkpoints: 3/5')
       // * Show Final Checkpoint
       this.checkpoint5.setAlpha(1);
       this.checkpoint4Collider = this.physics.add.overlap(this.ruby, this.checkpoint4, () => {
@@ -341,6 +356,7 @@ var raceQuest = [
    },
 
    function(fn) {
+      this.objectiveUI.setText('Checkpoints: 4/5')
       this.checkpoint5collider = this.physics.add.overlap(this.ruby, this.checkpoint5, () => {
          this.checkpoint5collider.active = false;
          this.sound.play('passed')
