@@ -9,9 +9,12 @@ class Opening extends Phaser.Scene {
    preload() {
       this.load.path = './assets/'
       this.load.image('mom', '/sprites/mom.png')
-      this.load.image('ruby', '/sprites/ruby.png')
+      this.load.image('ruby', '/sprites/sheets/ruby/idle.png')
       this.load.image('max', '/sprites/max.png')
       this.load.image('exit', '/sprites/change_depth.png')
+
+      // * Ruby Texture Atlas
+      this.load.atlas('ruby_sheet', '/sprites/sheets/ruby/ruby.png', '/sprites/sheets/ruby/ruby.json')
       
       // * TileMap
       this.load.image('tilesetImage1', '/tilemaps/interior_tileset.png')
@@ -39,8 +42,81 @@ class Opening extends Phaser.Scene {
       this.doorsLayer = this.map.createLayer('doors', this.tileset, 0, 0);
 
       // * Add Ruby (Protaganist)
-      this.ruby = this.physics.add.sprite(this.tile(15), this.tile(3.5), 'ruby', 0).setDepth(1).setScale(0.8).setOrigin(0);
-      this.ruby.canMove = true;
+      this.ruby = new Ruby(this, this.tile(15), this.tile(3.5), this.VEL).setDepth(1).setOrigin(0);
+
+      // * Add Ruby's Animations
+
+      // * Idle-Down Animation
+      this.anims.create({
+         key: 'idle_down',
+         frames: this.anims.generateFrameNames('ruby_sheet', {
+            prefix: 'down',
+            start: 1,
+            end: 1
+         }),
+         repeat: -1,
+         frameRate: 6,
+      })
+
+      // * Idle-Up Animation
+      this.anims.create({
+         key: 'idle_up',
+         frames: this.anims.generateFrameNames('ruby_sheet', {
+            prefix: 'up',
+            start: 1,
+            end: 1
+         }),
+         repeat: -1,
+         frameRate: 6,
+      })
+
+      // * Idle-Side Animation
+      this.anims.create({
+         key: 'idle_side',
+         frames: this.anims.generateFrameNames('ruby_sheet', {
+            prefix: 'side',
+            start: 1,
+            end: 1
+         }),
+         repeat: -1,
+         frameRate: 6,
+      })
+
+      // * Down Animation
+      this.anims.create({
+         key: 'down',
+         frames: this.anims.generateFrameNames('ruby_sheet', {
+            prefix: 'down',
+            start: 1,
+            end: 4
+         }),
+         repeat: -1,
+         frameRate: 6,
+      })
+
+      // * Side Animation
+      this.anims.create({
+         key: 'side',
+         frames: this.anims.generateFrameNames('ruby_sheet', {
+            prefix: 'side',
+            start: 1,
+            end: 4
+         }),
+         repeat: -1,
+         frameRate: 6,
+      })
+
+      // * Up Animation
+      this.anims.create({
+         key: 'up',
+         frames: this.anims.generateFrameNames('ruby_sheet', {
+            prefix: 'up',
+            start: 1,
+            end: 4
+         }),
+         repeat: -1,
+         frameRate: 6,
+      })
 
       this.ruby.body.setCollideWorldBounds(true)
 
@@ -70,6 +146,7 @@ class Opening extends Phaser.Scene {
          this.exitCollider.active = false;
          this.ruby.canMove = false;
          this.ruby.setVelocity(0, 0);
+         this.ruby.anims.play('idle_down');
          this.maxTheSlime.setVelocity(0, 0);
          this.cameras.main.fadeOut(1000, 0, 0, 0);
          this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
@@ -122,24 +199,11 @@ class Opening extends Phaser.Scene {
       })
       
    }
-
+   
    update() {
        // * Ruby Controls/Movement
        if(this.ruby.canMove) {
-         this.direction = new Phaser.Math.Vector2(0)
-         if(keyLEFT.isDown) {
-            this.direction.x = -1;
-         } else if (keyRIGHT.isDown) {
-            this.direction.x = 1;
-         }
-         if(keyUP.isDown) {
-            this.direction.y = -1;
-         } else if (keyDOWN.isDown) {
-            this.direction.y = 1;
-         }
-   
-         this.direction.normalize();
-         this.ruby.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
+         this.ruby.update();
          this.maxTheSlime.update();
        }
 
@@ -165,6 +229,7 @@ class Opening extends Phaser.Scene {
       this.ruby.canMove = false;
       this.dialogue.text = 'RUBYYYYYYYYYYY!!!\n\n(Press SPACE)'
       this.ruby.setVelocity(0, 0);
+      this.ruby.anims.play('idle_side');
       this.maxTheSlime.setVelocity(0, 0);
       this.dialogue.setAlpha(1);
       this.textBox.setAlpha(1);
@@ -197,6 +262,7 @@ var cutscene = [
       this.portrait.setAlpha(0);
       this.cutsceneCollider = this.physics.add.overlap(this.ruby, this.cutsceneFlag, () => { 
          this.ruby.setVelocity(0, 0);
+         this.ruby.anims.play('idle_up');
          this.maxTheSlime.setVelocity(0, 0);
          this.cutsceneCollider.active = false;
          console.log('hi');

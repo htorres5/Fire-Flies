@@ -94,7 +94,7 @@ class Overworld extends Phaser.Scene {
       this.changeToRiverArea.add(this.toRiverArea1, true);
 
       // * Add Ruby (Protaganist)
-      this.ruby = this.physics.add.sprite(this.tile(59) + (32 - 32*0.8), this.tile(40), 'ruby', 0).setDepth(1).setScale(0.8).setOrigin(0);
+      this.ruby = new Ruby(this, this.tile(59), this.tile(40), this.VEL).setDepth(1).setOrigin(0);
 
       // this.anims.create({
       //    key: 'jiggle',
@@ -183,20 +183,7 @@ class Overworld extends Phaser.Scene {
 
    update() {
       // * Ruby Controls/Movement
-      this.direction = new Phaser.Math.Vector2(0)
-      if(keyLEFT.isDown) {
-         this.direction.x = -1;
-      } else if (keyRIGHT.isDown) {
-         this.direction.x = 1;
-      }
-      if(keyUP.isDown) {
-         this.direction.y = -1;
-      } else if (keyDOWN.isDown) {
-         this.direction.y = 1;
-      }
-
-      this.direction.normalize();
-      this.ruby.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
+      this.ruby.update();
 
       // * Max Movment
       this.maxTheSlime.update();
