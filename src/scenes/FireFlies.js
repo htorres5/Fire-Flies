@@ -39,6 +39,18 @@ class FireFlies extends Phaser.Scene {
          frameHeight: 32,
       })
 
+      // * Checkpoint for Race
+      this.load.spritesheet('checkpoint', './sprites/checkpoint.png', {
+         frameWidth: 96,
+         frameHeight: 32,
+      })
+
+      // * Checkpoint Sound
+      this.load.audio('passed', './audio/coin.wav')
+
+      // * Won Race Sound
+      this.load.audio('won_race', './audio/won_race.wav')
+
       // * TileMaps
       
       // * TileMap
@@ -337,6 +349,12 @@ class FireFlies extends Phaser.Scene {
 
       // * Add Path for Seargent Jin
       this.armySlimePath = new Phaser.Curves.Path(this.tile(48.5), this.tile(11)); 
+      this.armySlimePath.lineTo(this.tile(48.5), this.tile(15));
+      this.armySlimePath.lineTo(this.tile(58.5), this.tile(15));
+      this.armySlimePath.lineTo(this.tile(58.5), this.tile(6));
+      this.armySlimePath.lineTo(this.tile(39.5), this.tile(6));
+      this.armySlimePath.lineTo(this.tile(39.5), this.tile(15));
+      this.armySlimePath.lineTo(this.tile(48.5), this.tile(15));
       this.armySlimePath.lineTo(this.tile(48.5), this.tile(11));
 
       // * Add Seargent Jin
@@ -355,7 +373,46 @@ class FireFlies extends Phaser.Scene {
       })
       this.army.anims.play('vibrate')
 
-      // * Add Quest Starter Collider
+      // * Race Checkpoints
+
+      // * Checkpoint Animation
+      this.anims.create({
+         key: 'flags',
+         frameRate: 12,
+         repeat: -1,
+         frames: this.anims.generateFrameNumbers('checkpoint', {
+            start: 0,
+            end: 3
+         })
+      })
+
+      // * Add Checkpoints
+      this.checkpoint1 = this.physics.add.sprite(this.tile(57), this.tile(13), 'checkpoint', 0).setOrigin(0).setAlpha(0);
+      this.checkpoint1.play('flags');
+
+      this.checkpoint2 = this.physics.add.sprite(this.tile(57), this.tile(8), 'checkpoint', 0).setOrigin(0).setAlpha(0);
+      this.checkpoint2.play('flags');
+
+      this.checkpoint3 = this.physics.add.sprite(this.tile(38), this.tile(8), 'checkpoint', 0).setOrigin(0).setAlpha(0);
+      this.checkpoint3.play('flags');
+
+      this.checkpoint4 = this.physics.add.sprite(this.tile(38), this.tile(13), 'checkpoint', 0).setOrigin(0).setAlpha(0);
+      this.checkpoint4.play('flags')
+
+      this.checkpoint5 = this.physics.add.sprite(this.tile(47.5), this.tile(13), 'checkpoint', 0).setOrigin(0);
+      this.checkpoint5.play('flags').setAlpha(0);
+
+      // * Quest Logic
+
+      // * Detect if Started Quest
+      this.startedQuest = false;
+
+      // * Detect if Won Race
+      this.timerEnded = false;
+      this.wonRace = false;
+
+
+      // * Add Race Quest Starter Collider
       this.raceQuestCollider = this.physics.add.collider(this.ruby, this.army, () => {
          this.raceQuestCollider.active = false;
          this.startRaceQuest();
@@ -406,69 +463,6 @@ class FireFlies extends Phaser.Scene {
 
    }
 
-      // yo i heard you was looking for fireflies
-      // ?
-      // From who?
-      // oh he was outside our cave the whole time
-      // You never left?
-      // here's the deal:
-      // if you want these fireflies, you gotta beat me in a race.
-      // A race?
-      // ye ye a race. is that too hard for you or what?
-      // i love races!
-      // see this kid gets it.
-      // so you in or what?
-      // Sure.
-      // i wasn't asking you.
-      // ? You want to race him?
-      // yes. i don't race females.
-      // Why not?
-      // as a male, we are biologically faster than females.
-      // so you're not worth my time.
-      // my sister isn't slow! she used to do track!
-      // oh really?
-      // name three track and field runners.
-      // I don't need too.
-      // I'll prove it to you in a race.
-      // haha, ok buddy
-      // I, daughter of the late Slippy Richard, will make sure you never set foot in a race again.
-      // wait, daughter of...?
-      // We will race around the town. 
-      // If you lose, you must admit that women are better runners than men, 
-      // and hand over those fireflies. 
-      // Deal?
-      // and if I win?
-      // You won't win.
-      // so just around the town?
-      // Yes, you cannot cut corners or anything.
-      // Just purely around town.
-      // pff, easy peasy.
-      // Ok, we will go on Go.
-      // Ready...
-      // Set...
-      // GO!
-
-      // yeah I'm more of a sprinter, not much of a long-distance runner
-      // That was only 400 meters...
-      // but wow you are fast!
-      // the daughter of the legendary of Slippy Richard...
-      // i had no chance.
-      // Good game.
-      // ok it was nice meeting you two.
-      // come back.
-      // ? why?
-      // I think you are forgetting something.
-      // Oh right, here you go.
-      // Obtained a FIREFLY.
-      // ok bye!
-      // One more thing.
-      // ...
-      // okok fine, you are faster than me.
-      // *pause*
-      // and women are faster.
-      // Thank you.
-      // You may go now.
-
    dialogBox(text, portrait, alpha) {
       this.textBox.setAlpha(alpha);
       this.dialogue.setText(text).setAlpha(alpha);
@@ -477,16 +471,29 @@ class FireFlies extends Phaser.Scene {
 
    raceQuestChain(i) {
       return function() {
+         // * Start of Quest
          if (raceQuest[i]) {
             raceQuest[i].call(this, this.raceQuestChain(++i));
+         // * End of Quest
          } else {
             this.ruby.canMove = true;
             this.dialogBox('', 'placeholder', 0);
+            if(this.timerEnded) {
+               this.wonRace = false;
+               console.log(this.wonRace);
+            } else {
+               this.wonRace = true;
+               this.time.delayedCall(500, () => {
+                  this.sound.play('won_race');
+               });
+               console.log(this.wonRace);
+            }
          }
       }.bind(this);
    }
 
    startRaceQuest() {
+      this.startedQuest = true;
       this.ruby.stopMoving('idle_up');
       this.maxTheSlime.setVelocity(0, 0);
       this.dialogBox('yo i heard you was looking\nfor fireflies', 'army', 1);
@@ -495,12 +502,3 @@ class FireFlies extends Phaser.Scene {
       }, this);
    }
 }
-
-var raceQuest = [
-   function(fn) {
-      this.dialogBox('?', 'ruby', 1);
-      keySPACE.once('down', () => {
-         fn();
-      })
-   },
-]
