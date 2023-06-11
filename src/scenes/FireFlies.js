@@ -147,7 +147,7 @@ class FireFlies extends Phaser.Scene {
       this.stairsLayer = this.map.createLayer('stairs', this.tileset, 0, 0).setDepth(-2);
       this.bgLayer = this.map.createLayer('background', this.tileset, 0, 0);
       this.pathsLayer = this.map.createLayer('paths', this.tileset, 0, 0);
-      this.bridgeLayer = this.map.createLayer('bridge', this.tileset, 0, 0);
+      this.bridgeLayer = this.map.createLayer('bridge', this.tileset, 0, 0).setDepth(3);
       this.decorationsLayer = this.map.createLayer('decorations', this.tileset, 0, 0);
       this.treesBehindLayer = this.map.createLayer('trees_behind', this.tileset, 0, 0);
       this.housesLayer = this.map.createLayer('houses', this.tileset, 0, 0);
