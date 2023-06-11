@@ -69,4 +69,10 @@ class Ruby extends Phaser.Physics.Arcade.Sprite {
       this.direction.normalize();
       this.setVelocity(this.velocity * this.direction.x, this.velocity * this.direction.y);
    }
+
+   stopMoving(animation) {
+      this.canMove = false;
+      this.setVelocity(0, 0);
+      this.anims.play(animation);
+   }
 }

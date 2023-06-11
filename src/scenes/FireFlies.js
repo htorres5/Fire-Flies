@@ -8,19 +8,45 @@ class FireFlies extends Phaser.Scene {
 
    preload() {
       this.load.path = './assets/'
+
+      // * Characters
+
+      // * Ruby
       this.load.image('ruby', '/sprites/sheets/ruby/idle.png')
+      
+      // * Max
       this.load.spritesheet('max', '/sprites/max.png', {
          frameWidth: 16,
          frameHeight: 16,
       })
-      this.load.image('location', '/sprites/change_depth.png')
 
       // * Ruby Texture Atlas
       this.load.atlas('ruby_sheet', '/sprites/sheets/ruby/ruby.png', '/sprites/sheets/ruby/ruby.json')
+
+      // * Quests
+
+      // * Dialogue Box
+      this.load.spritesheet('dialog', './sprites/dialog_info.png', {
+         frameWidth: 40,
+         frameHeight: 32,
+      })
+
+      // * Race Quest Assets
+
+      // * Quest Giver 1: Seargent Jin
+      this.load.spritesheet('army', './sprites/army.png', {
+         frameWidth: 32,
+         frameHeight: 32,
+      })
+
+      // * TileMaps
       
       // * TileMap
       this.load.image('fireFliesTileset', '/tilemaps/world_tileset.png')
       this.load.tilemapTiledJSON('fireFliesTilemap','/tilemaps/scene_3_map.json')
+
+      // * Loading Zone Sprite
+      this.load.image('placeholder', '/sprites/change_depth.png')
 
       // * Music
       this.load.audio('glimmering_woods', './audio/music/glimmering_woods.mp3')
@@ -232,6 +258,15 @@ class FireFlies extends Phaser.Scene {
       this.underCollider = this.physics.add.collider(this.ruby, this.underLayer)
       this.underCollider.active = false;
 
+      // * Music
+      this.music = this.sound.add('glimmering_woods', {volume: 0.25, loop: true});
+      this.music.play();
+      // this.tweens.add({
+      //    target: this.music,
+      //    volume: 0.25,
+      //    duration: 5000
+      // })
+
       // * Cameras
       this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
       this.cameras.main.startFollow(this.ruby, true, 0.25, 0.25)
@@ -245,6 +280,8 @@ class FireFlies extends Phaser.Scene {
       keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
       // * UI
+
+      // * Objective
       this.objectiveTextConfig = {
          fontFamily: 'Hanyi',
          fontSize: '10px',
@@ -256,14 +293,85 @@ class FireFlies extends Phaser.Scene {
       this.objectiveUI.scrollFactorX = 0;
       this.objectiveUI.scrollFactorY = 0;
 
+      // * QUESTS
+
+      // * Add Speech Bubble (Quest Indicator)
+      this.speech = this.add.sprite(this.tile(48.5), this.tile(10), 'dialog', 0).setOrigin(0).setDepth(5);
+      // * Add SpeechBubble Animation
+      this.anims.create({
+         key: 'speech',
+         frameRate: 6,
+         repeat: -1,
+         frames: this.anims.generateFrameNumbers('dialog', {
+            start: 0,
+            end: 3
+         })
+      })
+      this.speech.anims.play('speech');
+
+
+      // * Dialogue
+
+      // * Dialogue Box
+      this.textBox = this.add.rectangle(this.padding*2, game.config.height / 1.5, game.config.width - this.padding*4, (game.config.height / 3 ) - this.padding*2, 0x000000, 1).setStrokeStyle(this.padding, 0xFFFFFF, 1).setOrigin(0).setAlpha(0).setDepth(6);
+      this.textBox.setScrollFactor(0, 0);
+
+      this.dialogueConfig = {
+         fontFamily: 'Hanyi',
+         fontSize: '12px',
+         color: '#fff',
+         align: 'left'
+     }
+
+      // * Dialogue Text
+      this.dialogue = this.add.text(game.config.width / 4, game.config.height / 1.5 + this.padding*4, "", this.dialogueConfig).setAlpha(0).setDepth(6);
+      this.dialogue.setScrollFactor(0, 0);
+      
+      // * Dialogue Portrait
+      this.portrait = this.add.sprite(game.config.width / 8, game.config.height / 1.3 + this.padding*4, 'ruby').setOrigin(0.5).setAlpha(0).setDepth(6);
+      this.portrait.setScrollFactor(0, 0);
+
+      // * RACE QUEST
+
+      // * Add Questgiver: Seargent Jin
+
+      // * Add Path for Seargent Jin
+      this.armySlimePath = new Phaser.Curves.Path(this.tile(48.5), this.tile(11)); 
+      this.armySlimePath.lineTo(this.tile(48.5), this.tile(11));
+
+      // * Add Seargent Jin
+      this.army = this.add.follower(this.armySlimePath, this.tile(48.5), this.tile(11), 'army', 1).setOrigin(0);
+      this.physics.add.existing(this.army, true);
+
+      // * Add Jin's Animations
+      this.anims.create({
+         key: 'vibrate',
+         frameRate: 4,
+         repeat: -1,
+         frames: this.anims.generateFrameNumbers('army', {
+            start: 0,
+            end: 1
+         })
+      })
+      this.army.anims.play('vibrate')
+
+      // * Add Quest Starter Collider
+      this.raceQuestCollider = this.physics.add.collider(this.ruby, this.army, () => {
+         this.raceQuestCollider.active = false;
+         this.startRaceQuest();
+      })
+
    }
 
    update() {
-      // * Ruby Controls/Movement
-      this.ruby.update();
+      if(this.ruby.canMove) {
+         // * Ruby Controls/Movement
+         this.ruby.update();
 
-      // * Max Movment
-      this.maxTheSlime.update();
+         // * Max Movment
+         this.maxTheSlime.update();
+      }
+
       
       // * Colliders
       this.riverAreaCollider = this.physics.world.overlap(this.ruby, this.changeToRiverArea, () => {
@@ -297,4 +405,102 @@ class FireFlies extends Phaser.Scene {
       console.log(`update function: ${this.isInRiverLayer}`)
 
    }
+
+      // yo i heard you was looking for fireflies
+      // ?
+      // From who?
+      // oh he was outside our cave the whole time
+      // You never left?
+      // here's the deal:
+      // if you want these fireflies, you gotta beat me in a race.
+      // A race?
+      // ye ye a race. is that too hard for you or what?
+      // i love races!
+      // see this kid gets it.
+      // so you in or what?
+      // Sure.
+      // i wasn't asking you.
+      // ? You want to race him?
+      // yes. i don't race females.
+      // Why not?
+      // as a male, we are biologically faster than females.
+      // so you're not worth my time.
+      // my sister isn't slow! she used to do track!
+      // oh really?
+      // name three track and field runners.
+      // I don't need too.
+      // I'll prove it to you in a race.
+      // haha, ok buddy
+      // I, daughter of the late Slippy Richard, will make sure you never set foot in a race again.
+      // wait, daughter of...?
+      // We will race around the town. 
+      // If you lose, you must admit that women are better runners than men, 
+      // and hand over those fireflies. 
+      // Deal?
+      // and if I win?
+      // You won't win.
+      // so just around the town?
+      // Yes, you cannot cut corners or anything.
+      // Just purely around town.
+      // pff, easy peasy.
+      // Ok, we will go on Go.
+      // Ready...
+      // Set...
+      // GO!
+
+      // yeah I'm more of a sprinter, not much of a long-distance runner
+      // That was only 400 meters...
+      // but wow you are fast!
+      // the daughter of the legendary of Slippy Richard...
+      // i had no chance.
+      // Good game.
+      // ok it was nice meeting you two.
+      // come back.
+      // ? why?
+      // I think you are forgetting something.
+      // Oh right, here you go.
+      // Obtained a FIREFLY.
+      // ok bye!
+      // One more thing.
+      // ...
+      // okok fine, you are faster than me.
+      // *pause*
+      // and women are faster.
+      // Thank you.
+      // You may go now.
+
+   dialogBox(text, portrait, alpha) {
+      this.textBox.setAlpha(alpha);
+      this.dialogue.setText(text).setAlpha(alpha);
+      this.portrait.setTexture(portrait).setAlpha(alpha);
+   }
+
+   raceQuestChain(i) {
+      return function() {
+         if (raceQuest[i]) {
+            raceQuest[i].call(this, this.raceQuestChain(++i));
+         } else {
+            this.ruby.canMove = true;
+            this.dialogBox('', 'placeholder', 0);
+         }
+      }.bind(this);
+   }
+
+   startRaceQuest() {
+      this.ruby.stopMoving('idle_up');
+      this.maxTheSlime.setVelocity(0, 0);
+      this.dialogBox('yo i heard you was looking\nfor fireflies', 'army', 1);
+      keySPACE.once('down', () => {
+         raceQuest[0].call(this, this.raceQuestChain(1));
+      }, this);
+   }
 }
+
+var raceQuest = [
+   function(fn) {
+      this.dialogBox('?', 'ruby', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+]
