@@ -52,6 +52,7 @@ class Store extends Phaser.Scene {
       
       // * Add Max (real)
       this.maxTheSlime = new Max(this, this.tile(4.5), this.tile(6.5), this.ruby, 90, 'max').setAlpha(0);
+      this.maxTheSlime.play('jiggle');
 
       // * Add Path for Max (lil bro)
       this.maxPath = new Phaser.Curves.Path(this.tile(4.5), this.tile(6.5));
@@ -61,7 +62,8 @@ class Store extends Phaser.Scene {
       this.maxPath.lineTo(this.tile(16.5), this.tile(4.5));
 
       // * Add Max
-      this.maxTheSlimeActor = this.add.follower(this.maxPath, this.tile(4.5), this.tile(6.5), 'max');
+      this.maxTheSlimeActor = this.add.follower(this.maxPath, this.tile(4.5), this.tile(6.5), 'max', 0);
+      this.maxTheSlimeActor.play('jiggle');
 
       // * Add Richard (dad)
 

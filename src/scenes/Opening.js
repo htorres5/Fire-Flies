@@ -10,7 +10,10 @@ class Opening extends Phaser.Scene {
       this.load.path = './assets/'
       this.load.image('mom', '/sprites/mom.png')
       this.load.image('ruby', '/sprites/sheets/ruby/idle.png')
-      this.load.image('max', '/sprites/max.png')
+      this.load.spritesheet('max', '/sprites/max.png', {
+         frameWidth: 16,
+         frameHeight: 16,
+      })
       this.load.image('exit', '/sprites/change_depth.png')
 
       // * Ruby Texture Atlas
@@ -122,6 +125,18 @@ class Opening extends Phaser.Scene {
 
       // * Add Max (real)
       this.maxTheSlime = new Max(this, this.tile(16), this.tile(3.5), this.ruby, 90, 'max').setAlpha(0);
+
+      // * Add Max Animation
+      this.anims.create({
+         key: 'jiggle',
+         frameRate: 6,
+         repeat: -1,
+         frames: this.anims.generateFrameNumbers('max', {
+            start: 0,
+            end: 1
+         })
+      })
+      this.maxTheSlime.play('jiggle')
       
       // * Add Path for Max (lil bro)
       this.maxPath = new Phaser.Curves.Path(this.tile(3.5), this.tile(9));
@@ -332,7 +347,8 @@ var cutscene = [
    },
 
    function(fn) {
-      this.maxTheSlimeActor = this.add.follower(this.maxPath, this.tile(3.5), this.tile(9), 'max');
+      this.maxTheSlimeActor = this.add.follower(this.maxPath, this.tile(3.5), this.tile(9), 'max', 0);
+      this.maxTheSlimeActor.anims.play('jiggle');
       this.maxTheSlimeActor.startFollow({
           duration: 5000,
           rotateToPath: false,

@@ -96,21 +96,11 @@ class Overworld extends Phaser.Scene {
       // * Add Ruby (Protaganist)
       this.ruby = new Ruby(this, this.tile(59), this.tile(40), this.VEL);
 
-      // this.anims.create({
-      //    key: 'jiggle',
-      //    frameRate: 8,
-      //    repeat: -1,
-      //    frames: this.anims.generateFrameNumbers('ruby', {
-      //       start: 0,
-      //       end: 1
-      //    })
-      // })
-      // this.ruby.play('jiggle')
-
       this.ruby.body.setCollideWorldBounds(true);
 
       // * Add Max (Protaganist lil bro)
       this.maxTheSlime = new Max(this, this.tile(60), this.tile(40), this.ruby, 90, 'max').setDepth(1).setOrigin(0);
+      this.maxTheSlime.play('jiggle')
 
       this.maxTheSlime.body.setCollideWorldBounds(true);
 

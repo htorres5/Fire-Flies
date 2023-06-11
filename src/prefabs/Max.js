@@ -2,7 +2,7 @@
 class Max extends Phaser.Physics.Arcade.Sprite {
    constructor(scene, x, y, target, velocity, type) {
        // call Phaser Physics Sprite constructor
-       super(scene, x, y, type); 
+       super(scene, x, y, type, 1); 
 
        this.parentScene = scene;
        this.target = target;

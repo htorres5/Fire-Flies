@@ -129,6 +129,7 @@ class AirRaid extends Phaser.Scene {
 
       // * Add Max (Protaganist lil bro)
       this.maxTheSlime = new Max(this, this.tile(50), this.tile(5), this.ruby, 140, 'max').setDepth(1).setOrigin(0);
+      this.maxTheSlime.play('jiggle');
 
       this.maxTheSlime.body.setCollideWorldBounds(true);
 
