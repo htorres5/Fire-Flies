@@ -32,8 +32,8 @@
             "scale": 1,
             "selectedLayer": 7,
             "viewCenter": {
-                "x": 1024,
-                "y": 767.5
+                "x": 1207.5,
+                "y": 823
             }
         },
         "air_raid_map.tmx#air_raid_tileset": {
@@ -47,8 +47,8 @@
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 277.75,
-                "y": 159
+                "x": 277.25,
+                "y": 158.5
             }
         },
         "cave.tmx#interior_tileset": {
@@ -61,8 +61,8 @@
             "scale": 1.5,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 362.99999999999994,
-                "y": 111.33333333333331
+                "x": 320,
+                "y": 128.33333333333334
             }
         },
         "opening.tmx#interior_tileset": {
@@ -87,8 +87,8 @@
             "scale": 0.75,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 1790,
-                "y": 1301.3333333333333
+                "x": 1024,
+                "y": 767.3333333333333
             }
         },
         "scene_1_map.tmx#world_tileset": {
@@ -98,8 +98,8 @@
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1024,
-                "y": 767.6666666666666
+                "x": 1227.6666666666665,
+                "y": 763.3333333333333
             }
         },
         "scene_2_map.tmx#world_tileset": {
@@ -108,10 +108,10 @@
         },
         "scene_3_map.tmx": {
             "scale": 1.5,
-            "selectedLayer": 6,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 975.6666666666666,
-                "y": 431.99999999999994
+                "x": 1236.3333333333333,
+                "y": 774.6666666666666
             }
         },
         "scene_3_map.tmx#world_tileset": {
@@ -122,8 +122,8 @@
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 280.25,
-                "y": 173.5
+                "x": 320,
+                "y": 128.25
             }
         },
         "store.tmx#interior_tileset": {
