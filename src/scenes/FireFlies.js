@@ -54,6 +54,23 @@ class FireFlies extends Phaser.Scene {
       // * Won Race Sound
       this.load.audio('won_race', './audio/won_race.wav')
 
+      // * Futbol Quest Assets
+
+      // * Quest Giver 2: Adrian
+      this.load.spritesheet('adrian', './sprites/adrian.png', {
+         frameWidth: 16,
+         frameHeight: 16,
+      })
+
+      // * Futbol Music
+      this.load.audio('radiant_sunshine', './audio/music/radiant_sunshine.mp3')
+
+      // * Penalty Arrow
+      this.load.image('shooting_arrow', './sprites/arrow.png')
+
+      // * Fut Ball 
+      this.load.image('fut_ball', './sprites/fut_ball.png')
+
       // * TileMaps
       
       // * TileMap
@@ -331,8 +348,7 @@ class FireFlies extends Phaser.Scene {
 
       // * QUESTS
 
-      // * Add Speech Bubble (Quest Indicator)
-      this.speech = this.add.sprite(this.tile(48.5), this.tile(10), 'dialog', 0).setOrigin(0).setDepth(5);
+
       // * Add SpeechBubble Animation
       this.anims.create({
          key: 'speech',
@@ -343,7 +359,6 @@ class FireFlies extends Phaser.Scene {
             end: 3
          })
       })
-      this.speech.anims.play('speech');
 
 
       // * Dialogue
@@ -397,6 +412,10 @@ class FireFlies extends Phaser.Scene {
       })
       this.army.anims.play('vibrate')
 
+      // * Add Speech Bubble (Quest Indicator)
+      this.speech = this.add.sprite(this.tile(48.5), this.tile(10), 'dialog', 0).setOrigin(0).setDepth(5);
+      this.speech.anims.play('speech');
+
       // * Race Checkpoints
 
       // * Checkpoint Animation
@@ -442,8 +461,10 @@ class FireFlies extends Phaser.Scene {
 
       // * Add Race Quest Starter Collider
       this.raceQuestCollider = this.physics.add.collider(this.ruby, this.army, () => {
-         this.raceQuestCollider.active = false;
-         this.startRaceQuest();
+         if(!this.startedQuest) {
+            this.raceQuestCollider.active = false;
+            this.startRaceQuest();
+         }
       })
 
       // * Add Won Race Starter Collider
@@ -459,6 +480,87 @@ class FireFlies extends Phaser.Scene {
          this.startLostRaceQuest();
       })
       this.lostRaceCollider.active = false;
+
+
+      // * FUTBOL QUEST
+
+      // * Add Questgiver Adrian
+      this.adrian = this.physics.add.sprite(this.tile(31), this.tile(39), 'adrian', 0).setOrigin(0);
+      this.adrian.setImmovable();
+
+      // * Add Adrians's Animations
+      this.anims.create({
+         key: 'juggle',
+         frameRate: 4,
+         repeat: -1,
+         frames: this.anims.generateFrameNumbers('adrian', {
+            start: 0,
+            end: 1
+         })
+      })
+      this.adrian.anims.play('juggle')
+
+      // * Add Speech Bubble (Quest Indicator)
+      this.speech1 = this.add.sprite(this.tile(30.5), this.tile(38), 'dialog', 0).setOrigin(0).setDepth(5);
+      this.speech1.anims.play('speech');
+
+      // * Add Futbol Start Quest Collider
+      this.futbolQuestCollider = this.physics.add.collider(this.ruby, this.adrian, () => {
+         if(!this.startedQuest) {
+            this.futbolQuestCollider.active = false;
+            this.startFutbolQuest();
+         }
+      })
+
+      // * Futbol Music
+      this.futbolMusic = this.sound.add('radiant_sunshine', {volume: 0.25, loop: true})
+
+      // * Quest Logic
+
+      // * Start Penalties
+      this.doingPenalties = false;
+      this.maxFinishedPenalties = true;
+      
+      // * Goals Scored
+
+      // * Number of Goals Scored
+      this.goals = 0;
+
+      // * Current Round
+      this.round = 1;
+      this.maxRounds = 5;
+
+      // * Penalties
+      this.shootingArrow = this.physics.add.sprite(this.tile(31.5), this.tile(41), 'shooting_arrow').setAlpha(0).setOrigin(0, 0.5).setDepth(5).setAngle(2);
+
+      this.futBall = this.physics.add.sprite(this.tile(31.25), this.tile(40), 'fut_ball').setAlpha(0).setOrigin(0);
+
+      this.goalPost = this.add.rectangle(this.tile(30), this.tile(44), this.tile(3), this.tile(1), 0x000000, 0).setOrigin(0);
+      this.physics.add.existing(this.goalPost, true);
+
+      this.goalCollider = this.physics.add.overlap(this.futBall, this.goalPost, () => {
+         this.sound.play('passed');
+         this.resetPenaltyTimer.remove();
+         this.goalCollider.active = false;
+         this.goals += 1;
+         console.log(this.goals)
+         console.log(this.round)
+         if(this.round == this.maxRounds) {
+            this.endPenaltyTurn();
+         } else {
+            this.resetPenalty();
+         }
+      })
+
+      // * Add Goalie
+      this.goalie = this.physics.add.collider(this.adrian, this.futBall);
+
+      /// * Add Posts Collider
+      this.postsCollider = this.physics.add.collider(this.futBall, this.decorationsLayer)
+
+      /// * Add Max and Ruby Collider
+      this.fubolMaxCollider = this.physics.add.collider(this.futBall, this.maxTheSlime)
+      this.fubolRubyCollider = this.physics.add.collider(this.futBall, this.ruby)
 
    }
 
@@ -500,21 +602,88 @@ class FireFlies extends Phaser.Scene {
          this.underCollider.active = false;
          this.bridgeCollider.active = true;
 
-         // * Race Quest
-         if(this.timerEnded && this.completedRace && this.wonRace) {
-            this.completedRace = false;
-            this.wonRaceCollider.active = true;
-         }
-
-         if(this.timerEnded && this.completedRace && !this.wonRace) {
-            this.completedRace = false;
-            this.lostRaceCollider.active = true;
-         }
-
       }
 
+      // * Race Quest
+      if(this.timerEnded && this.completedRace && this.wonRace) {
+         this.completedRace = false;
+         this.wonRaceCollider.active = true;
+      }
+
+      if(this.timerEnded && this.completedRace && !this.wonRace) {
+         this.completedRace = false;
+         this.lostRaceCollider.active = true;
+      }
+
+      // * Soccer Quest
+      if(this.doingPenalties && (this.round <= this.maxRounds)) {
+
+         // * Move Shooting Arrow
+         if((this.shootingArrow.angle >= 0) && (this.shootingArrow.angle <= 3)) {
+            this.tweens.add({
+               targets: this.shootingArrow,
+               angle: 179,
+               duration: 1500/(this.round*0.6),
+           });
+         } else if((this.shootingArrow.angle >= 177) && (this.shootingArrow.angle <= 180)) {
+            this.tweens.add({
+               targets: this.shootingArrow,
+               angle: 0,
+               duration: 1500/(this.round*0.6),
+           });
+         }
+
+         // * Kick the Ball
+         if (Phaser.Input.Keyboard.JustDown(keyUP) && !this.shotBall) {
+            this.shotBall = true;
+            this.physics.velocityFromAngle(this.shootingArrow.angle, 100, this.futBall.body.velocity)
+            this.resetPenaltyTimer = this.time.delayedCall(5000, () => {
+               console.log(this.round)
+               if(this.round == this.maxRounds) {
+                  this.endPenaltyTurn();
+               } else {
+                  this.resetPenalty();
+               }
+            })
+         }
+
+         // * Make Adrian Move
+         if((this.adrian.body.position.x >= this.tile(29.75)) && (this.adrian.body.position.x <= this.tile(30.25))) {
+            this.tweens.add({
+               targets: this.adrian,
+               x: this.tile(33.25),
+               duration: 1500/(this.round*0.6),
+           });
+         } else if((this.adrian.body.position.x >= this.tile(32.75)) && (this.adrian.body.position.x <= this.tile(33.25))) {
+            this.tweens.add({
+               targets: this.adrian,
+               x: this.tile(30),
+               duration: 1500/(this.round*0.6),
+           });
+         }
+      }
       console.log(`update function: ${this.isInRiverLayer}`)
 
+   }
+   endPenaltyTurn() {
+      this.round += 1;
+      this.shootingArrow.setAlpha(0);
+      this.objectiveUI.setText(`Objective:\nScore Goals.\nScored: ${this.goals}/${this.maxRounds}`)
+      this.events.emit('endedTurn');
+   }
+
+   resetPenalty() {
+      // * Reset Ball
+      this.futBall.setPosition(this.tile(31.25), this.tile(40)).setAlpha(1);
+      this.futBall.setVelocity(0, 0);
+      // * Reset Collider
+      this.goalCollider.active = true;
+      // * Allow Ball to be kicked again
+      this.shotBall = false;
+      // * Next Round
+      this.round += 1;
+      // * Update Objective Text
+      this.objectiveUI.setText(`Objective:\nScore Goals.\nRound ${this.round} of ${this.maxRounds}\nScored: ${this.goals}/${this.maxRounds}`)
    }
 
    dialogBox(text, portrait, alpha) {
@@ -553,11 +722,6 @@ class FireFlies extends Phaser.Scene {
                this.checkpoint3.setAlpha(0);
                this.checkpoint4.setAlpha(0);
                this.checkpoint5.setAlpha(0);
-               // this.checkpoint1Collider.destroy();
-               // this.checkpoint2Collider.destroy();
-               // this.checkpoint3Collider.destroy();
-               // this.checkpoint4Collider.destroy();
-               // this.checkpoint5Collider.destroy();
                console.log(this.wonRace);
 
             // * If Won Race...
@@ -615,6 +779,9 @@ class FireFlies extends Phaser.Scene {
             this.checkpoint3.destroy();
             this.checkpoint4.destroy();
             this.checkpoint5.destroy();
+
+            // * Allow other Quests to be Started
+            this.startedQuest = false;
          }
       }.bind(this);
    }
@@ -660,13 +827,6 @@ class FireFlies extends Phaser.Scene {
                this.checkpoint4.setAlpha(0);
                this.checkpoint5.setAlpha(0);
 
-               // this.checkpoint1Collider.destroy();
-               // this.checkpoint2Collider.destroy();
-               // this.checkpoint3Collider.destroy();
-               // this.checkpoint4Collider.destroy();
-               // this.checkpoint5Collider.destroy();
-               console.log(this.wonRace);
-
             // * If Won Race...
             } else {
                this.wonRace = true;
@@ -700,6 +860,35 @@ class FireFlies extends Phaser.Scene {
       this.dialogBox('see I told you so.', 'army', 1);
       keySPACE.once('down', () => {
          lostRaceQuest[0].call(this, this.lostRaceQuestChain(1));
+      }, this);
+   }
+
+   // * FUTBOL QUEST
+
+   futbolQuestChain(i) {
+      return function() {
+         // * Start of Quest
+         if (futbolQuest[i]) {
+            futbolQuest[i].call(this, this.futbolQuestChain(++i));
+         // * End of Quest
+         } else {
+            this.cameras.main.startFollow(this.ruby, true, 0.25, 0.25)
+            this.ruby.canMove = true;
+            this.dialogBox('', 'placeholder', 0);
+            this.startedQuest = false;
+            this.fireFlies += 1;
+            this.objectiveUI.setText(`Objective:\nFind Fireflies. ${this.fireFlies}/${this.maxFireFlies}`);
+         }
+      }.bind(this);
+   }
+
+   startFutbolQuest() {
+      this.startedQuest = true;
+      this.ruby.stopMoving('idle_down');
+      this.maxTheSlime.setVelocity(0, 0);
+      this.dialogBox('Hey guys! Wanna play soccer? ⚽!', 'adrian', 1);
+      keySPACE.once('down', () => {
+         futbolQuest[0].call(this, this.futbolQuestChain(1));
       }, this);
    }
 }

@@ -27,6 +27,9 @@ class Ruby extends Phaser.Physics.Arcade.Sprite {
 
       // * Set Depth
       this.setDepth(1);
+
+      // * Set Immovable
+      this.setPushable(false);
    }
 
    update() {

@@ -439,123 +439,123 @@ var raceQuest = [
 ]
       
 var wonRaceQuest = [
-function(fn) {
-   this.dialogBox('That was only 400 meters...', 'ruby', 1);
-   keySPACE.once('down', () => {
-      fn();
-   })
-},
+   function(fn) {
+      this.dialogBox('That was only 400 meters...', 'ruby', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
 
-function(fn) {
-   this.dialogBox('but wow you are fast!', 'army', 1);
-   keySPACE.once('down', () => {
-      fn();
-   })
-},
+   function(fn) {
+      this.dialogBox('but wow you are fast!', 'army', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
 
-function(fn) {
-   this.dialogBox('the daughter of the legendary\nSlippy Richard...', 'army', 1);
-   keySPACE.once('down', () => {
-      fn();
-   })
-},
+   function(fn) {
+      this.dialogBox('the daughter of the legendary\nSlippy Richard...', 'army', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
 
-function(fn) {
-   this.dialogBox('i stood no chance.', 'army', 1);
-   keySPACE.once('down', () => {
-      fn();
-   })
-},
+   function(fn) {
+      this.dialogBox('i stood no chance.', 'army', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
 
-function(fn) {
-   this.dialogBox('Good game.', 'ruby', 1);
-   keySPACE.once('down', () => {
-      fn();
-   })
-},
+   function(fn) {
+      this.dialogBox('Good game.', 'ruby', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
 
-function(fn) {
-   this.dialogBox('ok it was nice meeting you two.', 'army', 1);
-   keySPACE.once('down', () => {
-      fn();
-   })
-},
+   function(fn) {
+      this.dialogBox('ok it was nice meeting you two.', 'army', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
 
-function(fn) {
-   this.dialogBox('', 'placeholder', 0);
-   this.army.startFollow({
-      duration: 3000,
-      rotateToPath: false,
-      verticalAdjust: true
-   });
-   this.time.delayedCall(1000, () => {
-      fn();
-   })
-},
+   function(fn) {
+      this.dialogBox('', 'placeholder', 0);
+      this.army.startFollow({
+         duration: 3000,
+         rotateToPath: false,
+         verticalAdjust: true
+      });
+      this.time.delayedCall(1000, () => {
+         fn();
+      })
+   },
 
-function(fn) {
-   this.army.destroy();
-   this.dialogBox('Coward.', 'ruby', 1);
-   keySPACE.once('down', () => {
-      fn();
-   })
-},
+   function(fn) {
+      this.army.destroy();
+      this.dialogBox('Coward.', 'ruby', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
 
-function(fn) {
-   this.dialogBox('he swindled us!', 'max', 1);
-   keySPACE.once('down', () => {
-      fn();
-   })
-},
+   function(fn) {
+      this.dialogBox('he swindled us!', 'max', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
 
-function(fn) {
-   this.dialogBox('Do not worry Max,', 'ruby', 1);
-   keySPACE.once('down', () => {
-      fn();
-   })
-},
+   function(fn) {
+      this.dialogBox('Do not worry Max,', 'ruby', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
 
-function(fn) {
-   this.dialogBox('He forgot to take the jar with him.', 'ruby', 1);
-   keySPACE.once('down', () => {
-      fn();
-   })
-},
+   function(fn) {
+      this.dialogBox('He forgot to take the jar with him.', 'ruby', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
 
-function(fn) {
-   this.dialogBox('Obtained FIREFLY', '', 1);
-   keySPACE.once('down', () => {
-      fn();
-   })
-},
+   function(fn) {
+      this.dialogBox('Obtained FIREFLY', '', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
 
-function(fn) {
-   this.dialogBox('you ran so fast!', 'max', 1);
-   keySPACE.once('down', () => {
-      fn();
-   })
-},
+   function(fn) {
+      this.dialogBox('you ran so fast!', 'max', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
 
-function(fn) {
-   this.dialogBox('why don\'t you run anymore?', 'max', 1);
-   keySPACE.once('down', () => {
-      fn();
-   })
-},
+   function(fn) {
+      this.dialogBox('why don\'t you run anymore?', 'max', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
 
-function(fn) {
-   this.dialogBox('I hate running.', 'ruby', 1);
-   keySPACE.once('down', () => {
-      fn();
-   })
-},
+   function(fn) {
+      this.dialogBox('I hate running.', 'ruby', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
 
-function(fn) {
-   this.dialogBox('Well, a little bit less now...', 'ruby', 1);
-   keySPACE.once('down', () => {
-      fn();
-   })
-},
+   function(fn) {
+      this.dialogBox('Well, a little bit less now...', 'ruby', 1);
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
 ]
 
 // see I told you so.
