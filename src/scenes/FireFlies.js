@@ -878,6 +878,9 @@ class FireFlies extends Phaser.Scene {
             this.startedQuest = false;
             this.fireFlies += 1;
             this.objectiveUI.setText(`Objective:\nFind Fireflies. ${this.fireFlies}/${this.maxFireFlies}`);
+            this.futBall.destroy();
+            this.goalPost.destroy();
+            this.shootingArrow.destroy();
          }
       }.bind(this);
    }
