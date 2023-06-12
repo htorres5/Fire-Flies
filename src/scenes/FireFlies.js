@@ -889,7 +889,7 @@ class FireFlies extends Phaser.Scene {
       this.startedQuest = true;
       this.ruby.stopMoving('idle_down');
       this.maxTheSlime.setVelocity(0, 0);
-      this.dialogBox('Hey guys! Wanna play soccer? ⚽!', 'adrian', 1);
+      this.dialogBox('Hey guys! Wanna play futbol? ⚽!', 'adrian', 1);
       keySPACE.once('down', () => {
          futbolQuest[0].call(this, this.futbolQuestChain(1));
       }, this);
