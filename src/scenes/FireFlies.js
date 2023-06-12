@@ -63,13 +63,35 @@ class FireFlies extends Phaser.Scene {
       })
 
       // * Futbol Music
-      this.load.audio('radiant_sunshine', './audio/music/radiant_sunshine.mp3')
+      this.load.audio('radiant_sunshine', './audio/music/radiant_sunshine.mp3');
 
       // * Penalty Arrow
       this.load.image('shooting_arrow', './sprites/arrow.png')
 
       // * Fut Ball 
       this.load.image('fut_ball', './sprites/fut_ball.png')
+
+      // * Tanooki Quest Assets
+
+      // * Quest Giver 3: Nathan the Farmer
+      this.load.spritesheet('nathan', './sprites/nathan.png', {
+         frameWidth: 32,
+         frameHeight: 32,
+      })
+
+      // * Tanooki Sprite
+      this.load.image('tanooki', './sprites/tanooki.png')
+
+      // * Mallet Sprite
+      this.load.image('mallet', './sprites/mallet.png')
+
+      // * Tanooki Music
+      this.load.audio('folk_roma', './audio/music/folk_roma2.mp3');
+
+      // * Hitsounds
+      this.load.audio('pop01', './audio/pop01.mp3');
+      this.load.audio('pop02', './audio/pop02.mp3');
+      this.load.audio('pop03', './audio/pop03.mp3');
 
       // * TileMaps
       
@@ -86,6 +108,10 @@ class FireFlies extends Phaser.Scene {
 
    tile(coord) {
       return coord * 32;
+   }
+
+   randomIntFromInterval(min, max) { // min and max included 
+      return Math.floor(Math.random() * (max - min + 1) + min)
    }
 
    create() {
@@ -562,6 +588,51 @@ class FireFlies extends Phaser.Scene {
       this.fubolMaxCollider = this.physics.add.collider(this.futBall, this.maxTheSlime)
       this.fubolRubyCollider = this.physics.add.collider(this.futBall, this.ruby)
 
+      // * TANOOKI QUEST
+
+      // * Add QuestGiver Nathan
+      this.nathan = this.physics.add.sprite(this.tile(15.5), this.tile(42), 'nathan', 0).setOrigin(0);
+      this.nathan.setImmovable();
+
+      // * Add Nathan's Animations
+      this.anims.create({
+         key: 'jello',
+         frameRate: 4,
+         repeat: -1,
+         frames: this.anims.generateFrameNumbers('nathan', {
+            start: 0,
+            end: 1
+         })
+      })
+      this.nathan.anims.play('jello')
+
+      // * Add Speech Bubble (Quest Indicator)
+      this.speech2 = this.add.sprite(this.tile(15.5), this.tile(41), 'dialog', 0).setOrigin(0).setDepth(5);
+      this.speech2.anims.play('speech');
+
+      // * Add Mallet Sprite
+      this.mallet = this.add.sprite(this.tile(14), this.tile(42), 'mallet', 0).setVisible(false).setDepth(5).setScrollFactor(0, 0);
+
+      // * Add Tanooki Start Quest Collider
+      this.tanookiQuestCollider = this.physics.add.collider(this.ruby, this.nathan, () => {
+         if(!this.startedQuest) {
+            this.tanookiQuestCollider.active = false;
+            this.startTanookiQuest();
+         }
+      })
+
+      // * Add Tanooki Group
+      this.tanookiGroup = this.add.group({
+         runChildUpdate: true
+      })
+
+      // * Add Tanooki Music
+      this.tanookiMusic = this.sound.add('folk_roma', {volume: 0.25})
+
+      // * Quest Logics
+      this.tanookiHitCount = 1;
+      this.tanookiTotalCount = 1;
+
    }
 
    update() {
@@ -572,8 +643,6 @@ class FireFlies extends Phaser.Scene {
          // * Max Movment
          this.maxTheSlime.update();
       }
-
-      
       // * Colliders
       this.riverAreaCollider = this.physics.world.overlap(this.ruby, this.changeToRiverArea, () => {
          this.isInRiverLayer = true;
@@ -662,29 +731,78 @@ class FireFlies extends Phaser.Scene {
            });
          }
       }
+
+      // * Tanooki Quest
+      if(this.tappingTanookis) {
+      }
       console.log(`update function: ${this.isInRiverLayer}`)
 
    }
-   endPenaltyTurn() {
-      this.round += 1;
-      this.shootingArrow.setAlpha(0);
-      this.objectiveUI.setText(`Objective:\nScore Goals.\nScored: ${this.goals}/${this.maxRounds}`)
-      this.events.emit('endedTurn');
+
+   showTanooki() {
+      let randomLocationX = this.randomIntFromInterval(10, 17)
+      let randomLocationY = this.randomIntFromInterval(31, 37)
+      let tanooki = this.tanookiGroup.create(this.tile(randomLocationX), this.tile(randomLocationY), 'tanooki', 0).setOrigin(0);
+
+      // * Add Tanooki to Total Tanookis
+      this.tanookiTotalCount += 1;
+
+      // * Lower Delay
+      if(this.tanookiTotalCount == 5) {
+         this.showTanookiTimer.delay = 2500;
+      } else if(this.tanookiTotalCount == 10) {
+         this.showTanookiTimer.delay = 2000;
+      } else if(this.tanookiTotalCount == 25) {
+         this.showTanookiTimer.delay = 1500;
+      } else if(this.tanookiTotalCount == 45) {
+         this.showTanookiTimer.delay = 1250;
+      } else if(this.tanookiTotalCount == 60) {
+         this.showTanookiTimer.delay = 1000;
+      }
+      console.log(this.showTanookiTimer.delay)
+
+      this.hideTanookiTimer = this.time.delayedCall(this.showTanookiTimer.delay/2, () => {
+         tanooki.destroy();
+         this.objectiveUI.setText(`Objective: Tap on the Tanookis before they hide.\nAccuracy: ${Math.trunc((this.tanookiHitCount/this.tanookiTotalCount)*100)}%`)
+      });
+      // make circle interactive so we can click (and remove) it
+      // https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#setInteractive
+      tanooki.setInteractive({
+         useHandCursor: true,
+      });
+      // call a function when the mouse clicks on the interactive object
+      // https://photonstorm.github.io/phaser3-docs/Phaser.Input.Events.html#event:GAMEOBJECT_POINTER_DOWN__anchor
+      tanooki.on('pointerdown', this.hideTanooki);
+   }  
+
+   hideTanooki(pointer, localX, localY, event) {
+      let sceneContext = this.scene;  // get scene context before we kill the object
+      sceneContext.hideTanookiTimer.remove();
+
+      // * Add to Score/Hit Accuracy
+      sceneContext.tanookiHitCount += 1;
+      sceneContext.objectiveUI.setText(`Objective: Tap on the Tanookis before they hide.\nAccuracy: ${Math.trunc((sceneContext.tanookiHitCount/sceneContext.tanookiTotalCount)*100)}%`)
+       
+      sceneContext.playPop();         // play pop sound
+      this.destroy();             // destroy the child obj
    }
 
-   resetPenalty() {
-      // * Reset Ball
-      this.futBall.setPosition(this.tile(31.25), this.tile(40)).setAlpha(1);
-      this.futBall.setVelocity(0, 0);
-      // * Reset Collider
-      this.goalCollider.active = true;
-      // * Allow Ball to be kicked again
-      this.shotBall = false;
-      // * Next Round
-      this.round += 1;
-      // * Update Objective Text
-      this.objectiveUI.setText(`Objective:\nScore Goals.\nRound ${this.round} of ${this.maxRounds}\nScored: ${this.goals}/${this.maxRounds}`)
-   }
+    // play a randomized pop sound
+    playPop() {
+      switch(Math.floor(Math.random() * 3)) {
+          case 0:
+              this.sound.play('pop01', {volume: 1});
+              break;
+          case 1:
+              this.sound.play('pop02', {volume: 1});
+              break;
+          case 2:
+              this.sound.play('pop03', {volume: 1});
+              break;
+          default:
+              console.log('Error: Invalid Sound');
+      }
+  }
 
    dialogBox(text, portrait, alpha) {
       this.textBox.setAlpha(alpha);
@@ -892,6 +1010,55 @@ class FireFlies extends Phaser.Scene {
       this.dialogBox('Hey guys! Wanna play futbol? ⚽!', 'adrian', 1);
       keySPACE.once('down', () => {
          futbolQuest[0].call(this, this.futbolQuestChain(1));
+      }, this);
+   }
+
+   endPenaltyTurn() {
+      this.round += 1;
+      this.shootingArrow.setAlpha(0);
+      this.objectiveUI.setText(`Objective:\nScore Goals.\nScored: ${this.goals}/${this.maxRounds}`)
+      this.events.emit('endedTurn');
+   }
+
+   resetPenalty() {
+      // * Reset Ball
+      this.futBall.setPosition(this.tile(31.25), this.tile(40)).setAlpha(1);
+      this.futBall.setVelocity(0, 0);
+      // * Reset Collider
+      this.goalCollider.active = true;
+      // * Allow Ball to be kicked again
+      this.shotBall = false;
+      // * Next Round
+      this.round += 1;
+      // * Update Objective Text
+      this.objectiveUI.setText(`Objective:\nScore Goals.\nRound ${this.round} of ${this.maxRounds}\nScored: ${this.goals}/${this.maxRounds}`)
+   }
+
+   // * TANOOKI QUEST
+
+   tanookiQuestChain(i) {
+      return function() {
+         // * Start of Quest
+         if (tanookiQuest[i]) {
+            tanookiQuest[i].call(this, this.tanookiQuestChain(++i));
+         // * End of Quest
+         } else {
+            this.ruby.canMove = true;
+            this.dialogBox('', 'placeholder', 0);
+            this.startedQuest = false;
+            this.fireFlies += 1;
+            this.objectiveUI.setText(`Objective:\nFind Fireflies. ${this.fireFlies}/${this.maxFireFlies}`);
+         }
+      }.bind(this);
+   }
+
+   startTanookiQuest() {
+      this.startedQuest = true;
+      this.ruby.stopMoving('idle_up');
+      this.maxTheSlime.setVelocity(0, 0);
+      this.dialogBox('RUBY!', 'nathan', 1);
+      keySPACE.once('down', () => {
+         tanookiQuest[0].call(this, this.tanookiQuestChain(1));
       }, this);
    }
 }
