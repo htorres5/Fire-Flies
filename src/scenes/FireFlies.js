@@ -869,55 +869,6 @@ class FireFlies extends Phaser.Scene {
 
    }
 
-   chopTree(lumberjack, tree, axe) {
-      tree.chopCount += 1;
-      console.log('tree cut progress: ' + tree.currentFrame);
-      if((tree.chopCount) % 50 == 0) {
-         this.cameras.main.shake(300, 0.0075);
-         tree.currentFrame += 1;
-         tree.setFrame(tree.currentFrame);
-         if(tree.currentFrame < 4) {
-            this.sound.play(`hatchet0${tree.currentFrame}`);
-         } else {
-            this.sound.play('tree_falling');
-            this.sound.play(`hatchet03`);
-         }
-      }
-      if (lumberjack != 'Ruby') {
-         axe.setFrame(1);
-         this.time.delayedCall(100, () => {
-            axe.setFrame(0);
-         })
-      }
-
-      // * Stop once Ruby Cuts Her Tree Down
-
-      if(this.rubysTree.chopCount == this.maxChopCount) {
-         this.choppingTreeWinner();
-      }
-      console.log('chop count: ' + tree.chopCount);
-      console.log('max chop count: ' + tree.chopCount);
-   }
-
-   choppingTreeWinner() {
-      console.log('rubysTreeIsCut')
-      this.lumberMusic.stop();
-      this.treeCutTime = this.rubyCutTree.getElapsedSeconds();
-      this.rubyCutTree.remove();
-      this.maxCutTree.remove();
-      this.jackCutTree.remove();
-      this.choppingWood = false;
-      if(this.treeCutTime < 90) {
-         this.time.delayedCall(3175, () => {
-            this.cameras.main.shake(300, 0.0075);
-            this.events.emit('rubysTreeIsCut');
-         })
-      } else {
-         this.events.emit('rubysTreeIsCut');
-      }
-
-   }
-
    dialogBox(text, portrait, alpha) {
       this.textBox.setAlpha(alpha);
       this.dialogue.setText(text).setAlpha(alpha);
@@ -1250,5 +1201,54 @@ class FireFlies extends Phaser.Scene {
       keySPACE.once('down', () => {
          lumberQuest[0].call(this, this.lumberQuestChain(1));
       }, this);
+   }
+
+   chopTree(lumberjack, tree, axe) {
+      tree.chopCount += 1;
+      console.log('tree cut progress: ' + tree.currentFrame);
+      if((tree.chopCount) % 50 == 0) {
+         this.cameras.main.shake(300, 0.0075);
+         tree.currentFrame += 1;
+         tree.setFrame(tree.currentFrame);
+         if(tree.currentFrame < 4) {
+            this.sound.play(`hatchet0${tree.currentFrame}`);
+         } else {
+            this.sound.play('tree_falling');
+            this.sound.play(`hatchet03`);
+         }
+      }
+      if (lumberjack != 'Ruby') {
+         axe.setFrame(1);
+         this.time.delayedCall(100, () => {
+            axe.setFrame(0);
+         })
+      }
+
+      // * Stop once Ruby Cuts Her Tree Down
+
+      if(this.rubysTree.chopCount == this.maxChopCount) {
+         this.choppingTreeWinner();
+      }
+      console.log('chop count: ' + tree.chopCount);
+      console.log('max chop count: ' + tree.chopCount);
+   }
+
+   choppingTreeWinner() {
+      console.log('rubysTreeIsCut')
+      this.lumberMusic.stop();
+      this.treeCutTime = this.rubyCutTree.getElapsedSeconds();
+      this.rubyCutTree.remove();
+      this.maxCutTree.remove();
+      this.jackCutTree.remove();
+      this.choppingWood = false;
+      if(this.treeCutTime < 90) {
+         this.time.delayedCall(3175, () => {
+            this.cameras.main.shake(300, 0.0075);
+            this.events.emit('rubysTreeIsCut');
+         })
+      } else {
+         this.events.emit('rubysTreeIsCut');
+      }
+
    }
 }

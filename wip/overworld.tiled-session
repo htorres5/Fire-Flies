@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "scene_1_map.tmx",
+    "activeFile": "scene_3_map.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -108,11 +108,11 @@
             "scaleInEditor": 0.75
         },
         "scene_3_map.tmx": {
-            "scale": 1.5,
-            "selectedLayer": 6,
+            "scale": 3,
+            "selectedLayer": 9,
             "viewCenter": {
-                "x": 1024,
-                "y": 767.6666666666666
+                "x": 154.83333333333331,
+                "y": 161.5
             }
         },
         "scene_3_map.tmx#world_tileset": {
@@ -153,12 +153,12 @@
     "recentFiles": [
         "overworld.tmx",
         "air_raid_map.tmx",
+        "scene_1_map.tmx",
+        "scene_2_map.tmx",
         "opening.tmx",
         "store.tmx",
         "cave.tmx",
         "scene_3_map.tmx",
-        "scene_2_map.tmx",
-        "scene_1_map.tmx",
         "C:/github/Fire-Flies/assets/prologue_map.json"
     ],
     "resizeMap.removeObjects": true,
