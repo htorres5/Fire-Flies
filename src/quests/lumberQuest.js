@@ -265,7 +265,7 @@ var lumberQuest = [
       this.music.resume();
       this.timeToFinish.setAlpha(0);
 
-      if(this.treeCutTime <= 90) {
+      if(this.treeCutTime < 90) {
          this.countdownToStart.setText(`${Math.trunc(this.treeCutTime)} seconds`).setAlpha(1)
       } else {
          this.countdownToStart.setText(`Failed!`).setAlpha(1)
@@ -302,7 +302,7 @@ var lumberQuest = [
          keySPACE.once('down', () => {
             this.dialogBox('I am against deforestation.', 'ruby', 1);
             keySPACE.once('down', () => {
-               this.dialogBox('But this is a dead tree...', 'jack', 1);
+               this.dialogBox('But those were dead trees...', 'jack', 1);
                keySPACE.once('down', () => {
                   this.dialogBox('It\'s fine though,\nany help is needed here at\nJack\'s Lumberyard!', 'jack', 1);
                   keySPACE.once('down', () => {

@@ -879,7 +879,7 @@ class FireFlies extends Phaser.Scene {
          if(tree.currentFrame < 4) {
             this.sound.play(`hatchet0${tree.currentFrame}`);
          } else {
-            this.sound.play('tree_falling')
+            this.sound.play('tree_falling');
             this.sound.play(`hatchet03`);
          }
       }
