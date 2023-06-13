@@ -242,7 +242,7 @@ var raceQuest = [
    },
 
    function(fn) {
-      this.dialogBox('I, daughter of the late\nSlippy Richard, will make sure you\nnever set foot in a race again.', 'ruby', 1);
+      this.dialogBox('I, daughter of the legendary\nSlippy Richard, will make sure you\nnever set foot in a race again.', 'ruby', 1);
       keySPACE.once('down', () => {
          fn();
       })

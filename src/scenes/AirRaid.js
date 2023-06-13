@@ -114,17 +114,6 @@ class AirRaid extends Phaser.Scene {
       // * Add Ruby (Protaganist)
       this.ruby = new Ruby(this, this.tile(49), this.tile(5), this.VEL);
 
-      // this.anims.create({
-      //    key: 'jiggle',
-      //    frameRate: 8,
-      //    repeat: -1,
-      //    frames: this.anims.generateFrameNumbers('ruby', {
-      //       start: 0,
-      //       end: 1
-      //    })
-      // })
-      // this.ruby.play('jiggle')
-
       this.ruby.body.setCollideWorldBounds(true);
 
       // * Add Max (Protaganist lil bro)

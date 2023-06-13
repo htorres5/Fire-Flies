@@ -391,7 +391,12 @@ var tanookiQuest = [
 
    function(fn) {
       this.hitAccuracy = (this.tanookiHitCount/this.tanookiTotalCount)*100;
-      this.countdownToStart.setText(`${Math.trunc(this.hitAccuracy)}%`).setAlpha(1)
+      if (this.hitAccuracy == 100) {
+         this.countdownToStart.setText(`FULL COMBO!`).setAlpha(1)
+      } else {
+         this.countdownToStart.setText(`${Math.trunc(this.hitAccuracy)}%`).setAlpha(1)
+      }
+
       this.objectiveUI.setText('Press SPACE to Continue.')
       if(this.hitAccuracy > 85) {
          this.sound.play('won_race')
@@ -433,8 +438,7 @@ var tanookiQuest = [
                   keySPACE.once('down', () => {
                      fn();
                   })
-               })
-            })
+               })            })
          })
       } else if((this.hitAccuracy == 100 )) {
          this.dialogBox('Lord almighty...', 'nathan', 1);
@@ -443,7 +447,7 @@ var tanookiQuest = [
             keySPACE.once('down', () => {
                this.dialogBox('Seen what?', 'ruby', 1);
                keySPACE.once('down', () => {
-                  this.dialogBox('You wiped out their\nentire population woman!', 'nathan', 1);
+                  this.dialogBox('You wiped out their\nentire population!', 'nathan', 1);
                   keySPACE.once('down', () => {
                      this.dialogBox('Where did you learn\nhow to do this?', 'nathan', 1);
                      keySPACE.once('down', () => {

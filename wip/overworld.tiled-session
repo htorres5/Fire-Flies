@@ -32,7 +32,7 @@
             "scale": 1,
             "selectedLayer": 7,
             "viewCenter": {
-                "x": 1024,
+                "x": 1023.5,
                 "y": 767.5
             }
         },
@@ -47,7 +47,7 @@
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 304,
+                "x": 303.75,
                 "y": 143.75
             }
         },
@@ -59,10 +59,10 @@
         },
         "opening.tmx": {
             "scale": 1.5,
-            "selectedLayer": 3,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 320,
-                "y": 128.33333333333334
+                "x": 319.66666666666663,
+                "y": 127.33333333333331
             }
         },
         "opening.tmx#interior_tileset": {
@@ -87,8 +87,8 @@
             "scale": 1.5,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 466.99999999999994,
-                "y": 1068.6666666666665
+                "x": 1023.6666666666666,
+                "y": 767.6666666666666
             }
         },
         "scene_1_map.tmx#world_tileset": {
@@ -99,7 +99,7 @@
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1024,
+                "x": 1023.6666666666666,
                 "y": 767.6666666666666
             }
         },
@@ -111,8 +111,8 @@
             "scale": 3,
             "selectedLayer": 9,
             "viewCenter": {
-                "x": 154.83333333333331,
-                "y": 161.5
+                "x": 274.1666666666667,
+                "y": 213.99999999999997
             }
         },
         "scene_3_map.tmx#world_tileset": {
@@ -123,7 +123,7 @@
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 320,
+                "x": 319.75,
                 "y": 128.25
             }
         },

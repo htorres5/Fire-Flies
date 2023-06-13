@@ -134,6 +134,9 @@ class FireFlies extends Phaser.Scene {
 
       // * Music
       this.load.audio('glimmering_woods', './audio/music/glimmering_woods.mp3')
+
+      // * UI
+      this.load.image('waypoint', './sprites/waypoint.png')
    }
 
    tile(coord) {
@@ -375,7 +378,8 @@ class FireFlies extends Phaser.Scene {
       // * UI
 
       // * FireFly Count
-      this.fireFlies = 0;
+      // ! CHANGE BACK TO 0
+      this.fireFlies = 3;
       this.maxFireFlies = 4;
 
       // * Objective
@@ -745,8 +749,17 @@ class FireFlies extends Phaser.Scene {
       // * Max Chop Count to Victory
       this.maxChopCount = 200;
 
-      
+      // * FINAL QUEST
 
+      // * Place Cave Entrance
+      this.caveEntrance = this.physics.add.sprite(this.tile(31), this.tile(20), 'placeholder').setOrigin(0).setAlpha(0).setImmovable();
+      this.caveEntranceCollider = this.physics.add.overlap(this.ruby, this.caveEntrance, () => {
+         // * On collision, exit scene.
+         this.exitScene();
+      })
+
+      // * Disable until Final Quest is Started
+      this.caveEntranceCollider.active = false;
    }
 
    update() {
@@ -757,7 +770,8 @@ class FireFlies extends Phaser.Scene {
          // * Max Movment
          this.maxTheSlime.update();
       }
-      // * Colliders
+
+      // * World Colliders
       this.riverAreaCollider = this.physics.world.overlap(this.ruby, this.changeToRiverArea, () => {
          this.isInRiverLayer = true;
          console.log(`Collider callback function: ${this.isInRiverLayer}`)
@@ -846,10 +860,6 @@ class FireFlies extends Phaser.Scene {
          }
       }
 
-      // * Tanooki Quest
-      if(this.tappingTanookis) {
-      }
-
       // * Lumber Quest
       if(this.choppingWood) {
          // * Show Timer
@@ -865,6 +875,23 @@ class FireFlies extends Phaser.Scene {
             this.rubysAxe.setFrame(0);
          }
       }
+
+      // * Final Quest
+      if(this.completedAllQuests) {
+         this.distanceToLocation = Math.trunc(Phaser.Math.Distance.Between(this.ruby.x, this.ruby.y, this.caveEntrance.x, this.caveEntrance.y)/4);
+         this.distanceUI.text = `${this.distanceToLocation}m`
+         
+         var rotation = Phaser.Math.Angle.Between(this.ruby.x, this.ruby.y, this.caveEntrance.x, this.caveEntrance.y);
+         this.waypoint.rotation = rotation;
+   
+         if(this.distanceToLocation < 40) {
+            this.waypoint.setAlpha(0);
+            this.distanceUI.setAlpha(0);
+         } else {
+            this.waypoint.setAlpha(1);
+            this.distanceUI.setAlpha(1);
+         }
+      }
       console.log(`update function: ${this.isInRiverLayer}`)
 
    }
@@ -873,6 +900,26 @@ class FireFlies extends Phaser.Scene {
       this.textBox.setAlpha(alpha);
       this.dialogue.setText(text).setAlpha(alpha);
       this.portrait.setTexture(portrait).setAlpha(alpha);
+   }
+
+   endQuest() {
+      // * Add to Fireflies
+      this.fireFlies += 1;
+
+      // * Update UI
+      this.objectiveUI.setText(`Objective:\nFind Fireflies. ${this.fireFlies}/${this.maxFireFlies}`);
+
+      // * Allow other Quests to be Started
+      this.startedQuest = false;
+
+      // * If Max Fireflies, start final Quest.
+      if(this.fireFlies == this.maxFireFlies) {
+         this.startFinalQuest();
+      } else {
+         // * Else Continue on as normal.
+         this.ruby.canMove = true;
+         this.dialogBox('', 'placeholder', 0)
+      }
    }
 
    // * Race Quest
@@ -951,26 +998,20 @@ class FireFlies extends Phaser.Scene {
             wonRaceQuest[i].call(this, this.wonRaceQuestChain(++i));
          // * End of Race Quest
          } else {
-            this.ruby.canMove = true;
-            this.dialogBox('', 'placeholder', 0)
-            this.fireFlies += 1;
-            this.objectiveUI.setText(`Objective:\nFind Fireflies. ${this.fireFlies}/${this.maxFireFlies}`);
-
-            // * Destroy Checkpoints
+            // * Destroy Quest Assets
             this.checkpoint1.destroy();
             this.checkpoint2.destroy();
             this.checkpoint3.destroy();
             this.checkpoint4.destroy();
             this.checkpoint5.destroy();
 
-            // * Allow other Quests to be Started
-            this.startedQuest = false;
+            // * End Quest
+            this.endQuest();
          }
       }.bind(this);
    }
 
    startWonRaceQuest() {
-      //this.startedQuest = true;
       this.ruby.stopMoving('idle_up');
       this.maxTheSlime.setVelocity(0, 0);
       this.dialogBox('yeah I\'m more of a sprinter\nnot much of a long-distance\nrunner.', 'army', 1);
@@ -1055,15 +1096,17 @@ class FireFlies extends Phaser.Scene {
             futbolQuest[i].call(this, this.futbolQuestChain(++i));
          // * End of Quest
          } else {
+            
+            // * Make Camera Follow Ruby Again
             this.cameras.main.startFollow(this.ruby, true, 0.25, 0.25)
-            this.ruby.canMove = true;
-            this.dialogBox('', 'placeholder', 0);
-            this.startedQuest = false;
-            this.fireFlies += 1;
-            this.objectiveUI.setText(`Objective:\nFind Fireflies. ${this.fireFlies}/${this.maxFireFlies}`);
+
+            // * Destroy Quest Assets
             this.futBall.destroy();
             this.goalPost.destroy();
             this.shootingArrow.destroy();
+
+            // * End Quest
+            this.endQuest();
          }
       }.bind(this);
    }
@@ -1108,11 +1151,8 @@ class FireFlies extends Phaser.Scene {
             tanookiQuest[i].call(this, this.tanookiQuestChain(++i));
          // * End of Quest
          } else {
-            this.ruby.canMove = true;
-            this.dialogBox('', 'placeholder', 0);
-            this.startedQuest = false;
-            this.fireFlies += 1;
-            this.objectiveUI.setText(`Objective:\nFind Fireflies. ${this.fireFlies}/${this.maxFireFlies}`);
+            // * End Quest
+            this.endQuest();
          }
       }.bind(this);
    }
@@ -1128,6 +1168,7 @@ class FireFlies extends Phaser.Scene {
    }
 
    showTanooki() {
+      // * Place Tanooki in Random Location
       let randomLocationX = this.randomIntFromInterval(10, 17)
       let randomLocationY = this.randomIntFromInterval(31, 37)
       let tanooki = this.tanookiGroup.create(this.tile(randomLocationX), this.tile(randomLocationY), 'tanooki', 0).setOrigin(0);
@@ -1184,11 +1225,8 @@ class FireFlies extends Phaser.Scene {
             lumberQuest[i].call(this, this.lumberQuestChain(++i));
          // * End of Quest
          } else {
-            this.ruby.canMove = true;
-            this.dialogBox('', 'placeholder', 0);
-            this.startedQuest = false;
-            this.fireFlies += 1;
-            this.objectiveUI.setText(`Objective:\nFind Fireflies. ${this.fireFlies}/${this.maxFireFlies}`);
+            // * End Quest
+            this.endQuest();
          }
       }.bind(this);
    }
@@ -1250,5 +1288,62 @@ class FireFlies extends Phaser.Scene {
          this.events.emit('rubysTreeIsCut');
       }
 
+   }
+
+
+   // * FINAL QUEST
+
+   // * Enables UI & Logic For Final Quest
+   setupFinalQuest() {
+      this.objectiveUI.setText('Objective:\nHead back to the Cave.')
+      this.caveEntranceCollider.active = true;
+      this.waypoint.setAlpha(1);
+      this.distanceUI.setAlpha(1);
+      this.completedAllQuests = true;
+   }
+
+   // * Final Quest Starting Dialogue
+   startFinalQuest() {
+      this.dialogBox('', 'placeholder', 0);
+      this.ruby.stopMoving('idle_up');
+      this.maxTheSlime.setVelocity(0, 0);
+
+      this.time.delayedCall(1000, () => {
+         this.dialogBox('Ok, that should be enough fireflies.', 'ruby', 1);
+         keySPACE.once('down', () => {
+            this.dialogBox('Ready to head back?', 'ruby', 1);
+            keySPACE.once('down', () => {
+               this.dialogBox('yes! let\'s go!', 'max', 1);
+               keySPACE.once('down', () => {
+                  this.ruby.canMove = true;
+                  this.dialogBox('', 'placeholder', 0);
+                  this.setupFinalQuest();
+               })
+            })
+         })
+
+      })
+   }
+
+   exitScene() {
+      // * Disable Collider
+      this.caveEntranceCollider.active = false;
+
+      // * Stop Music
+      this.tweens.add({
+         targets: this.music,
+         duration: 2500,
+         volume: 0
+      })
+
+      // * Stop Player Movement
+      this.ruby.stopMoving('idle_up');
+      this.maxTheSlime.setVelocity(0, 0);
+
+      // * Fade out Camera and enter next Scene
+      this.cameras.main.fadeOut(2500, 0, 0, 0);
+      this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            this.scene.start('finalScene');
+      });
    }
 }
