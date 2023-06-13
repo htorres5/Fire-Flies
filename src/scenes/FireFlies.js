@@ -903,17 +903,19 @@ class FireFlies extends Phaser.Scene {
       console.log('rubysTreeIsCut')
       this.lumberMusic.stop();
       this.treeCutTime = this.rubyCutTree.getElapsedSeconds();
-      if(this.treeCutTime >= 90) {
-         this.sound.play('tree_falling')
-      }
       this.rubyCutTree.remove();
       this.maxCutTree.remove();
       this.jackCutTree.remove();
       this.choppingWood = false;
-      this.time.delayedCall(3175, () => {
-         this.cameras.main.shake(300, 0.0075);
+      if(this.treeCutTime < 90) {
+         this.time.delayedCall(3175, () => {
+            this.cameras.main.shake(300, 0.0075);
+            this.events.emit('rubysTreeIsCut');
+         })
+      } else {
          this.events.emit('rubysTreeIsCut');
-      })
+      }
+
    }
 
    dialogBox(text, portrait, alpha) {
