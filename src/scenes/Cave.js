@@ -173,7 +173,7 @@ class Cave extends Phaser.Scene {
       this.maxTheSlime.setVelocity(0, 0);
 
       this.time.delayedCall(3000, () => {
-         this.dialogue.text = 'I\'m sorry for your loss.'
+         this.dialogue.text = 'i\'m sorry for your loss.'
          this.dialogue.setAlpha(1);
          this.textBox.setAlpha(1);
          this.portrait.setTexture('army').setAlpha(1);

@@ -373,7 +373,7 @@ var tanookiQuest = [
       })
 
       // * Start Game and Song
-      this.startSong - this.time.delayedCall(4000, () => {
+      this.startSong = this.time.delayedCall(4000, () => {
          this.tanookiMusic.play();
          this.countdownToStart.setAlpha(0);
          this.showTanookiTimer = this.time.addEvent({

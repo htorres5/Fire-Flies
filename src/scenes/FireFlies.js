@@ -90,8 +90,38 @@ class FireFlies extends Phaser.Scene {
 
       // * Hitsounds
       this.load.audio('pop01', './audio/pop01.mp3');
-      this.load.audio('pop02', './audio/pop02.mp3');
-      this.load.audio('pop03', './audio/pop03.mp3');
+
+
+      // * Lumber Quest Assets
+      
+      // * Quest Giver 4: Jack the Lumberjack
+      this.load.spritesheet('jack', './sprites/jack.png', {
+         frameWidth: 32,
+         frameHeight: 32,
+      })
+
+      // * Dead Tree
+      this.load.spritesheet('dead_tree', './sprites/life.png', {
+         frameWidth: 64,
+         frameHeight: 64,
+      })
+
+      // * Axe
+      this.load.spritesheet('axe', './sprites/axe.png', {
+         frameWidth: 28,
+         frameHeight: 28,
+      })
+
+      // * Lumber Music
+      this.load.audio('battlefield5', './audio/music/battlefield5.mp3')
+
+      // * Hatchet Sound Effects
+      this.load.audio('hatchet01', './audio/hatchet01.mp3')
+      this.load.audio('hatchet02', './audio/hatchet02.mp3')
+      this.load.audio('hatchet03', './audio/hatchet03.mp3')
+
+      // * Tree Falling Sound Effect
+      this.load.audio('tree_falling', './audio/tree_falling.mp3')
 
       // * TileMaps
       
@@ -340,6 +370,7 @@ class FireFlies extends Phaser.Scene {
       keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
       keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
       keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+      keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
       // * UI
 
@@ -633,6 +664,89 @@ class FireFlies extends Phaser.Scene {
       this.tanookiHitCount = 1;
       this.tanookiTotalCount = 1;
 
+      // * LUMBER QUEST
+
+      // * Add QuestGiver Jack
+      this.jack = this.physics.add.sprite(this.tile(10), this.tile(7), 'jack', 0).setOrigin(0);
+      this.jack.setImmovable();
+
+      // * Add Jack's Animations
+      this.anims.create({
+         key: 'convulse',
+         frameRate: 4,
+         repeat: -1,
+         frames: this.anims.generateFrameNumbers('jack', {
+            start: 0,
+            end: 1
+         })
+      })
+      this.jack.anims.play('convulse')
+
+      // * Add Speech Bubble (Quest Indicator)
+      this.speech3 = this.add.sprite(this.tile(10), this.tile(6), 'dialog', 0).setOrigin(0).setDepth(5);
+      this.speech3.anims.play('speech');
+
+      // * Add Tanooki Start Quest Collider
+      this.lumberQuestCollider = this.physics.add.collider(this.ruby, this.jack, () => {
+         if(!this.startedQuest) {
+            this.lumberQuestCollider.active = false;
+            this.startLumberQuest();
+         }
+      })
+
+      // * Add Lumber Music
+      this.lumberMusic = this.sound.add('battlefield5', {volume: 0.25, loop: true});
+
+      // * Quest Logicssx
+
+      // * To Start Chopping Mayhem
+      this.choppingWood = false;
+
+      // * Set Winner
+      this.declaredWinner = '';
+
+      // * Max's Tree
+      this.maxsTree = this.physics.add.sprite(this.tile(19), this.tile(11), 'dead_tree', 0).setOrigin(0).setScale(0.75, 0.75);
+      this.maxsTree.currentFrame = 0;
+      this.maxsTree.chopCount = 0;
+      // * Max's Axe
+      this.maxsAxe = this.add.sprite(this.tile(18.75), this.tile(11.75), 'axe', 0).setOrigin(0).setDepth(2).setScale(0.75, 0.75).setVisible(false);
+
+      // * Collider For Overworld
+      this.maxsTree.setImmovable();
+      this.physics.add.collider(this.ruby, this.maxsTree);
+
+      // * Jack's Tree
+      this.jacksTree = this.physics.add.sprite(this.tile(21), this.tile(8), 'dead_tree', 0).setOrigin(0);
+      this.jacksTree.currentFrame = 0;
+      this.jacksTree.chopCount = 0;
+
+      // * Jack's Axe
+      this.jacksAxe = this.add.sprite(this.tile(20.75), this.tile(9), 'axe', 0).setOrigin(0).setDepth(2).setVisible(false);
+
+      // * Collider For Overworld
+      this.jacksTree.setImmovable();
+      this.physics.add.collider(this.ruby, this.jacksTree);
+      
+      // * Ruby's Tree
+      this.rubysTree = this.physics.add.sprite(this.tile(26), this.tile(10), 'dead_tree', 0).setOrigin(0);
+      this.rubysTree.currentFrame = 0;
+      // * Number of Times Ruby Chopped
+      this.rubysTree.chopCount = 0;
+
+      // * Collider For Overworld
+      this.rubysTree.setImmovable();
+      this.physics.add.collider(this.ruby, this.rubysTree);
+
+      // * Ruby's Axe
+      this.rubysAxe = this.add.sprite(this.tile(25.75), this.tile(11), 'axe', 0).setOrigin(0).setDepth(2).setVisible(false);
+      this.rubysAxe.currentFrame = 0;
+
+      // * Max Chop Count to Victory
+      this.maxChopCount = 200;
+
+      
+
    }
 
    update() {
@@ -735,74 +849,72 @@ class FireFlies extends Phaser.Scene {
       // * Tanooki Quest
       if(this.tappingTanookis) {
       }
+
+      // * Lumber Quest
+      if(this.choppingWood) {
+         // * Show Timer
+         this.timeToFinish.setText(`${90 - Math.trunc(this.rubyCutTree.getElapsedSeconds())}`);
+         if (Phaser.Input.Keyboard.JustDown(keyUP) || Phaser.Input.Keyboard.JustDown(keyE)) {
+            this.chopTree('Ruby', this.rubysTree, this.rubysAxe);
+         } 
+
+         // * For Axe Animation
+         if (keyUP.isDown || keyE.isDown) {
+            this.rubysAxe.setFrame(1);
+         } else {
+            this.rubysAxe.setFrame(0);
+         }
+      }
       console.log(`update function: ${this.isInRiverLayer}`)
 
    }
 
-   showTanooki() {
-      let randomLocationX = this.randomIntFromInterval(10, 17)
-      let randomLocationY = this.randomIntFromInterval(31, 37)
-      let tanooki = this.tanookiGroup.create(this.tile(randomLocationX), this.tile(randomLocationY), 'tanooki', 0).setOrigin(0);
-
-      // * Add Tanooki to Total Tanookis
-      this.tanookiTotalCount += 1;
-
-      // * Lower Delay
-      if(this.tanookiTotalCount == 5) {
-         this.showTanookiTimer.delay = 2500;
-      } else if(this.tanookiTotalCount == 10) {
-         this.showTanookiTimer.delay = 2000;
-      } else if(this.tanookiTotalCount == 25) {
-         this.showTanookiTimer.delay = 1500;
-      } else if(this.tanookiTotalCount == 45) {
-         this.showTanookiTimer.delay = 1250;
-      } else if(this.tanookiTotalCount == 60) {
-         this.showTanookiTimer.delay = 1000;
+   chopTree(lumberjack, tree, axe) {
+      tree.chopCount += 1;
+      console.log('tree cut progress: ' + tree.currentFrame);
+      if((tree.chopCount) % 50 == 0) {
+         this.cameras.main.shake(300, 0.0075);
+         tree.currentFrame += 1;
+         tree.setFrame(tree.currentFrame);
+         if(tree.currentFrame < 4) {
+            this.sound.play(`hatchet0${tree.currentFrame}`);
+         } else {
+            this.sound.play('tree_falling')
+            this.sound.play(`hatchet03`);
+         }
       }
-      console.log(this.showTanookiTimer.delay)
+      if (lumberjack != 'Ruby') {
+         axe.setFrame(1);
+         this.time.delayedCall(100, () => {
+            axe.setFrame(0);
+         })
+      }
 
-      this.hideTanookiTimer = this.time.delayedCall(this.showTanookiTimer.delay/2, () => {
-         tanooki.destroy();
-         this.objectiveUI.setText(`Objective: Tap on the Tanookis before they hide.\nAccuracy: ${Math.trunc((this.tanookiHitCount/this.tanookiTotalCount)*100)}%`)
-      });
-      // make circle interactive so we can click (and remove) it
-      // https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#setInteractive
-      tanooki.setInteractive({
-         useHandCursor: true,
-      });
-      // call a function when the mouse clicks on the interactive object
-      // https://photonstorm.github.io/phaser3-docs/Phaser.Input.Events.html#event:GAMEOBJECT_POINTER_DOWN__anchor
-      tanooki.on('pointerdown', this.hideTanooki);
-   }  
+      // * Stop once Ruby Cuts Her Tree Down
 
-   hideTanooki(pointer, localX, localY, event) {
-      let sceneContext = this.scene;  // get scene context before we kill the object
-      sceneContext.hideTanookiTimer.remove();
-
-      // * Add to Score/Hit Accuracy
-      sceneContext.tanookiHitCount += 1;
-      sceneContext.objectiveUI.setText(`Objective: Tap on the Tanookis before they hide.\nAccuracy: ${Math.trunc((sceneContext.tanookiHitCount/sceneContext.tanookiTotalCount)*100)}%`)
-       
-      sceneContext.playPop();         // play pop sound
-      this.destroy();             // destroy the child obj
+      if(this.rubysTree.chopCount == this.maxChopCount) {
+         this.choppingTreeWinner();
+      }
+      console.log('chop count: ' + tree.chopCount);
+      console.log('max chop count: ' + tree.chopCount);
    }
 
-    // play a randomized pop sound
-    playPop() {
-      switch(Math.floor(Math.random() * 3)) {
-          case 0:
-              this.sound.play('pop01', {volume: 1});
-              break;
-          case 1:
-              this.sound.play('pop02', {volume: 1});
-              break;
-          case 2:
-              this.sound.play('pop03', {volume: 1});
-              break;
-          default:
-              console.log('Error: Invalid Sound');
+   choppingTreeWinner() {
+      console.log('rubysTreeIsCut')
+      this.lumberMusic.stop();
+      this.treeCutTime = this.rubyCutTree.getElapsedSeconds();
+      if(this.treeCutTime >= 90) {
+         this.sound.play('tree_falling')
       }
-  }
+      this.rubyCutTree.remove();
+      this.maxCutTree.remove();
+      this.jackCutTree.remove();
+      this.choppingWood = false;
+      this.time.delayedCall(3175, () => {
+         this.cameras.main.shake(300, 0.0075);
+         this.events.emit('rubysTreeIsCut');
+      })
+   }
 
    dialogBox(text, portrait, alpha) {
       this.textBox.setAlpha(alpha);
@@ -1059,6 +1171,82 @@ class FireFlies extends Phaser.Scene {
       this.dialogBox('RUBY!', 'nathan', 1);
       keySPACE.once('down', () => {
          tanookiQuest[0].call(this, this.tanookiQuestChain(1));
+      }, this);
+   }
+
+   showTanooki() {
+      let randomLocationX = this.randomIntFromInterval(10, 17)
+      let randomLocationY = this.randomIntFromInterval(31, 37)
+      let tanooki = this.tanookiGroup.create(this.tile(randomLocationX), this.tile(randomLocationY), 'tanooki', 0).setOrigin(0);
+
+      // * Add Tanooki to Total Tanookis
+      this.tanookiTotalCount += 1;
+
+      // * Lower Delay
+      if(this.tanookiTotalCount == 5) {
+         this.showTanookiTimer.delay = 2500;
+      } else if(this.tanookiTotalCount == 10) {
+         this.showTanookiTimer.delay = 2000;
+      } else if(this.tanookiTotalCount == 25) {
+         this.showTanookiTimer.delay = 1500;
+      } else if(this.tanookiTotalCount == 45) {
+         this.showTanookiTimer.delay = 1250;
+      } else if(this.tanookiTotalCount == 60) {
+         this.showTanookiTimer.delay = 1000;
+      }
+      console.log(this.showTanookiTimer.delay)
+
+      this.hideTanookiTimer = this.time.delayedCall(this.showTanookiTimer.delay/2, () => {
+         tanooki.destroy();
+         this.objectiveUI.setText(`Objective: Tap on the Tanookis before they hide.\nAccuracy: ${Math.trunc((this.tanookiHitCount/this.tanookiTotalCount)*100)}%`)
+      });
+      // make circle interactive so we can click (and remove) it
+      // https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#setInteractive
+      tanooki.setInteractive({
+         useHandCursor: true,
+      });
+      // call a function when the mouse clicks on the interactive object
+      // https://photonstorm.github.io/phaser3-docs/Phaser.Input.Events.html#event:GAMEOBJECT_POINTER_DOWN__anchor
+      tanooki.on('pointerdown', this.hideTanooki);
+   }  
+
+   hideTanooki(pointer, localX, localY, event) {
+      let sceneContext = this.scene;  // get scene context before we kill the object
+      sceneContext.hideTanookiTimer.remove();
+
+      // * Add to Score/Hit Accuracy
+      sceneContext.tanookiHitCount += 1;
+      sceneContext.objectiveUI.setText(`Objective: Tap on the Tanookis before they hide.\nAccuracy: ${Math.trunc((sceneContext.tanookiHitCount/sceneContext.tanookiTotalCount)*100)}%`)
+       
+      sceneContext.sound.play('pop01', {volume: 0.75});         // play pop sound
+      this.destroy();             // destroy the child obj
+   }
+
+   // * LUMBER QUEST
+
+   lumberQuestChain(i) {
+      return function() {
+         // * Start of Quest
+         if (lumberQuest[i]) {
+            lumberQuest[i].call(this, this.lumberQuestChain(++i));
+         // * End of Quest
+         } else {
+            this.ruby.canMove = true;
+            this.dialogBox('', 'placeholder', 0);
+            this.startedQuest = false;
+            this.fireFlies += 1;
+            this.objectiveUI.setText(`Objective:\nFind Fireflies. ${this.fireFlies}/${this.maxFireFlies}`);
+         }
+      }.bind(this);
+   }
+
+   startLumberQuest() {
+      this.startedQuest = true;
+      this.ruby.stopMoving('idle_up');
+      this.maxTheSlime.setVelocity(0, 0);
+      this.dialogBox('WE ARE RECRUITING HERE\nAT JACK\'S LUMBER YARD!', 'jack', 1);
+      keySPACE.once('down', () => {
+         lumberQuest[0].call(this, this.lumberQuestChain(1));
       }, this);
    }
 }
