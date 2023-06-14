@@ -12,10 +12,10 @@ let config = {
       }
    },
    zoom: 2.5,
-   scene: [Title, Opening, Overworld, Store, AirRaid, Cave, FireFlies, Finale]
+   scene: [Tanooki, Title, Opening, Overworld, Store, AirRaid, Cave, FireFlies, Finale, Chop, Futbol]
 }
 
 // reserve keyboard vars
-let keyESC, keySPACE, keyLEFT, keyRIGHT, keyUP, keyDOWN, keyF, keyC, keyE;
+let keyESC, keySPACE, keyLEFT, keyRIGHT, keyUP, keyDOWN, keyF, keyC, keyE, keyR;
 
 const game = new Phaser.Game(config);

@@ -350,7 +350,7 @@ var tanookiQuest = [
 
       // * Add Countdown
 
-      // * Objective
+      // * Countdown Text Formatting
       this.countdownTextConfig = {
          fontFamily: 'Hanyi',
          fontSize: '30px',
