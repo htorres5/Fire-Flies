@@ -523,7 +523,7 @@ var wonRaceQuest = [
    },
 
    function(fn) {
-      this.dialogBox('Obtained FIREFLY', '', 1);
+      this.dialogBox('Obtained FIREFLY', 'placeholder', 1);
       keySPACE.once('down', () => {
          fn();
       })

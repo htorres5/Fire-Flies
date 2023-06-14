@@ -14,11 +14,16 @@ class Opening extends Phaser.Scene {
          frameWidth: 16,
          frameHeight: 16,
       })
+
+      // * Blank Sprite
       this.load.image('exit', '/sprites/change_depth.png')
 
       // * Ruby Texture Atlas
       this.load.atlas('ruby_sheet', '/sprites/sheets/ruby/ruby.png', '/sprites/sheets/ruby/ruby.json')
-      
+
+      // * Controls Sprite
+      this.load.image('controls', '/sprites/controls.png')
+
       // * TileMap
       this.load.image('tilesetImage1', '/tilemaps/interior_tileset.png')
       this.load.tilemapTiledJSON('tilemapJSON1','/tilemaps/opening.json')
@@ -208,14 +213,27 @@ class Opening extends Phaser.Scene {
       this.portrait = this.add.sprite(game.config.width / 8, game.config.height / 1.3 + this.padding*4, 'mom').setOrigin(0.5).setAlpha(0).setDepth(3);
       this.portrait.setScrollFactor(0, 0);
 
-      this.time.delayedCall(1500, () => {
-         this.music.play();
-         this.start();
+      // * Show Controls
+      this.controls = this.add.image(this.tile(13.5), this.tile(0.25), 'controls', 0).setAlpha(0).setOrigin(0);
+
+      this.tweens.add({
+         targets: this.controls,
+         alpha: 1,
+         duration: 300
       })
-      
+
+      // * On Movement, Start Cutscene
+      this.moved = false;
    }
    
    update() {
+      // * On Movement, Start Music Cutscene
+      if((Phaser.Input.Keyboard.JustDown(keyUP) || (Phaser.Input.Keyboard.JustDown(keyDOWN)) || (Phaser.Input.Keyboard.JustDown(keyLEFT)) || (Phaser.Input.Keyboard.JustDown(keyRIGHT))) && !this.moved) {
+         this.moved = true;
+         this.controls.destroy();
+         this.music.play()
+         this.start();
+      }
        // * Ruby Controls/Movement
        if(this.ruby.canMove) {
          this.ruby.update();
@@ -250,13 +268,7 @@ class Opening extends Phaser.Scene {
       this.textBox.setAlpha(1);
       this.portrait.setAlpha(1);
       keySPACE.once('down', () => {
-         // ! UNCOMMENT THIS FOR PLAYTEST BUILD
          cutscene[0].call(this, this.chain(1));
-         // ! DELETE THIS
-         // this.cameras.main.fadeOut(2500, 0, 0, 0);
-         // this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-         //     this.scene.start('overworldScene');
-         // });
       }, this);
    }
 }

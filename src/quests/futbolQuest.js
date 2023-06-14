@@ -342,7 +342,7 @@ var futbolQuest = [
    },
 
    function(fn) {
-      this.dialogBox('Obtained FIREFLY.', 'placeholder', 1);
+      this.dialogBox('Obtained FIREFLY', 'placeholder', 1);
       keySPACE.once('down', () => {
          fn();
       })
