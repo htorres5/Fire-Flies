@@ -12,16 +12,31 @@ class Finale extends Phaser.Scene {
       // * Characters
 
       // * Ruby
-      this.load.image('ruby', '/sprites/sheets/ruby/idle.png')
+      this.load.image({
+         key:'ruby', 
+         url: '/sprites/sheets/ruby/idle.png',
+         normalMap: '/sprites/sheets/ruby/idle_n.png'
+      });
       
       // * Max
-      this.load.spritesheet('max', '/sprites/max.png', {
-         frameWidth: 16,
-         frameHeight: 16,
+      this.load.spritesheet({
+         key: 'max',
+         url: '/sprites/max.png', 
+         normalMap: '/sprites/max_n.png',
+         frameConfig: {
+            frameWidth: 16,
+            frameHeight: 16,
+         }
       })
 
       // * Ruby Texture Atlas
       this.load.atlas('ruby_sheet', '/sprites/sheets/ruby/ruby.png', '/sprites/sheets/ruby/ruby.json')
+
+      // * Firefly
+      this.load.image('firefly', './sprites/firefly.png')
+
+      // * Blank Sprite
+      this.load.image('placeholder', '/sprites/change_depth.png')
 
       // * Tilemap
       this.load.image({
@@ -29,6 +44,10 @@ class Finale extends Phaser.Scene {
          url: '/tilemaps/interior_tileset.png',
          normalMap: '/tilemaps/interior_tileset_n.png'});
       this.load.tilemapTiledJSON('finaleTilemap','/tilemaps/finale.json')
+   }
+
+   randomIntFromInterval(min, max) { // min and max included 
+      return Math.floor(Math.random() * (max - min + 1) + min)
    }
 
    tile(coord) {
@@ -41,27 +60,126 @@ class Finale extends Phaser.Scene {
       this.cameras.main.fadeIn(2500, 0, 0, 0)
 
       // * Enable Lights
-      this.lights.enable().setAmbientColor('dfffc0');
+      // 0x34416e
+      this.lights.enable().setAmbientColor(0x001459);
 
       // * Add Characters
 
       // * Add Ruby (Protaganist)
-      this.ruby = new Ruby(this, this.tile(10), this.tile(4), this.VEL);
+      this.ruby = new Ruby(this, this.tile(8.5), this.tile(4.25), this.VEL);
+      // * Enable Shading
+      this.ruby.setPipeline('Light2D');
 
       // * Add Max (lil bro)
-      this.maxTheSlime = new Max(this, this.tile(8), this.tile(4), this.ruby, this.VEL * .98, 'max').setDepth(1).setOrigin(0);
+      this.maxTheSlime = new Max(this, this.tile(9.75), this.tile(4.91), this.ruby, this.VEL * .98, 'max').setDepth(1).setOrigin(0);
+      // * Enable Shading
+      this.maxTheSlime.setPipeline('Light2D');
 
-      this.maxTheSlime.play('jiggle')
+      this.maxTheSlime.play('jiggle');
 
       // * Add Tilemap
-      this.map = this.add.tilemap('finaleTilemap')
-      this.tileset = this.map.addTilesetImage('interior_tileset', 'fireFliesTileset')
+      this.map = this.add.tilemap('finaleTilemap');
+      this.tileset = this.map.addTilesetImage('interior_tileset', 'finaleTileset');
 
+      // * Add Layers
+      this.caveLayer = this.map.createLayer('cave', this.tileset, 0, 0).setPipeline('Light2D');
+      this.decorationsLayer = this.map.createLayer('decorations', this.tileset, 0, 0).setPipeline('Light2D');
+      this.wellLayer = this.map.createLayer('well', this.tileset, 0, 0).setPipeline('Light2D');
 
+      // * Camera
+      this.cameras.main.setScroll(this.tile(4.5), this.tile(1));
 
+      // * Fireflies
+
+      // * I tried making this a prefab but it did not work :)
+
+      // * Firefly Physics Variables
+      this.SPEED = 50;
+      this.ROTATION_SPEED = 2 * Math.PI; // 0.5 turn per sec, 2 sec per turn
+      this.ROTATION_SPEED_DEGREES = Phaser.Math.RadToDeg(this.ROTATION_SPEED);
+      this.TOLERANCE = 0.02 * this.ROTATION_SPEED;
+
+      // * Light Properties
+      // b8bd68
+      this.COLOR = 0x6f9945;
+      this.RADIUS = 2000;
+      this.INTENSITY = 1.5;
+
+      // * Target that Firefly flys around
+      this.fireflyTargets = this.add.group({
+         runChildUpdate: true
+      })
+
+      // * Top Left Firefly
+      this.fireflySprite0 = this.add.sprite(this.tile(7), this.tile(3), 'firefly', 0).setScale(0.25).setDepth(3);
+      this.firefly0 = this.lights.addLight(this.tile(7), this.tile(3), this.RADIUS, this.COLOR, this.INTENSITY);
+      this.setUpFireFly(this.firefly0, this.SPEED);
+
+      // * Top Right Firefly
+      this.fireflySprite1 = this.add.sprite(this.tile(11), this.tile(3), 'firefly', 0).setScale(0.25).setDepth(3);
+      this.firefly1 = this.lights.addLight(this.tile(11), this.tile(3), this.RADIUS, this.COLOR, this.INTENSITY);
+      this.setUpFireFly(this.firefly1, this.SPEED);
+      
+      // * Bottom Left Firefly
+      this.fireflySprite2 = this.add.sprite(this.tile(6), this.tile(6), 'firefly', 0).setScale(0.25).setDepth(3);
+      this.firefly2 = this.lights.addLight(this.tile(6), this.tile(6), this.RADIUS, this.COLOR, this.INTENSITY);
+      this.setUpFireFly(this.firefly2, this.SPEED);
+      
+      // * Bottom Right Firefly
+      this.fireflySprite3 = this.add.sprite(this.tile(12), this.tile(6), 'firefly', 0).setScale(0.25).setDepth(3);
+      this.firefly3 = this.lights.addLight(this.tile(12), this.tile(6), this.RADIUS, this.COLOR, this.INTENSITY);
+      this.setUpFireFly(this.firefly3, this.SPEED);
+
+      // * Title Screen
+      const titleTextConfig = {
+         fontFamily: 'Hanyi',
+         fontSize: '55px',
+         color: '#294730',
+         align: 'center'
+      }
+
+      this.titleBg = this.add.rectangle(0, 0, game.config.width, game.config.height, 0x000000, 1).setScrollFactor(0,0).setOrigin(0).setDepth(2).setAlpha(0).setPipeline('Light2D');
+      const title = this.add.text(game.config.width/2, game.config.height/2, 'FireFlies', titleTextConfig).setOrigin(0.5).setDepth(3).setAlpha(0);
+      title.setScrollFactor(0, 0);
+      title.setStroke('#d4baba', 5);
+      title.setPipeline('Light2D');
+   }
+
+   update() {
+         this.updateFireFly(this.firefly0, this.fireflyTargets.children.entries[0], this.SPEED, this.randomIntFromInterval(1.8, 2.1), this.TOLERANCE);
+         this.updateFireFly(this.firefly1, this.fireflyTargets.children.entries[1], this.SPEED, this.randomIntFromInterval(1.8, 2.1), this.TOLERANCE);
+         this.updateFireFly(this.firefly2, this.fireflyTargets.children.entries[2], this.SPEED, this.randomIntFromInterval(1.8, 2.1), this.TOLERANCE);
+         this.updateFireFly(this.firefly3, this.fireflyTargets.children.entries[3], this.SPEED, this.randomIntFromInterval(1.8, 2.1), this.TOLERANCE);
+
+         this.fireflySprite0.setPosition(this.firefly0.x, this.firefly0.y)
+         this.fireflySprite1.setPosition(this.firefly1.x, this.firefly1.y)
+         this.fireflySprite2.setPosition(this.firefly2.x, this.firefly2.y)
+         this.fireflySprite3.setPosition(this.firefly3.x, this.firefly3.y)
+   }
+
+   setUpFireFly(firefly, speed) {
+      this.physics.add.existing(firefly);
+      firefly.body.setVelocity(speed, 0)
+
+      let fireflyTarget = this.physics.add.sprite(firefly.x, firefly.y, 'placholder', 0).setAlpha(0).setOrigin(0);
+      this.fireflyTargets.add(fireflyTarget, true);
+   }
+
+   updateFireFly(firefly, fireflyTarget, SPEED, ROTATION_SPEED, TOLERANCE) {
+      let ROTATION_SPEED_DEGREES = Phaser.Math.RadToDeg(ROTATION_SPEED);
+      let angleToPointer = Phaser.Math.Angle.Between(firefly.x, firefly.y, fireflyTarget.x, fireflyTarget.y);
+      let angleDelta = Phaser.Math.Angle.Wrap(angleToPointer - firefly.rotation);
+        
+      if (Phaser.Math.Fuzzy.Equal(angleDelta, 0, TOLERANCE)) {
+        firefly.rotation = angleToPointer;
+        firefly.body.setAngularVelocity(0);
+      } else {
+        firefly.body.setAngularVelocity(Math.sign(angleDelta) * ROTATION_SPEED_DEGREES);
+      }
+
+      this.physics.velocityFromRotation(firefly.rotation, SPEED, firefly.body.velocity);
    }
 }
-   
    
    // Ok, that should be enough fireflies.
    // Ready to head back?

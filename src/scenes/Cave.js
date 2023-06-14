@@ -42,6 +42,7 @@ class Cave extends Phaser.Scene {
       // * Add Layers
       this.caveLayer = this.map.createLayer('cave', this.tileset, 0, 0);
       this.decorationsLayer = this.map.createLayer('decorations', this.tileset, 0, 0);
+      this.wellLayer = this.map.createLayer('well', this.tileset, 0, 0);
 
       // * Add Ruby (Protaganist)
       this.ruby = new Ruby(this, this.tile(9), this.tile(4), this.VEL);

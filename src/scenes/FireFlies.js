@@ -129,7 +129,7 @@ class FireFlies extends Phaser.Scene {
       this.load.image('fireFliesTileset', '/tilemaps/world_tileset.png')
       this.load.tilemapTiledJSON('fireFliesTilemap','/tilemaps/scene_3_map.json')
 
-      // * Loading Zone Sprite
+      // * Blank Sprite
       this.load.image('placeholder', '/sprites/change_depth.png')
 
       // * Music
@@ -759,7 +759,8 @@ class FireFlies extends Phaser.Scene {
       })
 
       // * Disable until Final Quest is Started
-      this.caveEntranceCollider.active = false;
+      // ! CHANGE BACK TO FALSE
+      this.caveEntranceCollider.active = true;
    }
 
    update() {
