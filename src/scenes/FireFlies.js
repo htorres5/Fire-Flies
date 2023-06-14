@@ -1172,11 +1172,11 @@ class FireFlies extends Phaser.Scene {
          this.showTanookiTimer.delay = 2500;
       } else if(this.tanookiTotalCount == 10) {
          this.showTanookiTimer.delay = 2000;
-      } else if(this.tanookiTotalCount == 25) {
+      } else if(this.tanookiTotalCount == 20) {
          this.showTanookiTimer.delay = 1500;
-      } else if(this.tanookiTotalCount == 45) {
+      } else if(this.tanookiTotalCount == 35) {
          this.showTanookiTimer.delay = 1250;
-      } else if(this.tanookiTotalCount == 60) {
+      } else if(this.tanookiTotalCount == 50) {
          this.showTanookiTimer.delay = 1000;
       }
 

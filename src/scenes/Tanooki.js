@@ -139,7 +139,8 @@ class Tanooki extends Phaser.Scene {
       this.countdownToStart.setScrollFactor(0, 0).setStroke(0xFFFFFF, 5).setOrigin(0.5);
 
       // * Play Countdown Sound
-      this.time.delayedCall(1000, () => this.sound.play('countdown'))
+      this.countdownSound = this.sound.add('countdown')
+      this.time.delayedCall(1000, () => this.countdownSound.play())
 
       // * Start Countdown
       this.countdownUpdater = this.time.addEvent({
@@ -192,11 +193,17 @@ class Tanooki extends Phaser.Scene {
    update() {
       // * Quit to Minigames Scene
       if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
+         if(this.countdownSound.isPlaying) {
+            this.countdownSound.stop();
+         }
          this.tanookiMusic.stop();
          this.scene.start('titleScene');
       }
       // * Restart Scene
       if (Phaser.Input.Keyboard.JustDown(keyR)) {
+         if(this.countdownSound.isPlaying) {
+            this.countdownSound.stop();
+         }
          this.tanookiMusic.stop();
          this.scene.restart();
       }

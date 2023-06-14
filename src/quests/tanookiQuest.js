@@ -364,6 +364,7 @@ var tanookiQuest = [
       this.countdownToStart.setScrollFactor(0, 0).setStroke(0xFFFFFF, 5).setOrigin(0.5);
 
       // * Play Countdown Sound
+   
       this.time.delayedCall(1000, () => this.sound.play('countdown'))
       this.countdownUpdater = this.time.addEvent({
          delay: 1000,         
@@ -381,7 +382,7 @@ var tanookiQuest = [
          this.showTanookiTimer = this.time.addEvent({
             delay: 3000,         
             callback: this.showTanooki,
-            repeat: 73,
+            repeat: 80,
             startAt: 1,
             callbackScope: this
          })

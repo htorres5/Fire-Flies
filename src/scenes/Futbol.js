@@ -406,6 +406,20 @@ class Futbol extends Phaser.Scene {
    
    // * FUTBOL
 
+   resetPenalty() {
+      // * Reset Ball
+      this.futBall.setPosition(this.tile(31.25), this.tile(40)).setAlpha(1);
+      this.futBall.setVelocity(0, 0);
+      // * Reset Collider
+      this.goalCollider.active = true;
+      // * Allow Ball to be kicked again
+      this.shotBall = false;
+      // * Next Round
+      this.round += 1;
+      // * Update Objective Text
+      this.objectiveUI.setText(`Objective:\nScore Goals.\nRound ${this.round} of ${this.maxRounds}\nScored: ${this.goals}/${this.maxRounds}`)
+   }
+
    resultsScreen() {
       // * Used to Stop Game Update
       this.round += 1;
@@ -443,19 +457,5 @@ class Futbol extends Phaser.Scene {
       } else {
          this.rankUI.setText('F').setColor(this.fRankColor);
       }
-   }
-
-   resetPenalty() {
-      // * Reset Ball
-      this.futBall.setPosition(this.tile(31.25), this.tile(40)).setAlpha(1);
-      this.futBall.setVelocity(0, 0);
-      // * Reset Collider
-      this.goalCollider.active = true;
-      // * Allow Ball to be kicked again
-      this.shotBall = false;
-      // * Next Round
-      this.round += 1;
-      // * Update Objective Text
-      this.objectiveUI.setText(`Objective:\nScore Goals.\nRound ${this.round} of ${this.maxRounds}\nScored: ${this.goals}/${this.maxRounds}`)
    }
 }
