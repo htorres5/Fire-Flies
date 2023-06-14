@@ -150,6 +150,7 @@ class Tanooki extends Phaser.Scene {
          },
          repeat: 2,
       })
+      
       // * Rank Colors
       this.sRankColor = '#ffd700';
       this.aRankColor = '#54e354';
@@ -189,10 +190,12 @@ class Tanooki extends Phaser.Scene {
 }
 
    update() {
+      // * Quit to Minigames Scene
       if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
          this.tanookiMusic.stop();
          this.scene.start('titleScene');
       }
+      // * Restart Scene
       if (Phaser.Input.Keyboard.JustDown(keyR)) {
          this.tanookiMusic.stop();
          this.scene.restart();
@@ -208,7 +211,7 @@ class Tanooki extends Phaser.Scene {
       }
       this.rankUI.setFontSize('65px').setX(this.countdownToStart.x - this.countdownToStart.width/2).setY(this.countdownToStart.y).setOrigin(1, 0.5)
 
-      this.objectiveUI.setText('Press SPACE to Continue.\nPress R to Restart.')
+      this.objectiveUI.setText('Press SPACE to Quit.\nPress R to Restart.')
       if(this.hitAccuracy > 85) {
          this.sound.play('won_race')
       }

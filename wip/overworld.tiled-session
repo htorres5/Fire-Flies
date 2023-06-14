@@ -32,8 +32,8 @@
             "scale": 1,
             "selectedLayer": 7,
             "viewCenter": {
-                "x": 1021.5,
-                "y": 765
+                "x": 1024,
+                "y": 767.5
             }
         },
         "air_raid_map.tmx#air_raid_tileset": {
@@ -61,8 +61,8 @@
             "scale": 2,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 302.75,
-                "y": 143
+                "x": 304,
+                "y": 143.75
             }
         },
         "finale.tmx#interior_tileset": {
@@ -72,8 +72,8 @@
             "scale": 1.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 319.66666666666663,
-                "y": 127.33333333333331
+                "x": 320,
+                "y": 128.33333333333334
             }
         },
         "opening.tmx#interior_tileset": {
@@ -83,8 +83,8 @@
             "scale": 0.5,
             "selectedLayer": 8,
             "viewCenter": {
-                "x": 1021,
-                "y": 764
+                "x": 1023,
+                "y": 767
             }
         },
         "overworld.tmx#tileset": {
@@ -98,8 +98,8 @@
             "scale": 1.5,
             "selectedLayer": 12,
             "viewCenter": {
-                "x": 1241.6666666666665,
-                "y": 827.9999999999999
+                "x": 1240.3333333333333,
+                "y": 826.6666666666666
             }
         },
         "scene_1_map.tmx#world_tileset": {
@@ -110,8 +110,8 @@
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1003.6666666666666,
-                "y": 666
+                "x": 1024,
+                "y": 767.6666666666666
             }
         },
         "scene_2_map.tmx#world_tileset": {
@@ -122,8 +122,8 @@
             "scale": 1,
             "selectedLayer": 8,
             "viewCenter": {
-                "x": 731.5,
-                "y": 1244
+                "x": 1024,
+                "y": 767.5
             }
         },
         "scene_3_map.tmx#world_tileset": {
@@ -134,7 +134,7 @@
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 319.75,
+                "x": 320,
                 "y": 128.25
             }
         },

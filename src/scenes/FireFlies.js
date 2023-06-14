@@ -593,9 +593,9 @@ class FireFlies extends Phaser.Scene {
       this.maxRounds = 5;
 
       // * Penalties
-      this.shootingArrow = this.physics.add.sprite(this.tile(31.5), this.tile(41), 'shooting_arrow').setAlpha(0).setOrigin(0, 0.5).setDepth(5).setAngle(2);
+      this.shootingArrow = this.physics.add.sprite(this.tile(31.5), this.tile(40), 'shooting_arrow').setAlpha(0).setOrigin(0, 0.5).setDepth(5).setAngle(2);
 
-      this.futBall = this.physics.add.sprite(this.tile(31.25), this.tile(40), 'fut_ball').setAlpha(0).setOrigin(0);
+      this.futBall = this.physics.add.sprite(this.tile(31.25), this.tile(40), 'fut_ball').setAlpha(0).setOrigin(0).setDepth(6);
 
       this.goalPost = this.add.rectangle(this.tile(30), this.tile(44), this.tile(3), this.tile(1), 0x000000, 0).setOrigin(0);
       this.physics.add.existing(this.goalPost, true);
@@ -845,13 +845,13 @@ class FireFlies extends Phaser.Scene {
             this.tweens.add({
                targets: this.adrian,
                x: this.tile(33.25),
-               duration: 1500/(this.round*0.6),
+               duration: 1500/(this.round*0.4),
            });
          } else if((this.adrian.body.position.x >= this.tile(32.75)) && (this.adrian.body.position.x <= this.tile(33.25))) {
             this.tweens.add({
                targets: this.adrian,
                x: this.tile(30),
-               duration: 1500/(this.round*0.6),
+               duration: 1500/(this.round*0.4),
            });
          }
       }

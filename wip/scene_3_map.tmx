@@ -3459,6 +3459,11 @@
    <properties>
     <property name="collides" type="bool" value="true"/>
    </properties>
+   <objectgroup draworder="index" id="3">
+    <object id="12" x="1.875" y="27.375">
+     <polygon points="0,0 -0.25,-7.5 1.875,-17.375 4.125,-19.5 7.75,-19.5 9.875,-17.625 14.125,-21.5 19.875,-21.5 22.125,-19.625 28,-7.375 28.25,0.875 0.125,1"/>
+    </object>
+   </objectgroup>
   </tile>
   <tile id="691">
    <properties>
