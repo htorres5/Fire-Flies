@@ -1,6 +1,6 @@
 class Futbol extends Phaser.Scene {
    constructor() {
-      super({key: 'fireFliesScene'})
+      super({key: 'futbolScene'})
 
       this.padding = game.config.width / 100;
       this.VEL = 140;

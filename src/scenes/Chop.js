@@ -1,6 +1,6 @@
 class Chop extends Phaser.Scene {
    constructor() {
-      super({key: 'fireFliesScene'})
+      super({key: 'chopScene'})
 
       this.padding = game.config.width / 100;
       this.VEL = 140;

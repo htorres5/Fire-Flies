@@ -3,7 +3,6 @@ class Tanooki extends Phaser.Scene {
       super({key: 'tanookiScene'})
 
       this.padding = game.config.width / 100;
-      this.VEL = 140;
    }
 
    preload() {
@@ -91,24 +90,6 @@ class Tanooki extends Phaser.Scene {
       keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
       keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 
-      // TODO: Move to Pick Minigames Scene
-      
-      // * Rank Colors
-      this.sRankColor = '#ffd700';
-      this.aRankColor = '#54e354';
-      this.bRankColor = '#285feb';
-      this.cRankColor = '#ac55ad';
-      this.dRankColor = '#f50535';
-      this.fRankColor = '#adadad';
-
-      // * Rank Formatting
-      this.rankConfig = {
-         fontFamily: 'GrapeSoda',
-         fontSize: '12px',
-         color: sRankColor,
-         align: 'left'
-     }
-
       // * TAPPING TANOOKIS
 
       // * Add Mallet Sprite
@@ -169,9 +150,24 @@ class Tanooki extends Phaser.Scene {
          },
          repeat: 2,
       })
+      // * Rank Colors
+      this.sRankColor = '#ffd700';
+      this.aRankColor = '#54e354';
+      this.bRankColor = '#285feb';
+      this.cRankColor = '#ac55ad';
+      this.dRankColor = '#f50535';
+      this.fRankColor = '#adadad';
+
+      // * Rank Formatting
+      this.rankConfig = {
+         fontFamily: 'GrapeSoda',
+         fontSize: '40px',
+         color: this.sRankColor,
+         align: 'left'
+      }
 
       // * Rank UI
-      this.rankUI = this.add.text(this.objectiveUI.x + this.objectiveUI.width + 15, this.objectiveUI.y + 12, `S`, this.rankConfig)
+      this.rankUI = this.add.text(this.padding + 10, this.objectiveUI.y + 45, `S`, this.rankConfig).setOrigin(0.5, 0.5).setScrollFactor(0, 0).setStroke('#FFF', 3);
 
       // * Start Game and Song
       this.startSong = this.time.delayedCall(4000, () => {
@@ -180,7 +176,7 @@ class Tanooki extends Phaser.Scene {
          this.showTanookiTimer = this.time.addEvent({
             delay: 3000,         
             callback: this.showTanooki,
-            repeat: 73,
+            repeat: 80,
             startAt: 1,
             callbackScope: this
          })
@@ -190,24 +186,9 @@ class Tanooki extends Phaser.Scene {
       this.tanookiMusic.on('complete', () => {
         this.resultsScreen();
       })
-
 }
 
    update() {
-      if(((this.tanookiHitCount/this.tanookiTotalCount)*100) == 100) {
-         this.rankUI.setText('S').setColor(this.sRankColor);
-      } else if(((this.tanookiHitCount/this.tanookiTotalCount)*100) >= 92) {
-         this.rankUI.setText('A').setColor(this.aRankColor);
-      } else if(((this.tanookiHitCount/this.tanookiTotalCount)*100) >= 85) {
-         this.rankUI.setText('B').setColor(this.bRankColor);
-      } else if(((this.tanookiHitCount/this.tanookiTotalCount)*100) >= 75) {
-         this.rankUI.setText('C').setColor(this.cRankColor);
-      } else if(((this.tanookiHitCount/this.tanookiTotalCount)*100) >= 50) {
-         this.rankUI.setText('D').setColor(this.dRankColor);
-      } else {
-         this.rankUI.setText('F').setColor(this.fRankColor);
-      }
-
       if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
          this.tanookiMusic.stop();
          this.scene.start('titleScene');
@@ -221,11 +202,11 @@ class Tanooki extends Phaser.Scene {
    resultsScreen() {
       this.hitAccuracy = (this.tanookiHitCount/this.tanookiTotalCount)*100;
       if (this.hitAccuracy == 100) {
-         this.rankUI.setFontSize('50px').setX(this.countdownToStart.x - this.countdownToStart.width/2 - 15).setY(this.countdownToStart.y)
          this.countdownToStart.setText(`FULL\nCOMBO!`).setAlpha(1)
       } else {
          this.countdownToStart.setText(`${Math.trunc(this.hitAccuracy)}%`).setAlpha(1)
       }
+      this.rankUI.setFontSize('65px').setX(this.countdownToStart.x - this.countdownToStart.width/2).setY(this.countdownToStart.y).setOrigin(1, 0.5)
 
       this.objectiveUI.setText('Press SPACE to Continue.\nPress R to Restart.')
       if(this.hitAccuracy > 85) {
@@ -250,17 +231,18 @@ class Tanooki extends Phaser.Scene {
          this.showTanookiTimer.delay = 2500;
       } else if(this.tanookiTotalCount == 10) {
          this.showTanookiTimer.delay = 2000;
-      } else if(this.tanookiTotalCount == 25) {
+      } else if(this.tanookiTotalCount == 20) {
          this.showTanookiTimer.delay = 1500;
-      } else if(this.tanookiTotalCount == 45) {
+      } else if(this.tanookiTotalCount == 35) {
          this.showTanookiTimer.delay = 1250;
-      } else if(this.tanookiTotalCount == 60) {
+      } else if(this.tanookiTotalCount == 50) {
          this.showTanookiTimer.delay = 1000;
       }
 
       this.hideTanookiTimer = this.time.delayedCall(this.showTanookiTimer.delay/2, () => {
          tanooki.destroy();
          this.objectiveUI.setText(`Objective: Tap on the Tanookis before they hide.\nAccuracy: ${Math.trunc((this.tanookiHitCount/this.tanookiTotalCount)*100)}%`)
+         this.updateRank();
       });
       // make circle interactive so we can click (and remove) it
       // https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.GameObject.html#setInteractive
@@ -281,6 +263,26 @@ class Tanooki extends Phaser.Scene {
       sceneContext.objectiveUI.setText(`Objective: Tap on the Tanookis before they hide.\nAccuracy: ${Math.trunc((sceneContext.tanookiHitCount/sceneContext.tanookiTotalCount)*100)}%`)
        
       sceneContext.sound.play('pop01', {volume: 0.75});         // play pop sound
+
+      // * Update Rank
+      sceneContext.updateRank();
+
       this.destroy();             // destroy the child obj
+   }
+
+   updateRank() {
+      if(((this.tanookiHitCount/this.tanookiTotalCount)*100) == 100) {
+         this.rankUI.setText('S').setColor(this.sRankColor);
+      } else if(((this.tanookiHitCount/this.tanookiTotalCount)*100) >= 92) {
+         this.rankUI.setText('A').setColor(this.aRankColor);
+      } else if(((this.tanookiHitCount/this.tanookiTotalCount)*100) >= 85) {
+         this.rankUI.setText('B').setColor(this.bRankColor);
+      } else if(((this.tanookiHitCount/this.tanookiTotalCount)*100) >= 75) {
+         this.rankUI.setText('C').setColor(this.cRankColor);
+      } else if(((this.tanookiHitCount/this.tanookiTotalCount)*100) >= 50) {
+         this.rankUI.setText('D').setColor(this.dRankColor);
+      } else {
+         this.rankUI.setText('F').setColor(this.fRankColor);
+      }
    }
 }
