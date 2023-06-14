@@ -91,6 +91,8 @@ class FireFlies extends Phaser.Scene {
       // * Hitsounds
       this.load.audio('pop01', './audio/pop01.mp3');
 
+      // * Countdown Sound
+      this.load.audio('countdown', './audio/countdown.mp3')
 
       // * Lumber Quest Assets
       

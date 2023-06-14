@@ -363,6 +363,8 @@ var tanookiQuest = [
       this.countdownToStart = this.add.text(game.config.width/2, game.config.height/2, `${this.countdown}`, this.countdownTextConfig).setAlpha(0);
       this.countdownToStart.setScrollFactor(0, 0).setStroke(0xFFFFFF, 5).setOrigin(0.5);
 
+      // * Play Countdown Sound
+      this.time.delayedCall(1000, () => this.sound.play('countdown'))
       this.countdownUpdater = this.time.addEvent({
          delay: 1000,         
          callback: () => {

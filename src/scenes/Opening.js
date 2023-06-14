@@ -219,7 +219,7 @@ class Opening extends Phaser.Scene {
       this.tweens.add({
          targets: this.controls,
          alpha: 1,
-         duration: 300
+         duration: 500
       })
 
       // * On Movement, Start Cutscene

@@ -218,6 +218,8 @@ var lumberQuest = [
 
       this.timeToFinish = this.add.text(game.config.width- 15, 0, ``, this.countdownTextConfig).setAlpha(0).setScrollFactor(0, 0).setStroke(0xFFFFFF, 5).setOrigin(1, 0).setDepth(10);
 
+      // * Play Countdown Sound
+      this.time.delayedCall(1000, () => this.sound.play('countdown'))
       this.countdownUpdater = this.time.addEvent({
          delay: 1000,         
          callback: () => {
