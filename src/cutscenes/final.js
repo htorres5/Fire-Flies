@@ -1,3 +1,30 @@
+   // Ok, that should be enough fireflies.
+   // Ready to head back?
+   // yes! let's go!
+
+   // *goes to cave * //
+   // Look Max...
+   // ?
+   // I should not have held this from you for so long...
+   // But both mom and dad are—
+   // gone?
+   // ...
+   // Yes...
+   // are you sad?
+   // It has been destroying me inside,
+   // But spending time with you today made me realize that,
+   // As long as we have each other, 
+   // We will be fine no matter what.
+   // yes! i had fun too!
+   // oh! and look what I found!
+   // obtained RICE
+   //  !
+   // ^-^ Rice!
+   // Where did you find it!?
+   // the army guy left it when he ran away...
+   // I love you Max.
+   // i love you too Ruby!
+   // Fin (spanish)
 
 var finalScene = [
    function(fn) {
@@ -145,6 +172,13 @@ var finalScene = [
    },
 
    function(fn) {
+      // * Set That Player Completed Game
+      if (this.supportsLocalStorage()) {
+          this.completedGame = true;
+          localStorage.setItem('completedGame', `${this.completedGame}`);
+      }
+
+      // * Roll Credits :)
       this.tweens.add({
          targets: this.titleBg,
          alpha: 1,
@@ -161,60 +195,19 @@ var finalScene = [
          alpha: 1,
          duration: 2500
       })
-      this.time.delayedCall(3000, () => {
+      this.time.delayedCall(5000, () => {
          fn();
       })
    },
 
    function(fn) {
-      
-   },
-
-   function(fn) {
-      this.dialogBox('Do not worry Max,', 'ruby', 1);
-      keySPACE.once('down', () => {
-         fn();
+      console.log(this.credits.displayHeight)
+      this.tweens.add({
+         targets: this.credits,
+         y: -1000,
+         duration: 60000
       })
-   },
-
-   function(fn) {
-      this.dialogBox('He forgot to take the jar with him.', 'ruby', 1);
-      keySPACE.once('down', () => {
-         fn();
-      })
-   },
-
-   function(fn) {
-      this.dialogBox('Obtained FIREFLY', '', 1);
-      keySPACE.once('down', () => {
-         fn();
-      })
-   },
-
-   function(fn) {
-      this.dialogBox('you ran so fast!', 'max', 1);
-      keySPACE.once('down', () => {
-         fn();
-      })
-   },
-
-   function(fn) {
-      this.dialogBox('why don\'t you run anymore?', 'max', 1);
-      keySPACE.once('down', () => {
-         fn();
-      })
-   },
-
-   function(fn) {
-      this.dialogBox('I hate running.', 'ruby', 1);
-      keySPACE.once('down', () => {
-         fn();
-      })
-   },
-
-   function(fn) {
-      this.dialogBox('Well, a little bit less now...', 'ruby', 1);
-      keySPACE.once('down', () => {
+      this.time.delayedCall(61000, () => {
          fn();
       })
    },

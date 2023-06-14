@@ -268,6 +268,7 @@ class FireFlies extends Phaser.Scene {
       this.decorationsLayer = this.map.createLayer('decorations', this.tileset, 0, 0);
       this.treesBehindLayer = this.map.createLayer('trees_behind', this.tileset, 0, 0);
       this.housesLayer = this.map.createLayer('houses', this.tileset, 0, 0);
+      this.trees2Layer = this.map.createLayer('trees2', this.tileset, 0, 0).setDepth(2);
       this.treesLayer = this.map.createLayer('trees', this.tileset, 0, 0).setDepth(2);
       this.houseDecLayer = this.map.createLayer('house_decorations', this.tileset, 0, 0).setDepth(3);
 
@@ -333,6 +334,7 @@ class FireFlies extends Phaser.Scene {
       this.decorationsLayer.setCollisionByProperty({ collides: true })
       this.treesBehindLayer.setCollisionByProperty({ collides: true })
       this.treesLayer.setCollisionByProperty({ collides: true })
+      this.trees2Layer.setCollisionByProperty({ collides: true })
       this.houseDecLayer.setCollisionByProperty({ collides: true})
       this.bridgeLayer.setCollisionByProperty({ collides: true})
       this.physics.add.collider(this.ruby, this.bgLayer)
@@ -343,6 +345,7 @@ class FireFlies extends Phaser.Scene {
       this.physics.add.collider(this.ruby, this.pathsLayer)
       this.physics.add.collider(this.ruby, this.housesLayer)
       this.physics.add.collider(this.ruby, this.houseDecLayer)
+      this.physics.add.collider(this.ruby, this.trees2Layer)
       this.physics.add.collider(this.ruby, this.treesLayer)
 
 
@@ -374,8 +377,8 @@ class FireFlies extends Phaser.Scene {
       // * UI
 
       // * FireFly Count
-      // ! CHANGE BACK TO 0
-      this.fireFlies = 3;
+
+      this.fireFlies = 0;
       this.maxFireFlies = 4;
 
       // * Objective
@@ -755,8 +758,7 @@ class FireFlies extends Phaser.Scene {
       })
 
       // * Disable until Final Quest is Started
-      // ! CHANGE BACK TO FALSE
-      this.caveEntranceCollider.active = true;
+      this.caveEntranceCollider.active = false;
    }
 
    update() {

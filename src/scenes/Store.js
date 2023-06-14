@@ -144,9 +144,6 @@ class Store extends Phaser.Scene {
 
       // * Music
       this.siren = this.sound.add('air_raid_siren_loop', {volume: 1, loop: true});
-      this.sirenStart = this.sound.add('air_raid_siren_start', {volume: 1, loop: false}).on('complete', () => {
-         this.siren.play();
-      });
 
       // * Dialogue
 
@@ -446,7 +443,7 @@ var storeCutscene = [
 
    function(fn) {
       this.time.delayedCall(1500, () => {
-         this.sirenStart.play();
+         this.siren.play();
       })
       this.dialogue.setAlpha(0);
       this.textBox.setAlpha(0);

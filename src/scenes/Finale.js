@@ -78,6 +78,15 @@ class Finale extends Phaser.Scene {
       this.load.tilemapTiledJSON('finaleTilemap','/tilemaps/finale.json')
    }
 
+   supportsLocalStorage() {
+      try {
+          return 'localStorage' in window && window['localStorage'] !== null;
+      } catch (e) {
+          return false;
+      }
+   }
+   
+
    randomIntFromInterval(min, max) { // min and max included 
       return Math.floor(Math.random() * (max - min + 1) + min)
    }
@@ -135,7 +144,6 @@ class Finale extends Phaser.Scene {
       });
 
 
-
       // * Fireflies
 
       // * I tried making this a prefab but it did not work :)
@@ -177,21 +185,6 @@ class Finale extends Phaser.Scene {
       this.firefly3 = this.lights.addLight(this.tile(12), this.tile(6), this.RADIUS, this.COLOR, this.INTENSITY);
       this.setUpFireFly(this.firefly3, this.SPEED);
 
-      // * Title Screen
-      const titleTextConfig = {
-         fontFamily: 'Alkhemikal',
-         fontSize: '75px',
-         color: '#0a0b14',
-         align: 'center'
-      }
-
-      this.titleBg = this.add.rectangle(0, 0, game.config.width, game.config.height, 0x000000, 1).setScrollFactor(0,0).setOrigin(0).setDepth(3).setAlpha(0).setPipeline('Light2D');
-      this.title = this.add.text(game.config.width/2, game.config.height/2, 'FireFlies', titleTextConfig).setOrigin(0.5).setDepth(4).setAlpha(0);
-      this.title.setScrollFactor(0, 0);
-      this.title.setShadow(1, 1, '#FFF', 2, false, true);
-      this.title.setStroke('#b93281', 5);
-      this.title.setPipeline('Light2D');
-
       // * Dialog
 
       this.dialogueConfig = {
@@ -222,8 +215,68 @@ class Finale extends Phaser.Scene {
 
       this.dialogBox.add([this.portrait, this.dialogue])
 
-      // * Credits
-     this.credits = this.add
+      // * Credits "Scene"
+      this.credits = this.add.container(game.config.width / 2, game.config.height / 2).setScrollFactor(0, 0, true).setDepth(4);
+
+      // * Title
+
+      // * Title Screen
+      const titleTextConfig = {
+         fontFamily: 'KiwiSoda',
+         fontSize: '75px',
+         color: '#0a0b14',
+         align: 'center'
+      }
+
+      this.titleBg = this.add.rectangle(0, 0, game.config.width, game.config.height, 0x000000, 1).setScrollFactor(0,0).setOrigin(0).setDepth(3).setAlpha(0).setPipeline('Light2D');
+      this.title = this.add.text(0, 0, 'FireFlies', titleTextConfig).setOrigin(0.5).setDepth(4).setAlpha(0);
+      this.title.setScrollFactor(0, 0);
+      this.title.setShadow(1, 1, '#FFF', 2, false, true);
+      this.title.setStroke('#b93281', 5);
+      this.title.setPipeline('Light2D');
+
+      this.credits.add(this.title);
+      
+      // * Credits Text Formatting
+      this.dialogueConfig.align = 'center';
+      this.dialogueConfig.color = '#8c9c99';
+
+      // * Credits (real)
+      this.createdBy = this.add.text(0, game.config.height / 2, 'Created By', this.dialogueConfig).setDepth(4).setOrigin(0.5, 0).setPipeline('Light2D');
+      this.credits.add(this.createdBy);
+
+      this.me = this.add.text(0, this.createdBy.y + 30, 'Hector Torres', this.dialogueConfig).setDepth(4).setOrigin(0.5, 0).setPipeline('Light2D');
+      this.credits.add(this.me);
+
+      this.tilesetsBy = this.add.text(0, this.me.y + 100, 'Tileset Art', this.dialogueConfig).setDepth(4).setOrigin(0.5, 0).setPipeline('Light2D');
+      this.credits.add(this.tilesetsBy);
+
+      this.pixelArchipel = this.add.text(0, this.tilesetsBy.y + 30, 'pixel_boy\nAAA', this.dialogueConfig).setDepth(4).setOrigin(0.5, 0).setPipeline('Light2D');
+      this.credits.add(this.pixelArchipel);
+
+      this.musicBy = this.add.text(0, this.pixelArchipel.y + this.pixelArchipel.height + 100, 'Music', this.dialogueConfig).setDepth(4).setOrigin(0.5, 0).setPipeline('Light2D');
+      this.credits.add(this.musicBy);
+
+      this.musicians = this.add.text(0, this.musicBy.y + 30, 'Peritune', this.dialogueConfig).setDepth(4).setOrigin(0.5, 0).setPipeline('Light2D');
+      this.credits.add(this.musicians);
+
+      this.sfxBy = this.add.text(0, this.musicians.y + 100, 'Sound Effects', this.dialogueConfig).setDepth(4).setOrigin(0.5, 0).setPipeline('Light2D');
+      this.credits.add(this.sfxBy);
+
+      this.sfxDesigners = this.add.text(0, this.sfxBy.y + 30, 'Pixabay\nSoundEffectsFactory\nBerlin Atmospheres', this.dialogueConfig).setDepth(4).setOrigin(0.5, 0).setPipeline('Light2D');
+      this.credits.add(this.sfxDesigners);
+
+      this.fontsBy = this.add.text(0, this.sfxDesigners.y + this.sfxDesigners.height + 100, 'Fonts', this.dialogueConfig).setDepth(4).setOrigin(0.5, 0).setPipeline('Light2D');
+      this.credits.add(this.fontsBy);
+
+      this.fontists = this.add.text(0, this.fontsBy.y + 30, 'fontke.com\njeti', this.dialogueConfig).setDepth(4).setOrigin(0.5, 0).setPipeline('Light2D');
+      this.credits.add(this.fontists);
+
+      this.otherArtBy = this.add.text(0, this.fontists.y + this.fontists.height + 100, 'Character Designs\nTilemap\nAnimations', this.dialogueConfig).setDepth(4).setOrigin(0.5, 0).setPipeline('Light2D');
+      this.credits.add(this.otherArtBy);
+
+      this.artist = this.add.text(0, this.otherArtBy.y + this.otherArtBy.height + 30, 'Hector Torres', this.dialogueConfig).setDepth(4).setOrigin(0.5, 0).setPipeline('Light2D');
+      this.credits.add(this.artist);    
 
       // * Start Cutscene
       this.time.delayedCall(1000, () => {
@@ -280,8 +333,33 @@ class Finale extends Phaser.Scene {
             finalScene[i].call(this, this.finalSceneChain(++i));
          // * End of Quest
          } else {
-            // * End Quest
-            this.endQuest();
+            // * Fin
+
+            // * Stop Music
+            if(this.cutsceneMusic.isPlaying) {
+               // this.tweens.add({
+               //    targets: this.cutsceneMusic,
+               //    duration: 2500,
+               //    volume: 0
+               // })
+               this.cameras.main.fadeOut(2500, 0, 0, 0);
+               this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                     this.scene.start('titleScene', {music: this.cutsceneMusic});
+               });
+            } else if(this.creditsMusic.isPlaying) {
+               // this.tweens.add({
+               //    targets: this.cutsceneMusic,
+               //    duration: 2500,
+               //    volume: 0
+               // })
+               this.cameras.main.fadeOut(2500, 0, 0, 0);
+               this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                     this.scene.start('titleScene', {music: this.creditsMusic});
+               });
+            }
+
+
+      
          }
       }.bind(this);
    }
