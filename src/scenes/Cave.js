@@ -179,13 +179,7 @@ class Cave extends Phaser.Scene {
          this.textBox.setAlpha(1);
          this.portrait.setTexture('army').setAlpha(1);
          keySPACE.once('down', () => {
-            // ! UNCOMMENT THIS FOR PLAYTEST BUILD
             caveCutscene[0].call(this, this.chain(1));
-            // ! DELETE THIS
-            // this.cameras.main.fadeOut(2500, 0, 0, 0);
-            // this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            //     this.scene.start('overworldScene');
-            // });
          }, this);
       })
 
@@ -194,6 +188,14 @@ class Cave extends Phaser.Scene {
 }
 
 var caveCutscene = [
+   function(fn) {
+      this.dialogue.text = 'i will contact you later\nfor the funeral arrangements.'
+      this.portrait.setTexture('army');
+      keySPACE.once('down', () => {
+         fn();
+      })
+   },
+
    function(fn) {
       this.armySlime.startFollow({
          duration: 3000,

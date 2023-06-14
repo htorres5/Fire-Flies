@@ -3,7 +3,7 @@
    // * Cave Scene New
 
    // I'm sorry for your loss...
-   // I will contact you later for funeral arrangements.
+   // i will contact you later\nfor the funeral arrangements.
    
    // There is food at home.
    // please! we ran out of rice!
