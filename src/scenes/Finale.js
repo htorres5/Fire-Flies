@@ -14,13 +14,41 @@ class Finale extends Phaser.Scene {
       // * Ruby
       this.load.image({
          key:'ruby', 
+         url: '/sprites/sheets/ruby/down1.png',
+      });
+
+      // * Ruby (Shaded)
+      this.load.image({
+         key:'ruby_shaded', 
          url: '/sprites/sheets/ruby/idle.png',
          normalMap: '/sprites/sheets/ruby/idle_n.png'
+      });
+
+      // * Ruby (Suprised)
+      this.load.image({
+         key:'ruby_suprised', 
+         url: '/sprites/sheets/ruby/ruby_suprised.png',
+      });
+
+      // * Ruby (Happy)
+      this.load.image({
+         key:'ruby_happy', 
+         url: '/sprites/sheets/ruby/ruby_happy.png',
       });
       
       // * Max
       this.load.spritesheet({
          key: 'max',
+         url: '/sprites/max.png', 
+         frameConfig: {
+            frameWidth: 16,
+            frameHeight: 16,
+         }
+      })
+
+      // * Max (Shaded)
+      this.load.spritesheet({
+         key: 'max_shaded',
          url: '/sprites/max.png', 
          normalMap: '/sprites/max_n.png',
          frameConfig: {
@@ -37,6 +65,10 @@ class Finale extends Phaser.Scene {
 
       // * Blank Sprite
       this.load.image('placeholder', '/sprites/change_depth.png')
+      
+      // * Music
+      this.load.audio('dawning_tale', './audio/music/dawning_tale.mp3')
+      this.load.audio('limpid_water', './audio/music/limpid_water.mp3')
 
       // * Tilemap
       this.load.image({
@@ -66,12 +98,12 @@ class Finale extends Phaser.Scene {
       // * Add Characters
 
       // * Add Ruby (Protaganist)
-      this.ruby = new Ruby(this, this.tile(8.5), this.tile(4.25), this.VEL);
+      this.ruby = this.add.sprite(this.tile(8.5), this.tile(4.25), 'ruby_shaded', 0).setOrigin(0).setDepth(1);
       // * Enable Shading
       this.ruby.setPipeline('Light2D');
 
       // * Add Max (lil bro)
-      this.maxTheSlime = new Max(this, this.tile(9.75), this.tile(4.91), this.ruby, this.VEL * .98, 'max').setDepth(1).setOrigin(0);
+      this.maxTheSlime = new Max(this, this.tile(9.75), this.tile(4.91), this.ruby, this.VEL * .98, 'max_shaded').setDepth(1).setOrigin(0);
       // * Enable Shading
       this.maxTheSlime.setPipeline('Light2D');
 
@@ -88,6 +120,21 @@ class Finale extends Phaser.Scene {
 
       // * Camera
       this.cameras.main.setScroll(this.tile(4.5), this.tile(1));
+
+      // * Input
+      keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+      // * Music
+
+      // * Credits Music
+      this.creditsMusic = this.sound.add('limpid_water', {volume: 0.25, loop: true});
+      
+      // * CutsceneMusic
+      this.cutsceneMusic = this.sound.add('dawning_tale', {volume: 0.25}).on("complete", () => {
+         this.creditsMusic.play();
+      });
+
+
 
       // * Fireflies
 
@@ -111,38 +158,78 @@ class Finale extends Phaser.Scene {
       })
 
       // * Top Left Firefly
-      this.fireflySprite0 = this.add.sprite(this.tile(7), this.tile(3), 'firefly', 0).setScale(0.25).setDepth(3);
+      this.fireflySprite0 = this.add.sprite(this.tile(7), this.tile(3), 'firefly', 0).setScale(0.25).setDepth(5);
       this.firefly0 = this.lights.addLight(this.tile(7), this.tile(3), this.RADIUS, this.COLOR, this.INTENSITY);
       this.setUpFireFly(this.firefly0, this.SPEED);
 
       // * Top Right Firefly
-      this.fireflySprite1 = this.add.sprite(this.tile(11), this.tile(3), 'firefly', 0).setScale(0.25).setDepth(3);
+      this.fireflySprite1 = this.add.sprite(this.tile(11), this.tile(3), 'firefly', 0).setScale(0.25).setDepth(5);
       this.firefly1 = this.lights.addLight(this.tile(11), this.tile(3), this.RADIUS, this.COLOR, this.INTENSITY);
       this.setUpFireFly(this.firefly1, this.SPEED);
       
       // * Bottom Left Firefly
-      this.fireflySprite2 = this.add.sprite(this.tile(6), this.tile(6), 'firefly', 0).setScale(0.25).setDepth(3);
+      this.fireflySprite2 = this.add.sprite(this.tile(6), this.tile(6), 'firefly', 0).setScale(0.25).setDepth(5);
       this.firefly2 = this.lights.addLight(this.tile(6), this.tile(6), this.RADIUS, this.COLOR, this.INTENSITY);
       this.setUpFireFly(this.firefly2, this.SPEED);
       
       // * Bottom Right Firefly
-      this.fireflySprite3 = this.add.sprite(this.tile(12), this.tile(6), 'firefly', 0).setScale(0.25).setDepth(3);
+      this.fireflySprite3 = this.add.sprite(this.tile(12), this.tile(6), 'firefly', 0).setScale(0.25).setDepth(5);
       this.firefly3 = this.lights.addLight(this.tile(12), this.tile(6), this.RADIUS, this.COLOR, this.INTENSITY);
       this.setUpFireFly(this.firefly3, this.SPEED);
 
       // * Title Screen
       const titleTextConfig = {
-         fontFamily: 'Hanyi',
-         fontSize: '55px',
-         color: '#294730',
+         fontFamily: 'Alkhemikal',
+         fontSize: '75px',
+         color: '#0a0b14',
          align: 'center'
       }
 
-      this.titleBg = this.add.rectangle(0, 0, game.config.width, game.config.height, 0x000000, 1).setScrollFactor(0,0).setOrigin(0).setDepth(2).setAlpha(0).setPipeline('Light2D');
-      const title = this.add.text(game.config.width/2, game.config.height/2, 'FireFlies', titleTextConfig).setOrigin(0.5).setDepth(3).setAlpha(0);
-      title.setScrollFactor(0, 0);
-      title.setStroke('#d4baba', 5);
-      title.setPipeline('Light2D');
+      this.titleBg = this.add.rectangle(0, 0, game.config.width, game.config.height, 0x000000, 1).setScrollFactor(0,0).setOrigin(0).setDepth(3).setAlpha(0).setPipeline('Light2D');
+      this.title = this.add.text(game.config.width/2, game.config.height/2, 'FireFlies', titleTextConfig).setOrigin(0.5).setDepth(4).setAlpha(0);
+      this.title.setScrollFactor(0, 0);
+      this.title.setShadow(1, 1, '#FFF', 2, false, true);
+      this.title.setStroke('#b93281', 5);
+      this.title.setPipeline('Light2D');
+
+      // * Dialog
+
+      this.dialogueConfig = {
+         fontFamily: 'Hanyi',
+         fontSize: '12px',
+         color: '#fff',
+         align: 'left'
+     }
+
+      // * Container Holding Portrait and Text
+      this.dialogBox = this.add.container(game.config.width / 2, game.config.height - this.padding*2);
+      
+      // * Box
+      this.textBox = this.add.rectangle(this.padding*2, game.config.height / 1.5, game.config.width - this.padding*4, (game.config.height / 3 ) - this.padding*2, 0x000000, 1).setStrokeStyle(this.padding, 0xFFFFFF, 1).setOrigin(0).setAlpha(0).setDepth(6);
+      this.textBox.setScrollFactor(0, 0);
+
+      // * Prompt Text
+      this.prompt = this.add.text(game.config.width / 4, game.config.height / 1.5 + this.padding*4, "", this.dialogueConfig).setAlpha(0).setDepth(6);
+      this.prompt.setScrollFactor(0, 0);
+
+      // * Dialogue Text
+      this.dialogue = this.add.text(0, 0, "", this.dialogueConfig).setAlpha(0).setDepth(2).setOrigin(0.5, 1);
+      this.dialogue.setScrollFactor(0, 0);
+      
+      // * Dialogue Portrait
+      this.portrait = this.add.sprite(this.dialogue.x - this.dialogue.width, this.dialogue.y, 'ruby').setOrigin(1, 1).setAlpha(0).setDepth(2);
+      this.portrait.setScrollFactor(0, 0);
+
+      this.dialogBox.add([this.portrait, this.dialogue])
+
+      // * Credits
+     this.credits = this.add
+
+      // * Start Cutscene
+      this.time.delayedCall(1000, () => {
+         this.cutsceneMusic.play();
+         this.startFinalScene();
+      })
    }
 
    update() {
@@ -178,6 +265,32 @@ class Finale extends Phaser.Scene {
       }
 
       this.physics.velocityFromRotation(firefly.rotation, SPEED, firefly.body.velocity);
+   }
+
+   dialog(text, portrait, alpha) {
+      this.dialogue.setText(text).setAlpha(alpha).setX(this.portrait.width - 15);
+      console.log(this.dialogue.width);
+      this.portrait.setTexture(portrait).setAlpha(alpha).setPosition(this.dialogue.x - this.dialogue.width/2 - 15, this.dialogue.y);
+   }
+
+   finalSceneChain(i) {
+      return function() {
+         // * Start of Cutscene
+         if (finalScene[i]) {
+            finalScene[i].call(this, this.finalSceneChain(++i));
+         // * End of Quest
+         } else {
+            // * End Quest
+            this.endQuest();
+         }
+      }.bind(this);
+   }
+
+   startFinalScene() {
+      this.dialog('Max...', 'ruby', 1);
+      keySPACE.once('down', () => {
+         finalScene[0].call(this, this.finalSceneChain(1));
+      }, this);
    }
 }
    

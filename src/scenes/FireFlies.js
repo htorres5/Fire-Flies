@@ -356,11 +356,7 @@ class FireFlies extends Phaser.Scene {
       // * Music
       this.music = this.sound.add('glimmering_woods', {volume: 0.25, loop: true});
       this.music.play();
-      // this.tweens.add({
-      //    target: this.music,
-      //    volume: 0.25,
-      //    duration: 5000
-      // })
+
 
       // * Cameras
       this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
@@ -424,7 +420,7 @@ class FireFlies extends Phaser.Scene {
 
       // * Dialogue
 
-      // * Dialogue Box
+      
       this.textBox = this.add.rectangle(this.padding*2, game.config.height / 1.5, game.config.width - this.padding*4, (game.config.height / 3 ) - this.padding*2, 0x000000, 1).setStrokeStyle(this.padding, 0xFFFFFF, 1).setOrigin(0).setAlpha(0).setDepth(6);
       this.textBox.setScrollFactor(0, 0);
 
