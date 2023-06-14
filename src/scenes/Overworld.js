@@ -161,7 +161,6 @@ class Overworld extends Phaser.Scene {
       this.storeLocation = this.physics.add.sprite(this.tile(49), this.tile(4), 'store_location').setOrigin(0).setDepth(-4);
       this.storeLocation.setImmovable();
       this.storeCollider = this.physics.add.overlap(this.ruby, this.storeLocation, () => {
-         console.log("hit");
          this.storeCollider.active = false;
          this.scene.start('storeScene', {music: this.music});
       })
@@ -186,11 +185,9 @@ class Overworld extends Phaser.Scene {
       // * Colliders
       this.riverAreaCollider = this.physics.world.overlap(this.ruby, this.changeToRiverArea, () => {
          this.isInRiverLayer = true;
-         console.log(`Collider callback function: ${this.isInRiverLayer}`)
       }, null, this)
       this.regularAreaCollider = this.physics.world.overlap(this.ruby, this.changeToRegularArea, () => {
          this.isInRiverLayer = false;
-         console.log(`Collider callback function: ${this.isInRiverLayer}`)
       }, null, this)
 
       // * If is in River Layer...
@@ -199,7 +196,6 @@ class Overworld extends Phaser.Scene {
          this.maxTheSlime.setDepth(-1);
          this.ruby.setDepth(-1);
          
-         console.log(this.ruby.depth)
          // * Disable Bridge Collider & Enable River Collider
          this.underCollider.active = true;
          this.bridgeCollider.active = false;

@@ -603,8 +603,6 @@ class FireFlies extends Phaser.Scene {
          this.resetPenaltyTimer.remove();
          this.goalCollider.active = false;
          this.goals += 1;
-         console.log(this.goals)
-         console.log(this.round)
          if(this.round == this.maxRounds) {
             this.endPenaltyTurn();
          } else {
@@ -773,11 +771,10 @@ class FireFlies extends Phaser.Scene {
       // * World Colliders
       this.riverAreaCollider = this.physics.world.overlap(this.ruby, this.changeToRiverArea, () => {
          this.isInRiverLayer = true;
-         console.log(`Collider callback function: ${this.isInRiverLayer}`)
       }, null, this)
       this.regularAreaCollider = this.physics.world.overlap(this.ruby, this.changeToRegularArea, () => {
          this.isInRiverLayer = false;
-         console.log(`Collider callback function: ${this.isInRiverLayer}`)
+
       }, null, this)
 
       // * If is in River Layer...
@@ -786,7 +783,6 @@ class FireFlies extends Phaser.Scene {
          this.maxTheSlime.setDepth(-1);
          this.ruby.setDepth(-1);
          
-         console.log(this.ruby.depth)
          // * Disable Bridge Collider & Enable River Collider
          this.underCollider.active = true;
          this.bridgeCollider.active = false;
@@ -834,7 +830,6 @@ class FireFlies extends Phaser.Scene {
             this.shotBall = true;
             this.physics.velocityFromAngle(this.shootingArrow.angle, 100, this.futBall.body.velocity)
             this.resetPenaltyTimer = this.time.delayedCall(5000, () => {
-               console.log(this.round)
                if(this.round == this.maxRounds) {
                   this.endPenaltyTurn();
                } else {
@@ -951,7 +946,6 @@ class FireFlies extends Phaser.Scene {
                this.checkpoint3.setAlpha(0);
                this.checkpoint4.setAlpha(0);
                this.checkpoint5.setAlpha(0);
-               console.log(this.wonRace);
 
             // * If Won Race...
             } else {
@@ -972,8 +966,6 @@ class FireFlies extends Phaser.Scene {
                   this.music.resume();
                   this.sound.play('won_race');
                });
-
-               console.log(this.wonRace);
             }
          }
       }.bind(this);
@@ -1069,8 +1061,6 @@ class FireFlies extends Phaser.Scene {
                   this.music.resume();
                   this.sound.play('won_race');
                });
-
-               console.log(this.wonRace);
             }
          }
       }.bind(this);
@@ -1187,7 +1177,6 @@ class FireFlies extends Phaser.Scene {
       } else if(this.tanookiTotalCount == 60) {
          this.showTanookiTimer.delay = 1000;
       }
-      console.log(this.showTanookiTimer.delay)
 
       this.hideTanookiTimer = this.time.delayedCall(this.showTanookiTimer.delay/2, () => {
          tanooki.destroy();
@@ -1242,7 +1231,6 @@ class FireFlies extends Phaser.Scene {
 
    chopTree(lumberjack, tree, axe) {
       tree.chopCount += 1;
-      console.log('tree cut progress: ' + tree.currentFrame);
       if((tree.chopCount) % 50 == 0) {
          this.cameras.main.shake(300, 0.0075);
          tree.currentFrame += 1;
@@ -1266,12 +1254,9 @@ class FireFlies extends Phaser.Scene {
       if(this.rubysTree.chopCount == this.maxChopCount) {
          this.choppingTreeWinner();
       }
-      console.log('chop count: ' + tree.chopCount);
-      console.log('max chop count: ' + tree.chopCount);
    }
 
    choppingTreeWinner() {
-      console.log('rubysTreeIsCut')
       this.lumberMusic.stop();
       this.treeCutTime = this.rubyCutTree.getElapsedSeconds();
       this.rubyCutTree.remove();

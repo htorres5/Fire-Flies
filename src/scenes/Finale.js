@@ -322,7 +322,6 @@ class Finale extends Phaser.Scene {
 
    dialog(text, portrait, alpha) {
       this.dialogue.setText(text).setAlpha(alpha).setX(this.portrait.width - 15);
-      console.log(this.dialogue.width);
       this.portrait.setTexture(portrait).setAlpha(alpha).setPosition(this.dialogue.x - this.dialogue.width/2 - 15, this.dialogue.y);
    }
 

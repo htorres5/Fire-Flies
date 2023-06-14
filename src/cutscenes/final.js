@@ -201,7 +201,6 @@ var finalScene = [
    },
 
    function(fn) {
-      console.log(this.credits.displayHeight)
       this.tweens.add({
          targets: this.credits,
          y: -1000,
