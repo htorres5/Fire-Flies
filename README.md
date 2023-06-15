@@ -24,6 +24,11 @@ Scene 3: Fireflies in Cave (Or Fireflies in General)
 
 
 ## Cool Features
+
+<details>
+	<summary> Please Click After You Finished the Game 😎 </summary> 
+
+ 
 ### Quests and Cutscenes
 Before this I have always wondered how cutscenes and quests were implemented into games, since at first glance it seemed like it would be very hard to manage so many quests and make sure they all work with each other properly. But then I found this lab in Phaser that uses a function array that can chain into each other, and that made it very easy. The first scenes I created though have the array baked into the Scene file itself which looks very messy, but later on I separated them and it turned out well!
 
@@ -36,11 +41,14 @@ I hate Phaser's Lighting system. I hate that I have to write `.setPipeline('Ligh
 But it was all worth it in the end. The Cave Scene turned out amazing; it took a lot of effort and fine tuning, but it really made a difference in how good it looked. I will definitely make an effort to add lighting to any other game I create. 
 
 Ok that is all, hope you enjoyed my game!
+</details>
 
 ## Credits
 ### HUGE SHOUTOUT TO PIXEL-ARCHIPEL FOR THE TILESET ART!
 The game would not look as good without them!
 https://www.patreon.com/pixelarchipel
+Tileset Art
+https://pixel-boy.itch.io/ninja-adventure-asset-pack
 
 #### AND TO PERITUNE FOR THE FREE BANGERS!
 https://peritune.com/
@@ -50,7 +58,10 @@ https://www.dafont.com/alkhemikal.font?text=FireFlies&back=bitmap
 
 #### SOUND EFFECT DESIGNERS!
 https://www.youtube.com/watch?v=msX8iULEQgA - air raid sound effect
+
 https://pixabay.com/sound-effects/falling-bomb-41038/ - falling bomb sound effect
+
 https://pixabay.com/sound-effects/chopping-a-tree-with-hatchet-in-a-forest-close-up-68478/ -chopping tree sound effect
+
 https://www.youtube.com/watch?v=su2oT3s4fQ0&t=15s - tree falling sound effect
  
