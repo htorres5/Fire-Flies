@@ -129,7 +129,7 @@ class Title extends Phaser.Scene {
 
          // * Make Text Smaller
          this.promptConfig.fontSize = '10px'
-         this.news = this.add.text(game.config.width/2, game.config.height/1.25, "Replayable Minigames Coming Soon!", this.promptConfig).setDepth(2).setOrigin(0.5, 0).setPipeline('Light2D');
+         this.minigamesPrompt = this.add.text(game.config.width/2, game.config.height/1.25, "Press R for Minigames!", this.promptConfig).setDepth(2).setOrigin(0.5, 0).setPipeline('Light2D');
 
       } else {
          // * Prompt To Start
