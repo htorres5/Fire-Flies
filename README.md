@@ -9,7 +9,7 @@
 ## Adapted Scenes
 Scene 1: Getting Groceries (Scrapped: Stealing Food From Farm)
 
->The first phase is based on the scene where Setsuko and Seita go get and purchase rice from the store after moving in with their Aunt. I decided to adapt this instead of the scene where Seita steals food from farmers due to time constraints, and as a way to differentiate between the pre-raid and post-raid world. Also, stealing food would go against my game's goofy story, and trying to create a darker narrative would have taken too much time. And I suck at writing :)
+>!The first phase is based on the scene where Setsuko and Seita go get and purchase rice from the store after moving in with their Aunt. I decided to adapt this instead of the scene where Seita steals food from farmers due to time constraints, and as a way to differentiate between the pre-raid and post-raid world. Also, stealing food would go against my game's goofy story, and trying to create a darker narrative would have taken too much time. And I suck at writing :)
 
 Scene 2: Air Raid 
 >This is one of the most iconic scenes from the movie, so I knew it had to go in from the start. I struggled with the art direction for this scene since trying to create active destruction in games is very hard to do in a convincing way, but all my doubt went away as soon as I added Camera Shake to the explosions. Glory to Camera Shake 🙏🙏🙏
