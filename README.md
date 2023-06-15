@@ -14,12 +14,12 @@
  
 Scene 1: Getting Groceries (Scrapped: Stealing Food From Farm)
  
-> The first phase is based on the scene where Setsuko and Seita go and purchase rice from the store after moving in with their Aunt. I decided to adapt this instead of the scene where Seita steals food from farmers due to time constraints, and as a way to differentiate between the pre-raid and post-raid world. In Grave of the Fireflies, the plot builds from Seita and Setsuko enjoying life to resorting to theivery while on the clutches of death, which was hard for me to pull off properly in such a short period of time. So I decided to take a more light-hearted and goofy approach instead, which I think turned out well.
+> The first phase is based on the scene where Setsuko and Seita go and purchase rice from the store after moving in with their Aunt. I decided to adapt this instead of the scene where Seita steals food from farmers due to time constraints, and as a way to differentiate between the pre-raid and post-raid world. In Grave of the Fireflies, the plot builds from Seita and Setsuko enjoying life to resorting to theivery while on the clutches of death, which was hard for me to pull off properly in such a short period of time. So I decided to take a more light-hearted and goofy approach instead.
 
 Scene 2: Air Raid 
 > This is one of the most iconic scenes from the movie, so I knew it had to go in from the start. I struggled with the art direction for this scene since trying to create active destruction in games is very hard to do in a convincing way, but all my doubt went away as soon as I added Camera Shake to the explosions. Glory to Camera Shake 🙏🙏🙏
 
-Scene 3: Fireflies in Cave (Or Fireflies in General)
+Scene 3: Fireflies in Cave
 > This scene is based off of the time where Setsuko and Seita go look for fireflies, and let them all loose in their cave. As soon I saw this scene, I knew it was gonna be my core pillar and foundation due to how beautiful it was. If I had more time, I would have added lighting to the whole map and went all out, but I think only having it in the end acts as a good reward for the player.
 </details>
 
