@@ -320,7 +320,7 @@ var storeCutscene = [
    },
 
    function(fn) {
-      this.dialogue.text = 'Is that the only reason you two\ncame here for?'
+      this.dialogue.text = 'Is that the only thing you two\ncame here for?'
       this.portrait.setTexture('dad');
       keySPACE.once('down', () => {
          fn();

@@ -333,7 +333,7 @@ var raceQuest = [
    },
 
    function(fn) {
-      this.dialogBox('Ok, we will go on Go.', 'ruby', 1);
+      this.dialogBox('Ok, we will start on Go.', 'ruby', 1);
       keySPACE.once('down', () => {
          fn();
       })
