@@ -14,7 +14,7 @@
  
 Scene 1: Getting Groceries (Scrapped: Stealing Food From Farm)
  
-> The first phase is based on the scene where Setsuko and Seita go get and purchase rice from the store after moving in with their Aunt. I decided to adapt this instead of the scene where Seita steals food from farmers due to time constraints, and as a way to differentiate between the pre-raid and post-raid world. Also, stealing food would go against my game's goofy story, and trying to create a darker narrative would have taken too much time. And I suck at writing :)
+> The first phase is based on the scene where Setsuko and Seita go and purchase rice from the store after moving in with their Aunt. I decided to adapt this instead of the scene where Seita steals food from farmers due to time constraints, and as a way to differentiate between the pre-raid and post-raid world. In Grave of the Fireflies, the plot builds from Seita and Setsuko enjoying life to resorting to theivery while on the clutches of death, which was hard for me to pull off properly in such a short period of time. So I decided to take a more light-hearted and goofy approach instead, which I think turned out well.
 
 Scene 2: Air Raid 
 > This is one of the most iconic scenes from the movie, so I knew it had to go in from the start. I struggled with the art direction for this scene since trying to create active destruction in games is very hard to do in a convincing way, but all my doubt went away as soon as I added Camera Shake to the explosions. Glory to Camera Shake 🙏🙏🙏
@@ -39,7 +39,7 @@ Ok, so I could not think of way of not making this adaptation a walking simulato
 ### Lighting
 I hate Phaser's Lighting system. I hate that I have to write `.setPipeline('Light2D')` after every single game object. I hate creating normal maps. I hate that there was not a single search result on Google on how to create a Light prefab in Phaser. 
 
-But it was all worth it in the end. The Cave Scene turned out amazing; it took a lot of effort and fine tuning, but it really made a difference in how good it looked. I will definitely make an effort to add lighting to any other game I create. 
+But it was all worth it in the end! The Cave Scene turned out amazing; it took a lot of effort and fine tuning, but it really made a difference in how good it looked. I will definitely make an effort to add lighting to any other game I create. 
 
 Ok that is all, hope you enjoyed my game!
 </details>
