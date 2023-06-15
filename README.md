@@ -7,15 +7,21 @@
 # Please Stay After the Credits! :)
 
 ## Adapted Scenes
-Scene 1: Getting Groceries (Scrapped: Stealing Food From Farm)
+<details>
+	<summary> Please Click After You Finished the Game 😎 </summary> 
 
->!The first phase is based on the scene where Setsuko and Seita go get and purchase rice from the store after moving in with their Aunt. I decided to adapt this instead of the scene where Seita steals food from farmers due to time constraints, and as a way to differentiate between the pre-raid and post-raid world. Also, stealing food would go against my game's goofy story, and trying to create a darker narrative would have taken too much time. And I suck at writing :)
+ 
+Scene 1: Getting Groceries (Scrapped: Stealing Food From Farm)
+ 
+> The first phase is based on the scene where Setsuko and Seita go get and purchase rice from the store after moving in with their Aunt. I decided to adapt this instead of the scene where Seita steals food from farmers due to time constraints, and as a way to differentiate between the pre-raid and post-raid world. Also, stealing food would go against my game's goofy story, and trying to create a darker narrative would have taken too much time. And I suck at writing :)
 
 Scene 2: Air Raid 
->This is one of the most iconic scenes from the movie, so I knew it had to go in from the start. I struggled with the art direction for this scene since trying to create active destruction in games is very hard to do in a convincing way, but all my doubt went away as soon as I added Camera Shake to the explosions. Glory to Camera Shake 🙏🙏🙏
+> This is one of the most iconic scenes from the movie, so I knew it had to go in from the start. I struggled with the art direction for this scene since trying to create active destruction in games is very hard to do in a convincing way, but all my doubt went away as soon as I added Camera Shake to the explosions. Glory to Camera Shake 🙏🙏🙏
 
 Scene 3: Fireflies in Cave (Or Fireflies in General)
->This scene is based off of the time where Setsuko and Seita go look for fireflies, and let them all loose in their cave. As soon I saw this scene, I knew it was gonna be my core pillar and foundation due to how beautiful it was. If I had more time, I would have added lighting to the whole map and went all out, but I think only having it in the end acts as a good reward for the player.
+> This scene is based off of the time where Setsuko and Seita go look for fireflies, and let them all loose in their cave. As soon I saw this scene, I knew it was gonna be my core pillar and foundation due to how beautiful it was. If I had more time, I would have added lighting to the whole map and went all out, but I think only having it in the end acts as a good reward for the player.
+</details>
+
 
 ## Cool Features
 ### Quests and Cutscenes
