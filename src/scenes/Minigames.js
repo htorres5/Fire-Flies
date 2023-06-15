@@ -50,7 +50,7 @@ class Minigames extends Phaser.Scene {
       this.cameras.main.fadeIn(300, 0, 0, 0)
 
       // * Enable Lights
-      // 0x34416e
+
       this.lights.enable().setAmbientColor(0x001459);
 
       // * Input
@@ -68,7 +68,7 @@ class Minigames extends Phaser.Scene {
       this.TOLERANCE = 0.02 * this.ROTATION_SPEED;
 
       // * Light Properties
-      // b8bd68
+
       this.COLOR = 0x6f9945;
       this.RADIUS = 2000;
       this.INTENSITY = 1.5;
@@ -77,7 +77,7 @@ class Minigames extends Phaser.Scene {
       this.fireflyTargets = this.add.group({
          runChildUpdate: true
       })
-      // 144
+
       // * Top Left Firefly
       this.fireflySprite0 = this.add.sprite(80, 64, 'firefly', 0).setScale(0.25).setDepth(5);
       this.firefly0 = this.lights.addLight(80, 64, this.RADIUS, this.COLOR, this.INTENSITY);
@@ -116,7 +116,6 @@ class Minigames extends Phaser.Scene {
       this.title.setPipeline('Light2D');
 
       // * Play Music (only if not coming from Minigame)
-      console.log(this.music);
       if(this.music == undefined) {
          this.music = this.sound.add('limpid_water', {volume: 0.25, loop: true})
          this.music.play();

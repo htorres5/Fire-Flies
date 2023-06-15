@@ -1,3 +1,8 @@
+// *                         * //
+// *                         * //
+// * PLEASE GO TO README.MD! * //
+// *                         * //
+// *                         * //
 let config = {
    type: Phaser.WEBGL,
    render: {
@@ -12,7 +17,7 @@ let config = {
       }
    },
    zoom: 2.5,
-   scene: [Title, Minigames, Opening, Overworld, Store, AirRaid, Cave, FireFlies, Finale, Tanooki, Chop, Futbol]
+   scene: [Title, Opening, Overworld, Store, AirRaid, Cave, FireFlies, Finale, Minigames, Tanooki, Chop, Futbol]
 }
 
 // reserve keyboard vars

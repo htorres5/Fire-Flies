@@ -294,7 +294,6 @@ var cutscene = [
          this.cutsceneCollider.active = false;
          console.log('hi');
          fn();
-         //this.startCutscene = true;
       })
    },
 

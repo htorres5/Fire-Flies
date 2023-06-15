@@ -347,11 +347,6 @@ class Finale extends Phaser.Scene {
                      this.scene.start('titleScene', {music: undefined});
                });
             } else if(this.creditsMusic.isPlaying) {
-               // this.tweens.add({
-               //    targets: this.cutsceneMusic,
-               //    duration: 2500,
-               //    volume: 0
-               // })
                this.cameras.main.fadeOut(2500, 0, 0, 0);
                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
                      this.scene.start('titleScene', {music: this.creditsMusic});

@@ -164,10 +164,8 @@ class Tanooki extends Phaser.Scene {
       this.savedHighScore = false;
       this.highScore = parseInt(localStorage.getItem('bestAccuracy'));
       this.bestRank = localStorage.getItem('tanookiBestRank');
-      console.log(this.bestRank)
       if (isNaN(this.highScore)) {
          this.highScore = 0;
-         console.log(this.highScore)
          this.savedHighScore = false;
       } else {
          this.savedHighScore = true;

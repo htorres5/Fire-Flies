@@ -1,4 +1,3 @@
-// TODO: Implement Store Scene
 class Store extends Phaser.Scene {
    constructor() {
       super({key: 'storeScene'})
@@ -168,7 +167,6 @@ class Store extends Phaser.Scene {
          this.cutsceneCollider.active = false;
          console.log('hi');
          this.start();
-         //this.startCutscene = true;
       })
       
    }
@@ -209,13 +207,7 @@ class Store extends Phaser.Scene {
       this.textBox.setAlpha(1);
       this.portrait.setAlpha(1);
       keySPACE.once('down', () => {
-         // ! UNCOMMENT THIS FOR PLAYTEST BUILD
          storeCutscene[0].call(this, this.chain(1));
-         // ! DELETE THIS
-         // this.cameras.main.fadeOut(2500, 0, 0, 0);
-         // this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-         //     this.scene.start('overworldScene');
-         // });
       }, this);
    }
 }
