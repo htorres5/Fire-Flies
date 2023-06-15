@@ -174,14 +174,14 @@ class Minigames extends Phaser.Scene {
       this.savedChopHighScore = false;
       this.bestTime = parseInt(localStorage.getItem('bestTime'));
       this.chopBestRank = localStorage.getItem('chopBestRank');
-      if (isNaN(this.highScore)) {
+      if (isNaN(this.bestTime)) {
          this.highScore = 0;
          this.savedChopHighScore = false;
       } else {
          this.savedChopHighScore = true;
       }
 
-      this.minigameInfo('chopScene', game.config.width*(1/10), this.title.y + this.title.height + 5 + 64, 'Chopping Mayhem', 'Chop your tree as fast as possible!\nUse E or W to Chop.', `${this.chopBestRank}`, `${this.bestTime} seconds`, 'chopping_mayhem', this.savedFutbolHighScore)
+      this.minigameInfo('chopScene', game.config.width*(1/10), this.title.y + this.title.height + 5 + 64, 'Chopping Mayhem', 'Chop your tree as fast as possible!\nUse E or W to Chop.', `${this.chopBestRank}`, `${this.bestTime} seconds`, 'chopping_mayhem', this.savedChopHighScore)
 
       // * Futbol Frenzy
 

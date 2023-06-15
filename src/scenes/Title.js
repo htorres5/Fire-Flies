@@ -170,7 +170,7 @@ class Title extends Phaser.Scene {
          // * Fade Out To Opening Scene
          this.cameras.main.fadeOut(2500, 0, 0, 0);
          this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            this.music.stop();
+            if(this.completedGame) this.music.stop();
             this.time.delayedCall(1000, () => {
                this.scene.start('openingScene');
             })

@@ -488,6 +488,7 @@ class Futbol extends Phaser.Scene {
       // * Save High Score if New Score
       if (this.goals > this.highScore) {
          this.highScore = this.goals;
+         this.highScoreUI.setText(`${this.highScore}`)
          this.bestRankUI.setText(this.rankUI.text);
          this.saveHighScore();
       } else if(this.goals > 7) {
