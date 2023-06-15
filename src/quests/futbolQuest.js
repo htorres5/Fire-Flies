@@ -349,7 +349,7 @@ var futbolQuest = [
    },
 
    function(fn) {
-      this.dialogBox('nice! whered u find it?', 'max', 1);
+      this.dialogBox('nice! where did u find it?', 'max', 1);
       keySPACE.once('down', () => {
          fn();
       })
