@@ -48,6 +48,7 @@ Ok that is all, hope you enjoyed my game!
 ### HUGE SHOUTOUT TO PIXEL-ARCHIPEL FOR THE TILESET ART!
 The game would not look as good without them!
 https://www.patreon.com/pixelarchipel
+
 Tileset Art
 https://pixel-boy.itch.io/ninja-adventure-asset-pack
 
