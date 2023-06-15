@@ -6,6 +6,14 @@ class Futbol extends Phaser.Scene {
       this.VEL = 140;
    }
 
+   supportsLocalStorage() {
+      try {
+          return 'localStorage' in window && window['localStorage'] !== null;
+      } catch (e) {
+          return false;
+      }
+  }
+
    preload() {
       this.load.path = './assets/'
 
@@ -329,12 +337,51 @@ class Futbol extends Phaser.Scene {
          align: 'left'
       }
 
+      
+      // * High Score
+      this.savedHighScore = false;
+      this.highScore = parseInt(localStorage.getItem('mostGoalsScored'));
+      this.bestRank = localStorage.getItem('futbolBestRank');
+      if (isNaN(this.highScore)) {
+         this.highScore = 0;
+         this.savedHighScore = false;
+      } else {
+         this.savedHighScore = true;
+      }
+
       // * Final Score UI
       this.finalScoreUI = this.add.text(game.config.width/2, game.config.height/2, ``, this.resultsTextConfig).setAlpha(0);
-      this.finalScoreUI.setScrollFactor(0, 0).setStroke(0xFFFFFF, 5).setOrigin(0.5);
+      this.finalScoreUI.setScrollFactor(0, 0).setStroke(0xFFFFFF, 5).setOrigin(0.5).setDepth(10);
 
       // * Rank UI
       this.rankUI = this.add.text(this.finalScoreUI.x - this.finalScoreUI.width/2, this.finalScoreUI.y, `S`, this.rankConfig).setOrigin(0.5, 0.5).setAlpha(0).setScrollFactor(0, 0).setStroke('#FFF', 3);
+
+      // * High Score UI
+      this.highScoreUI = this.add.text(game.config.width - 5, game.config.height - 15, `${this.highScore}/10`, this.resultsTextConfig).setAlpha(1).setScrollFactor(0, 0).setStroke(0xFFFFFF, 5).setOrigin(1, 0.5).setDepth(10).setFontSize('18px').setVisible(false);
+      
+      // * Best Rank UI
+      this.bestRankUI = this.add.text(this.highScoreUI.x - this.highScoreUI.width, this.highScoreUI.y, `${this.bestRank}`, this.rankConfig).setOrigin(1, 0.5).setAlpha(1).setScrollFactor(0, 0).setStroke('#FFF', 3).setFontSize('30px').setDepth(10).setVisible(false);
+
+      // * Set Rank Color
+      if(this.bestRankUI.text == 'S') {
+         this.bestRankUI.setColor(this.sRankColor);
+      } else if(this.bestRankUI.text == 'A') {
+         this.bestRankUI.setColor(this.aRankColor);
+      } else if(this.bestRankUI.text == 'B') {
+         this.bestRankUI.setColor(this.bRankColor);
+      } else if(this.bestRankUI.text == 'C') {
+         this.bestRankUI.setColor(this.cRankColor);
+      } else if(this.bestRankUI.text == 'D') {
+         this.bestRankUI.setColor(this.dRankColor);
+      } else {
+         this.bestRankUI.setColor(this.fRankColor);
+      }
+
+      // * Show if High Score Exists
+      if(this.savedHighScore) {
+         this.highScoreUI.setVisible(true);
+         this.bestRankUI.setVisible(true);
+      }
 
    }
 
@@ -394,7 +441,7 @@ class Futbol extends Phaser.Scene {
       // * Quit to Minigames Scene
       if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
          this.futbolMusic.stop();
-         this.scene.start('titleScene');
+         this.scene.start('minigamesScene', {music: undefined});
       }
       // * Restart Scene
       if (Phaser.Input.Keyboard.JustDown(keyR)) {
@@ -438,7 +485,12 @@ class Futbol extends Phaser.Scene {
       this.objectiveUI.setText('Press SPACE to Quit.\nPress R to Restart.')
       
       // * Victory Jingle
-      if(this.goals > 7) {
+      // * Save High Score if New Score
+      if (this.goals > this.highScore) {
+         this.highScore = this.goals;
+         this.bestRankUI.setText(this.rankUI.text);
+         this.saveHighScore();
+      } else if(this.goals > 7) {
          this.sound.play('won_race')
       }
    }
@@ -458,4 +510,13 @@ class Futbol extends Phaser.Scene {
          this.rankUI.setText('F').setColor(this.fRankColor);
       }
    }
+
+   saveHighScore () {
+      if (!this.supportsLocalStorage()) { return false; }
+   
+      localStorage.setItem('mostGoalsScored', `${this.highScore}`);
+      localStorage.setItem('futbolBestRank', this.rankUI.text);
+
+      return true;
+  }
 }

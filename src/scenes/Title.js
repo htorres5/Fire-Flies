@@ -44,6 +44,7 @@ class Title extends Phaser.Scene {
 
       // * Input
       keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+      keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
       this.keyPressed = false;
 
       // * Fireflies
@@ -168,9 +169,20 @@ class Title extends Phaser.Scene {
          // * Fade Out To Opening Scene
          this.cameras.main.fadeOut(2500, 0, 0, 0);
          this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            this.music.stop();
             this.time.delayedCall(1000, () => {
                this.scene.start('openingScene');
             })
+         });
+      }
+
+      if (Phaser.Input.Keyboard.JustDown(keyR) && !this.keyPressed && this.completedGame) {
+         this.keyPressed = true;
+
+         // * Fade Out To Minigames Scene
+         this.cameras.main.fadeOut(300, 0, 0, 0);
+         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            this.scene.start('minigamesScene', {music: this.music});
          });
       }
    }

@@ -5,6 +5,14 @@ class Chop extends Phaser.Scene {
       this.padding = game.config.width / 100;
    }
 
+   supportsLocalStorage() {
+      try {
+          return 'localStorage' in window && window['localStorage'] !== null;
+      } catch (e) {
+          return false;
+      }
+  }
+
    preload() {
       this.load.path = './assets/'
 
@@ -336,6 +344,44 @@ class Chop extends Phaser.Scene {
       // * Rank UI
       this.rankUI = this.add.text(this.timeToFinish.x - this.timeToFinish.width - 25, this.timeToFinish.y + this.timeToFinish.height/2, `S`, this.rankConfig).setOrigin(1, 0.5).setScrollFactor(0, 0).setStroke('#FFF', 3).setAlpha(0);
 
+      // * High Score
+      this.savedHighScore = false;
+      this.highScore = parseInt(localStorage.getItem('bestTime'));
+      this.bestRank = localStorage.getItem('chopBestRank');
+      if (isNaN(this.highScore)) {
+         this.highScore = 0;
+         this.savedHighScore = false;
+      } else {
+         this.savedHighScore = true;
+      }
+
+      // * High Score UI
+      this.highScoreUI = this.add.text(game.config.width - 5, game.config.height - 15, `${this.highScore} seconds`, this.countdownTextConfig).setAlpha(1).setScrollFactor(0, 0).setStroke(0xFFFFFF, 5).setOrigin(1, 0.5).setDepth(10).setFontSize('18px').setVisible(false);
+
+      // * Best Rank UI
+      this.bestRankUI = this.add.text(this.highScoreUI.x - this.highScoreUI.width, this.highScoreUI.y, `${this.bestRank}`, this.rankConfig).setOrigin(1, 0.5).setAlpha(1).setScrollFactor(0, 0).setStroke('#FFF', 3).setFontSize('30px').setDepth(10).setVisible(false);
+
+      // * Set Rank Color
+      if(this.bestRankUI.text == 'S') {
+         this.bestRankUI.setColor(this.sRankColor);
+      } else if(this.bestRankUI.text == 'A') {
+         this.bestRankUI.setColor(this.aRankColor);
+      } else if(this.bestRankUI.text == 'B') {
+         this.bestRankUI.setColor(this.bRankColor);
+      } else if(this.bestRankUI.text == 'C') {
+         this.bestRankUI.setColor(this.cRankColor);
+      } else if(this.bestRankUI.text == 'D') {
+         this.bestRankUI.setColor(this.dRankColor);
+      } else {
+         this.bestRankUI.setColor(this.fRankColor);
+      }
+
+      // * Show if High Score Exists
+      if(this.savedHighScore) {
+         this.highScoreUI.setVisible(true);
+         this.bestRankUI.setVisible(true);
+      }
+
       // * Start Game and Song
       this.startGame = this.time.delayedCall(4000, () => {
          this.choppingWood = true;
@@ -394,11 +440,11 @@ class Chop extends Phaser.Scene {
          if(this.resultsMusic.isPlaying) {
             this.resultsMusic.stop();
          }
-         if(this.resultsMusic.isPlaying) {
+         if(this.countdownSound.isPlaying) {
             this.countdownSound.stop();
          }
          this.lumberMusic.stop();
-         this.scene.start('titleScene');
+         this.scene.start('minigamesScene', {music: undefined});
       }
       // * Restart Scene
       if (Phaser.Input.Keyboard.JustDown(keyR)) {
@@ -468,7 +514,14 @@ class Chop extends Phaser.Scene {
       this.rankUI.setFontSize('80px').setX(this.countdownToStart.x).setY(this.countdownToStart.y + this.countdownToStart.height + 15).setOrigin(0.5, 0.5)
 
       this.objectiveUI.setText('Press SPACE to Quit.\nPress R to Restart.')
-      if(this.treeCutTime < 35) {
+
+      // * Victory Jingle
+      // * Save High Score if New Score
+      if (this.highScore < this.treeCutTime) {
+         this.highScore = this.treeCutTime;
+         this.bestRankUI.setText(this.rankUI.text);
+         this.saveHighScore();
+      } else if(this.treeCutTime < 35) {
          this.sound.play('won_race')
       }
    }
@@ -489,4 +542,13 @@ class Chop extends Phaser.Scene {
          this.rankUI.setText('F').setColor(this.fRankColor);
       }
    }
+
+   saveHighScore () {
+      if (!this.supportsLocalStorage()) { return false; }
+   
+      localStorage.setItem('bestTime', `${this.highScore}`);
+      localStorage.setItem('chopBestRank', this.rankUI.text);
+
+      return true;
+  }
 }

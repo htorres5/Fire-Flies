@@ -12,7 +12,7 @@ let config = {
       }
    },
    zoom: 2.5,
-   scene: [Chop, Futbol, Tanooki, Title, Opening, Overworld, Store, AirRaid, Cave, FireFlies, Finale]
+   scene: [Title, Minigames, Opening, Overworld, Store, AirRaid, Cave, FireFlies, Finale, Tanooki, Chop, Futbol]
 }
 
 // reserve keyboard vars

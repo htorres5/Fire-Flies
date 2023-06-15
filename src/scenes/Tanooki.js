@@ -5,6 +5,14 @@ class Tanooki extends Phaser.Scene {
       this.padding = game.config.width / 100;
    }
 
+   supportsLocalStorage() {
+      try {
+          return 'localStorage' in window && window['localStorage'] !== null;
+      } catch (e) {
+          return false;
+      }
+   }
+
    preload() {
       this.load.path = './assets/'
 
@@ -132,25 +140,6 @@ class Tanooki extends Phaser.Scene {
          color: 'yellow',
          align: 'left'
       }
-
-      // * Countdown UI
-      this.countdown = 4;
-      this.countdownToStart = this.add.text(game.config.width/2, game.config.height/2, `${this.countdown}`, this.countdownTextConfig).setAlpha(0);
-      this.countdownToStart.setScrollFactor(0, 0).setStroke(0xFFFFFF, 5).setOrigin(0.5);
-
-      // * Play Countdown Sound
-      this.countdownSound = this.sound.add('countdown')
-      this.time.delayedCall(1000, () => this.countdownSound.play())
-
-      // * Start Countdown
-      this.countdownUpdater = this.time.addEvent({
-         delay: 1000,         
-         callback: () => {
-            this.countdown -= 1;
-            this.countdownToStart.setText(`${this.countdown}`).setAlpha(1);
-         },
-         repeat: 2,
-      })
       
       // * Rank Colors
       this.sRankColor = '#ffd700';
@@ -171,9 +160,71 @@ class Tanooki extends Phaser.Scene {
       // * Rank UI
       this.rankUI = this.add.text(this.padding + 10, this.objectiveUI.y + 45, `S`, this.rankConfig).setOrigin(0.5, 0.5).setScrollFactor(0, 0).setStroke('#FFF', 3);
 
+      // * High Score
+      this.savedHighScore = false;
+      this.highScore = parseInt(localStorage.getItem('bestAccuracy'));
+      this.bestRank = localStorage.getItem('tanookiBestRank');
+      console.log(this.bestRank)
+      if (isNaN(this.highScore)) {
+         this.highScore = 0;
+         console.log(this.highScore)
+         this.savedHighScore = false;
+      } else {
+         this.savedHighScore = true;
+      }
+
+      // * High Score UI
+      this.highScoreUI = this.add.text(game.config.width/2, game.config.height/1.5, `${this.highScore}%`, this.countdownTextConfig).setAlpha(1).setScrollFactor(0, 0).setStroke(0xFFFFFF, 5).setOrigin(0, 0.5).setDepth(10).setFontSize('18px').setVisible(false);
+      
+      // * Best Rank UI
+
+      this.bestRankUI = this.add.text(this.highScoreUI.x - this.highScoreUI.width/2, this.highScoreUI.y, `${this.bestRank}`, this.rankConfig).setOrigin(0, 0.5).setAlpha(1).setScrollFactor(0, 0).setStroke('#FFF', 3).setFontSize('30px').setDepth(10).setVisible(false);
+
+      if(this.bestRankUI.text == 'S') {
+         this.bestRankUI.setColor(this.sRankColor);
+      } else if(this.bestRankUI.text == 'A') {
+         this.bestRankUI.setColor(this.aRankColor);
+      } else if(this.bestRankUI.text == 'B') {
+         this.bestRankUI.setColor(this.bRankColor);
+      } else if(this.bestRankUI.text == 'C') {
+         this.bestRankUI.setColor(this.cRankColor);
+      } else if(this.bestRankUI.text == 'D') {
+         this.bestRankUI.setColor(this.dRankColor);
+      } else {
+         this.bestRankUI.setColor(this.fRankColor);
+      }
+
+      // * Countdown UI
+      this.countdown = 4;
+      this.countdownToStart = this.add.text(game.config.width/2, game.config.height/2, `${this.countdown}`, this.countdownTextConfig).setAlpha(0);
+      this.countdownToStart.setScrollFactor(0, 0).setStroke(0xFFFFFF, 5).setOrigin(0.5);
+
+      // * Play Countdown Sound
+      this.countdownSound = this.sound.add('countdown')
+      this.time.delayedCall(1000, () => { 
+         if(this.savedHighScore) {
+            this.highScoreUI.setVisible(true);
+            this.bestRankUI.setVisible(true);
+         }
+         this.countdownSound.play() 
+      })
+
+      // * Start Countdown
+      this.countdownUpdater = this.time.addEvent({
+         delay: 1000,         
+         callback: () => {
+            this.countdown -= 1;
+            this.countdownToStart.setText(`${this.countdown}`).setAlpha(1);
+         },
+         repeat: 2,
+      })
+
       // * Start Game and Song
       this.startSong = this.time.delayedCall(4000, () => {
+         
          this.tanookiMusic.play();
+         this.highScoreUI.setVisible(false);
+         this.bestRankUI.setVisible(false);
          this.countdownToStart.setAlpha(0);
          this.showTanookiTimer = this.time.addEvent({
             delay: 3000,         
@@ -188,7 +239,7 @@ class Tanooki extends Phaser.Scene {
       this.tanookiMusic.on('complete', () => {
         this.resultsScreen();
       })
-}
+   }
 
    update() {
       // * Quit to Minigames Scene
@@ -197,7 +248,7 @@ class Tanooki extends Phaser.Scene {
             this.countdownSound.stop();
          }
          this.tanookiMusic.stop();
-         this.scene.start('titleScene');
+         this.scene.start('minigamesScene', {music: undefined});
       }
       // * Restart Scene
       if (Phaser.Input.Keyboard.JustDown(keyR)) {
@@ -212,14 +263,27 @@ class Tanooki extends Phaser.Scene {
    resultsScreen() {
       this.hitAccuracy = (this.tanookiHitCount/this.tanookiTotalCount)*100;
       if (this.hitAccuracy == 100) {
-         this.countdownToStart.setText(`FULL\nCOMBO!`).setAlpha(1)
+         this.countdownToStart.setText(`FULL\nCOMBO!`).setAlpha(1).setOrigin(0.5);
       } else {
-         this.countdownToStart.setText(`${Math.trunc(this.hitAccuracy)}%`).setAlpha(1)
+         this.countdownToStart.setText(`${Math.trunc(this.hitAccuracy)}%`).setOrigin(0, 0.5).setAlpha(1)
       }
-      this.rankUI.setFontSize('65px').setX(this.countdownToStart.x - this.countdownToStart.width/2).setY(this.countdownToStart.y).setOrigin(1, 0.5)
+      this.rankUI.setFontSize('65px').setX(this.countdownToStart.x - this.countdownToStart.width/2).setY(this.countdownToStart.y).setOrigin(0, 0.5)
 
       this.objectiveUI.setText('Press SPACE to Quit.\nPress R to Restart.')
-      if(this.hitAccuracy > 85) {
+
+      // * Show High Score
+      if(this.savedHighScore) {
+         this.highScoreUI.setVisible(true);
+         this.bestRankUI.setVisible(true);
+      }
+
+      // * Save High Score if New Score
+      if (this.hitAccuracy > this.highScore) {
+         this.sound.play('won_race')
+         this.highScore = this.hitAccuracy;
+         this.bestRankUI.setText(this.rankUI.text);
+         this.saveHighScore();
+      } else if (this.hitAccuracy > 85) {
          this.sound.play('won_race')
       }
       this.finished = true;
@@ -295,4 +359,13 @@ class Tanooki extends Phaser.Scene {
          this.rankUI.setText('F').setColor(this.fRankColor);
       }
    }
+
+   saveHighScore () {
+      if (!this.supportsLocalStorage()) { return false; }
+   
+      localStorage.setItem('bestAccuracy', `${this.highScore}`);
+      localStorage.setItem('tanookiBestRank', this.rankUI.text);
+
+      return true;
+  }
 }
