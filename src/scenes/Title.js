@@ -117,7 +117,8 @@ class Title extends Phaser.Scene {
          this.title.setPipeline('Light2D');
 
          // * Play Music (only if not coming from Credits)
-         if(this.music == undefined) {
+         console.log(this.music)
+         if((this.music == undefined) || (this.music == null)) {
             this.music = this.sound.add('limpid_water', {volume: 0.25, loop: true})
             this.music.play();
          }
